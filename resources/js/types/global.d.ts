@@ -6,10 +6,20 @@ import { PageProps as AppPageProps } from './';
 declare global {
     interface Window {
         axios: AxiosInstance;
+        Echo: Echo;
+        Pusher: typeof Pusher;
     }
 
     /* eslint-disable no-var */
     var route: typeof ziggyRoute;
+
+    interface Filters {
+        [key: string]: string;
+    }
+
+    interface Options {
+        [key: string]: string;
+    }
 }
 
 declare module 'vue' {
