@@ -11,7 +11,7 @@ declare global {
     }
 
     /* eslint-disable no-var */
-    var route: typeof ziggyRoute;
+    let route: typeof ziggyRoute;
 
     interface Filters {
         [key: string]: string;
@@ -27,6 +27,12 @@ declare module 'vue' {
         route: typeof ziggyRoute;
     }
 }
+
+declare module 'vue3-lazyload';
+declare module 'vue3-toastify';
+declare module '@vueuse/core';
+declare module 'pinia';
+declare module 'pinia-plugin-persistedstate';
 
 declare module '@inertiajs/core' {
     interface PageProps extends InertiaPageProps, AppPageProps {}

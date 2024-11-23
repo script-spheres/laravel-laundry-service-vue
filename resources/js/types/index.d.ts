@@ -30,8 +30,76 @@ export type User = {
     name: string;
     email: string;
     email_verified_at?: string;
+};
+
+export type Coupon = {
+    id: number;
+    title: string;
+    description: string;
+    code: string;
+    min_amount: number;
+    max_amount: number;
+    valid_from: string;
+    valid_to: string;
+    discount_type: string;
+    discount_amount: number;
+    discount_percentage: number;
+    usage_limit: number;
+    used_count: number;
+    active_status: ActiveStatus;
+};
+
+export interface Store {
+    id: number;
+    name: string;
+    address?: string;
+    email: string;
+    phone_number: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
+export interface Customer {
+    id: number;
+    name: string;
+    email: string;
+    phone_number: string;
+    address: string | null;
+    communication_pref: string | null;
+}
+
+export interface ServiceType {
+    id: number;
+    type_name: string;
+    description: string;
+    active_status: ActiveStatus;
+}
+
+export interface Service {
+    id: number;
+    service_name: string;
+    description: string | null;
+    store_id: number;
+    image: string | null;
+    active_status: ActiveStatus;
+}
+export interface Timeslot {
+    id: number;
+    start_time: string;
+    end_time: string;
+    day: string | null;
+    capacity: number;
+    active_status: ActiveStatus;
+}
+
+export interface Expense {
+    id: number;
+    category: string;
+    amount: number;
+    store_id: number;
+    store_name: string;
+    receipt: string | null;
+}
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
