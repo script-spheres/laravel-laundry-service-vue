@@ -115,7 +115,7 @@ const submitForm = async () => {
                         v-model="form.outlet_id"
                         :options="outletOptions"
                     />
-                    <InputError :message="errors.outlet_id" class="mt-2" />
+                    <InputError :message="errors.outlet_id" />
                 </div>
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                     <InputLabel for="table_id" value="Table No" />
@@ -123,19 +123,19 @@ const submitForm = async () => {
                         v-model="form.table_id"
                         :options="tableOptions"
                     />
-                    <InputError :message="errors.table_id" class="mt-2" />
+                    <InputError :message="errors.table_id" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                     <InputLabel for="customer_name" value="Customer Name" />
-                    <TextInput v-model="form.customer_name" type="text" />
-                    <InputError :message="errors.customer_name" class="mt-2" />
+                    <TextInput v-model="form.customer_name" />
+                    <InputError :message="errors.customer_name" />
                 </div>
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                     <InputLabel for="customer_phone" value="Customer Phone" />
                     <TextInput v-model="form.customer_phone" />
-                    <InputError :message="errors.customer_phone" class="mt-2" />
+                    <InputError :message="errors.customer_phone" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap">
@@ -145,24 +145,24 @@ const submitForm = async () => {
                         v-model="form.no_of_people"
                         placeholder="Enter total person"
                     />
-                    <InputError :message="errors.no_of_people" class="mt-2" />
+                    <InputError :message="errors.no_of_people" />
                 </div>
                 <div class="mb-6 w-1/2 px-3 md:mb-0">
                     <InputLabel for="booking_date" value="Date" />
                     <TextInput v-model="form.booking_date" type="date" />
-                    <InputError :message="errors.booking_date" class="mt-2" />
+                    <InputError :message="errors.booking_date" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-1/2 px-3 md:mb-0">
                     <InputLabel for="start_time" value="Start Time" />
                     <TextInput v-model="form.start_time" type="time" />
-                    <InputError :message="errors.start_time" class="mt-2" />
+                    <InputError :message="errors.start_time" />
                 </div>
                 <div class="mb-6 w-1/2 px-3 md:mb-0">
                     <InputLabel for="end_time" value="End Time" />
                     <TextInput v-model="form.end_time" type="time" />
-                    <InputError :message="errors.end_time" class="mt-2" />
+                    <InputError :message="errors.end_time" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap">
@@ -172,7 +172,7 @@ const submitForm = async () => {
                         v-model="form.booking_status"
                         :options="bookingStatusOptions"
                     />
-                    <InputError :message="errors.booking_status" class="mt-2" />
+                    <InputError :message="errors.booking_status" />
                 </div>
             </div>
             <div class="flex flex-wrap gap-3">

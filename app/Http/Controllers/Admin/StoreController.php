@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreStoreRequest;
 use App\Http\Requests\Admin\UpdateStoreRequest;
-use App\Http\Resources\StoreResource;
+use App\Http\Resources\Api\StoreResource;
 use App\Models\Store;
 use App\Services\StoreService;
 use Illuminate\Http\Request;

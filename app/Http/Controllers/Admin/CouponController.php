@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCouponRequest;
 use App\Http\Requests\Admin\UpdateCouponRequest;
-use App\Http\Resources\CouponResource;
+use App\Http\Resources\Api\CouponResource;
 use App\Models\Coupon;
 use App\Services\CouponService;
 use Illuminate\Http\Request;

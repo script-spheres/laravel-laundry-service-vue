@@ -97,18 +97,13 @@ watch(filter, (newFilters) => {
         <div class="flex items-center gap-x-3">
             <div class="mb-6 w-full md:w-1/3">
                 <InputLabel for="name" value="Name" />
-                <TextInput
-                    v-model="filter.name"
-                    placeholder="Search by name"
-                    type="text"
-                />
+                <TextInput v-model="filter.name" placeholder="Search by name" />
             </div>
             <div class="mb-6 w-full md:w-1/3">
                 <InputLabel for="email" value="Email" />
                 <TextInput
                     v-model="filter.email"
                     placeholder="Search by email"
-                    type="text"
                 />
             </div>
             <div class="mb-6 w-full md:w-1/3">

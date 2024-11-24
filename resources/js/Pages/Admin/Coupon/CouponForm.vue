@@ -8,12 +8,12 @@ import TextInput from '@/Components/Form/TextInput.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 
+import NumberInput from '@/Components/Form/NumberInput.vue';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Coupon } from '@/types';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
-import NumberInput from "@/Components/Form/NumberInput.vue";
 
 defineOptions({ layout: AdminLayout });
 
@@ -74,20 +74,12 @@ const submitForm = () => {
             <form @submit.prevent="submitForm">
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Title"
-                            v-model="form.title"
-                            type="text"
-                        />
-                        <InputError :message="form.errors.title" class="mt-2" />
+                        <TextInput value="Title" v-model="form.title" />
+                        <InputError :message="form.errors.title" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Coupon Code"
-                            v-model="form.code"
-                            type="text"
-                        />
-                        <InputError :message="form.errors.code" class="mt-2" />
+                        <TextInput value="Coupon Code" v-model="form.code" />
+                        <InputError :message="form.errors.code" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -96,10 +88,7 @@ const submitForm = () => {
                             value="Description"
                             v-model="form.description"
                         />
-                        <InputError
-                            :message="form.errors.description"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.description" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -112,10 +101,7 @@ const submitForm = () => {
                                 { value: 'percentage', label: 'Percentage' },
                             ]"
                         />
-                        <InputError
-                            :message="form.errors.discount_type"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.discount_type" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <NumberInput
@@ -124,10 +110,7 @@ const submitForm = () => {
                             type="number"
                             step="0.01"
                         />
-                        <InputError
-                            :message="form.errors.discount_amount"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.discount_amount" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -138,10 +121,7 @@ const submitForm = () => {
                             type="number"
                             step="0.01"
                         />
-                        <InputError
-                            :message="form.errors.min_amount"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.min_amount" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <NumberInput
@@ -150,10 +130,7 @@ const submitForm = () => {
                             type="number"
                             step="0.01"
                         />
-                        <InputError
-                            :message="form.errors.max_amount"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.max_amount" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -163,10 +140,7 @@ const submitForm = () => {
                             v-model="form.valid_from"
                             type="date"
                         />
-                        <InputError
-                            :message="form.errors.valid_from"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.valid_from" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <TextInput
@@ -174,10 +148,7 @@ const submitForm = () => {
                             v-model="form.valid_to"
                             type="date"
                         />
-                        <InputError
-                            :message="form.errors.valid_to"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.valid_to" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -187,10 +158,7 @@ const submitForm = () => {
                             v-model="form.usage_limit"
                             type="number"
                         />
-                        <InputError
-                            :message="form.errors.usage_limit"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.usage_limit" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <NumberInput
@@ -198,10 +166,7 @@ const submitForm = () => {
                             v-model="form.used_count"
                             type="number"
                         />
-                        <InputError
-                            :message="form.errors.used_count"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.used_count" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -211,10 +176,7 @@ const submitForm = () => {
                             v-model="form.active_status"
                             :options="statusOptions"
                         />
-                        <InputError
-                            :message="form.errors.active_status"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.active_status" />
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3">
@@ -225,9 +187,7 @@ const submitForm = () => {
                     >
                         {{ coupon ? 'Update' : 'Submit' }}
                     </PrimaryButton>
-                    <LinkButton
-                        :href="route('admin.coupons.index')"
-                    >
+                    <LinkButton :href="route('admin.coupons.index')">
                         Cancel
                     </LinkButton>
                 </div>

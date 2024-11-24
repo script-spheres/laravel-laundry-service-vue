@@ -62,7 +62,6 @@ watch(filter, (newFilters) => {
                         v-model="filter.search"
                         class="w-full rounded-md bg-white text-lg shadow transition-shadow focus:shadow-2xl focus:outline-none"
                         placeholder="Cari menu ..."
-                        type="text"
                     />
                     <PrimaryButton @click="handleClearFilter">
                         Reset

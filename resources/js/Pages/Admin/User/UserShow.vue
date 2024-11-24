@@ -57,25 +57,16 @@ const update = () => form.post(route('admin.Banner.update', banner.id));
                     <form class="w-full" @submit.prevent="update">
                         <div class="-mx-3 mb-6 flex flex-wrap">
                             <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                                <Input
-                                    v-model="form.title"
-                                    :label="'Title'"
-                                    type="text"
-                                />
-                                <InputError
-                                    :message="form.errors.title"
-                                    class="mt-2"
-                                />
+                                <Input v-model="form.title" :label="'Title'" />
+                                <InputError :message="form.errors.title" />
                             </div>
                             <div class="w-full px-3 md:w-1/2">
                                 <Input
                                     v-model="form.description"
                                     :label="'Description'"
-                                    type="text"
                                 />
                                 <InputError
                                     :message="form.errors.description"
-                                    class="mt-2"
                                 />
                             </div>
                         </div>
@@ -83,12 +74,10 @@ const update = () => form.post(route('admin.Banner.update', banner.id));
                             <div class="mb-6 w-full px-3 md:mb-0">
                                 <FileUpload
                                     :label="'Image'"
-                                    type="text"
                                     @input="form.image = $event.target.files[0]"
                                 />
                                 <InputError
                                     :message="form.errors.description"
-                                    class="mt-2"
                                 />
                             </div>
                         </div>
@@ -100,7 +89,6 @@ const update = () => form.post(route('admin.Banner.update', banner.id));
                                 />
                                 <InputError
                                     :message="form.errors.active_status"
-                                    class="mt-2"
                                 />
                             </div>
                         </div>

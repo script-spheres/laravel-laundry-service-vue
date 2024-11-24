@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Services;
+
+use App\Http\Requests\Admin\StoreFinancialYearRequest;
+use App\Http\Requests\Admin\UpdateFinancialYearRequest;
+use App\Models\FinancialYear;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+
+class FinancialYearService
+{
+    /**
+     * Get paginated financial years with filters and sorting.
+     */
+    public function getFinancialYears()
+    {
+        return QueryBuilder::for(FinancialYear::class)
+            ->allowedFilters([
+                AllowedFilter::exact('id'),
+                AllowedFilter::partial('title'),
+                AllowedFilter::exact('active_status'),
+            ])
+            ->allowedSorts(['title', 'created_at'])
+            ->latest()
+            ->paginate()
+            ->appends(request()->query());
+    }
+
+    /**
+     * Store a new financial year.
+     */
+    public function create(StoreFinancialYearRequest $request): FinancialYear
+    {
+        $attributes = $request->validated();
+
+        return FinancialYear::create($attributes);
+    }
+
+    /**
+     * Update an existing financial year.
+     */
+    public function update(FinancialYear $financialYear, UpdateFinancialYearRequest $request): FinancialYear
+    {
+        $attributes = $request->validated();
+
+        // Update the financial year attributes
+        $financialYear->update($attributes);
+
+        return $financialYear;
+    }
+
+    /**
+     * Delete a financial year.
+     */
+    public function delete(FinancialYear $financialYear): void
+    {
+        $financialYear->delete();
+    }
+}

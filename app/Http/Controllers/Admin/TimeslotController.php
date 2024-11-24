@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreTimeslotRequest;
 use App\Http\Requests\Admin\UpdateTimeslotRequest;
-use App\Http\Resources\TimeslotResource;
+use App\Http\Resources\Api\TimeslotResource;
 use App\Models\Timeslot;
 use App\Services\TimeslotService;
 use Illuminate\Http\Request;

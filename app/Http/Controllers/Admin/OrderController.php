@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreOrderRequest;
 use App\Http\Requests\Admin\UpdateOrderRequest;
-use App\Http\Resources\OrderResource;
+use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\ServiceType;

@@ -71,12 +71,8 @@ const submitForm = () => {
                         <TextInput
                             value="Service Name"
                             v-model="form.service_name"
-                            type="text"
                         />
-                        <InputError
-                            :message="form.errors.service_name"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.service_name" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -86,10 +82,7 @@ const submitForm = () => {
                             v-model="form.description"
                             placeholder="Service Description (optional)"
                         />
-                        <InputError
-                            :message="form.errors.description"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.description" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -97,10 +90,9 @@ const submitForm = () => {
                         <TextInput
                             value="Image URL"
                             v-model="form.image"
-                            type="text"
                             placeholder="Service Image URL (optional)"
                         />
-                        <InputError :message="form.errors.image" class="mt-2" />
+                        <InputError :message="form.errors.image" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <SelectInput
@@ -108,10 +100,7 @@ const submitForm = () => {
                             :options="storesOptions"
                             placeholder="Select Store"
                         />
-                        <InputError
-                            :message="form.errors.store_id"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.store_id" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -119,13 +108,9 @@ const submitForm = () => {
                         <TextInput
                             value="Active Status"
                             v-model="form.active_status"
-                            type="text"
                             placeholder="Active or Inactive"
                         />
-                        <InputError
-                            :message="form.errors.active_status"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.active_status" />
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3">

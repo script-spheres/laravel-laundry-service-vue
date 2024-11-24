@@ -62,12 +62,8 @@ const submitForm = () => {
             <form @submit.prevent="submitForm">
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Store Name"
-                            v-model="form.name"
-                            type="text"
-                        />
-                        <InputError :message="form.errors.name" class="mt-2" />
+                        <TextInput value="Store Name" v-model="form.name" />
+                        <InputError :message="form.errors.name" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -77,10 +73,7 @@ const submitForm = () => {
                             v-model="form.address"
                             placeholder="Store Address (optional)"
                         />
-                        <InputError
-                            :message="form.errors.address"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.address" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -90,18 +83,14 @@ const submitForm = () => {
                             v-model="form.email"
                             type="email"
                         />
-                        <InputError :message="form.errors.email" class="mt-2" />
+                        <InputError :message="form.errors.email" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <TextInput
                             value="Phone Number"
                             v-model="form.phone_number"
-                            type="text"
                         />
-                        <InputError
-                            :message="form.errors.phone_number"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.phone_number" />
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3">

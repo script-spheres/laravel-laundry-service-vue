@@ -66,12 +66,8 @@ const submitForm = () => {
                         <TextInput
                             value="Service Type Name"
                             v-model="form.type_name"
-                            type="text"
                         />
-                        <InputError
-                            :message="form.errors.type_name"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.type_name" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -81,10 +77,7 @@ const submitForm = () => {
                             v-model="form.description"
                             placeholder="Service Type Description (optional)"
                         />
-                        <InputError
-                            :message="form.errors.description"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.description" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -92,12 +85,8 @@ const submitForm = () => {
                         <TextInput
                             value="Active Status"
                             v-model="form.active_status"
-                            type="text"
                         />
-                        <InputError
-                            :message="form.errors.active_status"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.active_status" />
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3">

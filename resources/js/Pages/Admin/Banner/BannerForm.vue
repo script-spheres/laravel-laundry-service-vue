@@ -104,7 +104,7 @@ const submitForm = () => {
                 <div class="w-full px-3 md:w-1/2">
                     <InputLabel for="name" value="Title" />
                     <TextInput v-model="form.title" />
-                    <InputError :message="form.errors.title" class="mt-2" />
+                    <InputError :message="form.errors.title" />
                 </div>
                 <div class="w-full px-3 md:w-1/2">
                     <InputLabel for="active_status" value="Status" />
@@ -112,20 +112,14 @@ const submitForm = () => {
                         v-model="form.active_status"
                         :options="statusOptions"
                     />
-                    <InputError
-                        :message="form.errors.active_status"
-                        class="mt-2"
-                    />
+                    <InputError :message="form.errors.active_status" />
                 </div>
             </div>
             <div class="mb-6 flex flex-wrap">
                 <div class="mb-6 w-full px-3">
                     <InputLabel for="description" value="Description" />
                     <TextareaInput v-model="form.description" />
-                    <InputError
-                        :message="form.errors.description"
-                        class="mt-2"
-                    />
+                    <InputError :message="form.errors.description" />
                 </div>
             </div>
             <div class="mb-6 flex flex-wrap">
@@ -137,7 +131,7 @@ const submitForm = () => {
                         @processfile="handleFileProcess"
                         @removefile="handleFileRemoved"
                     />
-                    <InputError :message="form.errors.image" class="mt-2" />
+                    <InputError :message="form.errors.image" />
                 </div>
             </div>
             <div class="flex gap-3">

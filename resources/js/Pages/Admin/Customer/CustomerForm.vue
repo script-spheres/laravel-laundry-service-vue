@@ -7,6 +7,8 @@ import TextInput from '@/Components/Form/TextInput.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 
+import EmailInput from '@/Components/Form/EmailInput.vue';
+import PhoneInput from '@/Components/Form/PhoneInput.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Customer } from '@/types';
 import { PropType } from 'vue';
@@ -63,12 +65,8 @@ const submitForm = () => {
             <form @submit.prevent="submitForm">
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Customer Name"
-                            v-model="form.name"
-                            type="text"
-                        />
-                        <InputError :message="form.errors.name" class="mt-2" />
+                        <TextInput value="Customer Name" v-model="form.name" />
+                        <InputError :message="form.errors.name" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -78,31 +76,20 @@ const submitForm = () => {
                             v-model="form.address"
                             placeholder="Customer Address (optional)"
                         />
-                        <InputError
-                            :message="form.errors.address"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.address" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Email"
-                            v-model="form.email"
-                            type="email"
-                        />
-                        <InputError :message="form.errors.email" class="mt-2" />
+                        <EmailInput value="Email" v-model="form.email" />
+                        <InputError :message="form.errors.email" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
+                        <PhoneInput
                             value="Phone Number"
                             v-model="form.phone_number"
-                            type="text"
                         />
-                        <InputError
-                            :message="form.errors.phone_number"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.phone_number" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
@@ -112,10 +99,7 @@ const submitForm = () => {
                             v-model="form.communication_pref"
                             placeholder="Communication Preferences (optional)"
                         />
-                        <InputError
-                            :message="form.errors.communication_pref"
-                            class="mt-2"
-                        />
+                        <InputError :message="form.errors.communication_pref" />
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3">

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreExpenseRequest;
 use App\Http\Requests\Admin\UpdateExpenseRequest;
-use App\Http\Resources\ExpenseResource;
+use App\Http\Resources\Api\ExpenseResource;
 use App\Models\Expense;
 use App\Services\ExpenseService;
 use Illuminate\Http\Request;

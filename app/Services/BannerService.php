@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Requests\StoreBannerRequest;
-use App\Http\Requests\UpdateBannerRequest;
+use App\Http\Requests\Admin\StoreBannerRequest;
+use App\Http\Requests\Admin\UpdateBannerRequest;
 use App\Models\Banner;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
