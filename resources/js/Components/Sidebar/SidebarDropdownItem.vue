@@ -1,20 +1,13 @@
 <script setup lang="ts">
-import { NavigationItem } from '@/Components/Sidebar/types';
-import { Link, usePage } from '@inertiajs/vue3';
-import { computed, onMounted, ref } from 'vue';
+import { NavigationItem } from '@/types';
+import getIcon from '@/Utility/icons';
+import { Link } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
 
-const props = defineProps<{ item: NavigationItem }>();
+defineProps<{ item: NavigationItem }>();
 
 const isCollapsed = ref(false);
 
-// Determine initial state based on the current page component
-onMounted(() => {
-    isCollapsed.value = props.item.child?.some((childItem) =>
-        usePage().component.startsWith('Admin/' + childItem.component),
-    );
-});
-
-// Toggle collapse manually
 const toggleCollapse = () => {
     isCollapsed.value = !isCollapsed.value;
 };
@@ -30,11 +23,14 @@ const svgClasses = computed(() => [
         <button
             @click="toggleCollapse"
             :class="[
-                'flex w-full items-center px-2 py-3 text-sm font-medium hover:rounded-md hover:bg-gray-400 hover:text-white dark:text-white',
+                'flex w-full items-center px-2 py-3 text-sm font-medium dark:text-white',
                 isCollapsed ? 'rounded-t-md bg-gray-800 text-white' : '',
             ]"
         >
-            <component :is="item.icon" class="mr-2 h-5 w-5" />
+            <component
+                :is="getIcon(item.attributes.icon)"
+                class="mr-2 h-5 w-5"
+            />
             <span>{{ item.title }}</span>
             <svg
                 :class="svgClasses"
@@ -66,7 +62,10 @@ const svgClasses = computed(() => [
                         },
                     ]"
                 >
-                    <component :is="childItem.icon" class="h-4 w-4" />
+                    <component
+                        :is="getIcon(childItem.attributes.icon)"
+                        class="h-4 w-4"
+                    />
                     {{ childItem.title }}
                 </Link>
             </li>

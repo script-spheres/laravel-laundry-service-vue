@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateAccessoryRequest;
 use App\Http\Resources\AccessoryResource;
 use App\Models\Accessory;
 use App\Services\AccessoryService;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -18,7 +19,7 @@ class DashboardController extends Controller
     {
         $accessories = $accessoryService->getAccessories();
 
-        return inertia('Admin/Dashboard', [
+        return Inertia::render('Admin/Dashboard', [
             'accessories' => AccessoryResource::collection($accessories),
             'reservations' => AccessoryResource::collection($accessories),
             'orders' => AccessoryResource::collection($accessories),

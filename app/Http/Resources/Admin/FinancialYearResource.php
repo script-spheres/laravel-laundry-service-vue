@@ -6,7 +6,7 @@ use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends JsonResource
+class FinancialYearResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,7 +25,7 @@ class CategoryResource extends JsonResource
             'active_status' => $this->active_status,
             // Conditional inclusion example:
             'parent_category' => $this->when($this->relationLoaded('parentCategory'), function () {
-                return new CategoryResource($this->parentCategory);
+                return new FinancialYearResource($this->parentCategory);
             }),
             // Another example with attribute inclusion:
             'created_at' => $this->when($this->created_at, $this->created_at->format('Y-m-d H:i:s')),

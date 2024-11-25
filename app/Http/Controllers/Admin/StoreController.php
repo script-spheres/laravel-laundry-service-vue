@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreStoreRequest;
 use App\Http\Requests\Admin\UpdateStoreRequest;
-use App\Http\Resources\Api\StoreResource;
+use App\Http\Resources\Admin\StoreResource;
 use App\Models\Store;
 use App\Services\StoreService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class StoreController extends Controller
 {
@@ -19,7 +20,7 @@ class StoreController extends Controller
     {
         $stores = $storeService->getStores();
 
-        return inertia('Admin/Store/StoreIndex', [
+        return Inertia::render('Admin/Store/StoreIndex', [
             'stores' => StoreResource::collection($stores),
             'filters' => $request->get('filter'),
         ]);
@@ -30,7 +31,7 @@ class StoreController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Store/StoreForm');
+        return Inertia::render('Admin/Store/StoreForm');
     }
 
     /**
@@ -48,7 +49,7 @@ class StoreController extends Controller
      */
     public function show(Store $store)
     {
-        return inertia('Admin/Store/StoreForm', [
+        return Inertia::render('Admin/Store/StoreForm', [
             'store' => StoreResource::make($store)->resolve()
         ]);
     }
@@ -58,7 +59,7 @@ class StoreController extends Controller
      */
     public function edit(Store $store)
     {
-        return inertia('Admin/Store/StoreForm', [
+        return Inertia::render('Admin/Store/StoreForm', [
             'store' => StoreResource::make($store)->resolve()
         ]);
     }

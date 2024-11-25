@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreFinancialYearRequest;
 use App\Http\Requests\Admin\UpdateFinancialYearRequest;
-use App\Http\Resources\Api\FinancialYearResource;
+use App\Http\Resources\Admin\FinancialYearResource;
 use App\Models\FinancialYear;
 use App\Services\FinancialYearService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class FinancialYearController extends Controller
 {
@@ -19,7 +20,7 @@ class FinancialYearController extends Controller
     {
         $financialYears = $financialYearService->getFinancialYears();
 
-        return inertia('Admin/FinancialYear/FinancialYearIndex', [
+        return Inertia::render('Admin/FinancialYear/FinancialYearIndex', [
             'financialYears' => FinancialYearResource::collection($financialYears),
             'filters' => $request->get('filter'),
         ]);
@@ -30,7 +31,7 @@ class FinancialYearController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/FinancialYear/FinancialYearForm');
+        return Inertia::render('Admin/FinancialYear/FinancialYearForm');
     }
 
     /**
@@ -48,7 +49,7 @@ class FinancialYearController extends Controller
      */
     public function show(FinancialYear $financialYear)
     {
-        return inertia('Admin/FinancialYear/FinancialYearForm', [
+        return Inertia::render('Admin/FinancialYear/FinancialYearForm', [
             'financialYear' => FinancialYearResource::make($financialYear)->resolve()
         ]);
     }
@@ -58,7 +59,7 @@ class FinancialYearController extends Controller
      */
     public function edit(FinancialYear $financialYear)
     {
-        return inertia('Admin/FinancialYear/FinancialYearForm', [
+        return Inertia::render('Admin/FinancialYear/FinancialYearForm', [
             'financialYear' => FinancialYearResource::make($financialYear)->resolve()
         ]);
     }

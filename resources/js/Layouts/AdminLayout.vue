@@ -3,7 +3,7 @@ import Dropdown from '@/Components/Dropdown/Dropdown.vue';
 import DropdownLink from '@/Components/Dropdown/DropdownLink.vue';
 import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import SidebarLogo from '@/Components/Sidebar/SidebarLogo.vue';
-import { useSidebar } from '@/Components/Sidebar/useSidebar';
+import { useSidebar } from '@/Composables/useSidebar';
 import { useDarkMode } from '@/Composables/useDarkMode';
 
 import {
@@ -53,7 +53,7 @@ const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
         ]"
     >
         <header
-            class="flex justify-between border-b bg-white px-3 py-5 text-black transition-all lg:px-8 dark:border-b-gray-700 dark:bg-gray-900 dark:text-white"
+            class="flex justify-between border-b bg-white px-3 py-4 text-black transition-all lg:px-8 dark:border-b-gray-700 dark:bg-gray-900 dark:text-white"
         >
             <button
                 class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"

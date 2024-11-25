@@ -50,85 +50,80 @@ const submitForm = () => {
 </script>
 
 <template>
-    <div>
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    {{ service ? 'Edit Service' : 'Create New Service' }}
-                </h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                    Fill in the details for your
-                    {{ service ? 'existing' : 'new' }} service.
-                </p>
-            </div>
-            <LinkButton :href="route('admin.services.index')">Back</LinkButton>
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+                {{ service ? 'Edit Service' : 'Create New Service' }}
+            </h2>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
+                Fill in the details for your
+                {{ service ? 'existing' : 'new' }} service.
+            </p>
         </div>
-
-        <Card class="mx-auto mt-6 p-4">
-            <form @submit.prevent="submitForm">
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Service Name"
-                            v-model="form.service_name"
-                        />
-                        <InputError :message="form.errors.service_name" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0">
-                        <TextareaInput
-                            value="Description"
-                            v-model="form.description"
-                            placeholder="Service Description (optional)"
-                        />
-                        <InputError :message="form.errors.description" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Image URL"
-                            v-model="form.image"
-                            placeholder="Service Image URL (optional)"
-                        />
-                        <InputError :message="form.errors.image" />
-                    </div>
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <SelectInput
-                            v-model="form.store_id"
-                            :options="storesOptions"
-                            placeholder="Select Store"
-                        />
-                        <InputError :message="form.errors.store_id" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Active Status"
-                            v-model="form.active_status"
-                            placeholder="Active or Inactive"
-                        />
-                        <InputError :message="form.errors.active_status" />
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <PrimaryButton
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                        type="submit"
-                    >
-                        {{ service ? 'Update' : 'Submit' }}
-                    </PrimaryButton>
-                    <LinkButton
-                        :href="route('admin.services.index')"
-                        color="red"
-                    >
-                        Cancel
-                    </LinkButton>
-                </div>
-            </form>
-        </Card>
+        <LinkButton :href="route('admin.services.index')">Back</LinkButton>
     </div>
+
+    <Card class="mx-auto mt-6 p-4">
+        <form @submit.prevent="submitForm">
+            <div class="-mx-3 mb-6 flex flex-wrap">
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                    <TextInput
+                        label="Service Name"
+                        v-model="form.service_name"
+                    />
+                    <InputError :message="form.errors.service_name" />
+                </div>
+            </div>
+            <div class="-mx-3 mb-6 flex flex-wrap">
+                <div class="mb-6 w-full px-3 md:mb-0">
+                    <TextareaInput
+                        label="Description"
+                        v-model="form.description"
+                        placeholder="Service Description (optional)"
+                    />
+                    <InputError :message="form.errors.description" />
+                </div>
+            </div>
+            <div class="-mx-3 mb-6 flex flex-wrap">
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                    <TextInput
+                        label="Image URL"
+                        v-model="form.image"
+                        placeholder="Service Image URL (optional)"
+                    />
+                    <InputError :message="form.errors.image" />
+                </div>
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                    <SelectInput
+                        v-model="form.store_id"
+                        :options="storesOptions"
+                        label="Select Store"
+                    />
+                    <InputError :message="form.errors.store_id" />
+                </div>
+            </div>
+            <div class="-mx-3 mb-6 flex flex-wrap">
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                    <TextInput
+                        label="Active Status"
+                        v-model="form.active_status"
+                        :options="storesOptions"
+                    />
+                    <InputError :message="form.errors.active_status" />
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <PrimaryButton
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                    type="submit"
+                >
+                    {{ service ? 'Update' : 'Submit' }}
+                </PrimaryButton>
+                <LinkButton :href="route('admin.services.index')" color="red">
+                    Cancel
+                </LinkButton>
+            </div>
+        </form>
+    </Card>
 </template>

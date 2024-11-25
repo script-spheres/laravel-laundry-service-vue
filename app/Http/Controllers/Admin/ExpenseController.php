@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreExpenseRequest;
 use App\Http\Requests\Admin\UpdateExpenseRequest;
-use App\Http\Resources\Api\ExpenseResource;
+use App\Http\Resources\Admin\ExpenseResource;
 use App\Models\Expense;
+use App\Models\Store;
 use App\Services\ExpenseService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ExpenseController extends Controller
 {
@@ -19,18 +21,10 @@ class ExpenseController extends Controller
     {
         $expenses = $expenseService->getExpenses();
 
-        return inertia('Admin/Expense/ExpenseIndex', [
+        return Inertia::render('Admin/Expense/ExpenseIndex', [
             'expenses' => ExpenseResource::collection($expenses),
             'filters' => $request->get('filter'),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return inertia('Admin/Expense/ExpenseForm');
     }
 
     /**
@@ -44,11 +38,21 @@ class ExpenseController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Admin/Expense/ExpenseForm', [
+            'storesOptions' => Store::pluck('name', 'id'),
+        ]);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Expense $expense)
     {
-        return inertia('Admin/Expense/ExpenseForm', [
+        return Inertia::render('Admin/Expense/ExpenseForm', [
             'expense' => ExpenseResource::make($expense)->resolve()
         ]);
     }
@@ -58,7 +62,8 @@ class ExpenseController extends Controller
      */
     public function edit(Expense $expense)
     {
-        return inertia('Admin/Expense/ExpenseForm', [
+        return Inertia::render('Admin/Expense/ExpenseForm', [
+            'storesOptions' => Store::pluck('name', 'id'),
             'expense' => ExpenseResource::make($expense)->resolve()
         ]);
     }

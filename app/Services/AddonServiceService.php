@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class CategoryService
+class AddonServiceService
 {
     /**
      * Get paginated categories with filters and sorting.

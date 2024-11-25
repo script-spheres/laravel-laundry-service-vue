@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreServiceTypeRequest;
 use App\Http\Requests\Admin\UpdateServiceTypeRequest;
-use App\Http\Resources\Api\ServiceTypeResource;
+use App\Http\Resources\Admin\ServiceTypeResource;
 use App\Models\ServiceType;
 use App\Services\ServiceTypeService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ServiceTypeController extends Controller
 {
@@ -19,7 +20,7 @@ class ServiceTypeController extends Controller
     {
         $serviceTypes = $serviceTypeService->getServiceTypes();
 
-        return inertia('Admin/ServiceType/ServiceTypeIndex', [
+        return Inertia::render('Admin/ServiceType/ServiceTypeIndex', [
             'serviceTypes' => ServiceTypeResource::collection($serviceTypes),
             'filters' => $request->get('filter'),
         ]);
@@ -30,7 +31,7 @@ class ServiceTypeController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/ServiceType/ServiceTypeForm');
+        return Inertia::render('Admin/ServiceType/ServiceTypeForm');
     }
 
     /**
@@ -48,7 +49,7 @@ class ServiceTypeController extends Controller
      */
     public function show(ServiceType $serviceType)
     {
-        return inertia('Admin/ServiceType/ServiceTypeForm', [
+        return Inertia::render('Admin/ServiceType/ServiceTypeForm', [
             'serviceType' => ServiceTypeResource::make($serviceType)->resolve()
         ]);
     }
@@ -58,7 +59,7 @@ class ServiceTypeController extends Controller
      */
     public function edit(ServiceType $serviceType)
     {
-        return inertia('Admin/ServiceType/ServiceTypeForm', [
+        return Inertia::render('Admin/ServiceType/ServiceTypeForm', [
             'serviceType' => ServiceTypeResource::make($serviceType)->resolve()
         ]);
     }

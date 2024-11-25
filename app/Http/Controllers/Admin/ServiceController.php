@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreServiceRequest;
 use App\Http\Requests\Admin\UpdateServiceRequest;
-use App\Http\Resources\Api\ServiceResource;
+use App\Http\Resources\Admin\ServiceResource;
 use App\Models\Service;
+use App\Models\Store;
 use App\Services\ServiceService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
@@ -19,8 +21,9 @@ class ServiceController extends Controller
     {
         $services = $serviceService->getServices();
 
-        return inertia('Admin/Service/ServiceIndex', [
+        return Inertia::render('Admin/Service/ServiceIndex', [
             'services' => ServiceResource::collection($services),
+            'storesOptions' => Store::pluck('name', 'id'),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -30,7 +33,9 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Service/ServiceForm');
+        return Inertia::render('Admin/Service/ServiceForm',[
+            'storesOptions' => Store::pluck('name', 'id'),
+        ]);
     }
 
     /**
@@ -48,8 +53,9 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
-        return inertia('Admin/Service/ServiceForm', [
-            'service' => ServiceResource::make($service)->resolve()
+        return Inertia::render('Admin/Service/ServiceForm', [
+            'service' => ServiceResource::make($service)->resolve(),
+            'storesOptions' => Store::pluck('name', 'id'),
         ]);
     }
 
@@ -58,8 +64,9 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        return inertia('Admin/Service/ServiceForm', [
-            'service' => ServiceResource::make($service)->resolve()
+        return Inertia::render('Admin/Service/ServiceForm', [
+            'service' => ServiceResource::make($service)->resolve(),
+            'storesOptions' => Store::pluck('name', 'id'),
         ]);
     }
 

@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreBannerRequest;
 use App\Http\Requests\Admin\UpdateBannerRequest;
-use App\Http\Resources\Api\BannerResource;
+use App\Http\Resources\Admin\BannerResource;
 use App\Models\Banner;
 use App\Services\BannerService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BannerController extends Controller
 {
@@ -19,7 +20,7 @@ class BannerController extends Controller
     {
         $banners = $bannerService->getBanners();
 
-        return inertia('Admin/Banner/BannerIndex', [
+        return Inertia::render('Admin/Banner/BannerIndex', [
             'banners' => BannerResource::collection($banners),
             'filters' => $request->get('filter'),
         ]);
@@ -30,7 +31,7 @@ class BannerController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Banner/BannerForm');
+        return Inertia::render('Admin/Banner/BannerForm');
     }
 
     /**
@@ -48,7 +49,7 @@ class BannerController extends Controller
      */
     public function show(Banner $banner)
     {
-        return inertia('Admin/Banner/BannerForm', [
+        return Inertia::render('Admin/Banner/BannerForm', [
             'banner' => BannerResource::make($banner)->resolve()
         ]);
     }
@@ -58,7 +59,7 @@ class BannerController extends Controller
      */
     public function edit(Banner $banner)
     {
-        return inertia('Admin/Banner/BannerForm', [
+        return Inertia::render('Admin/Banner/BannerForm', [
             'banner' => BannerResource::make($banner)->resolve()
         ]);
     }

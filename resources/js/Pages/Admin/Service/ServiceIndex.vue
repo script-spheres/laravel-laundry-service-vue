@@ -7,7 +7,6 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import InputLabel from '@/Components/Form/InputLabel.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
 import ToggleInput from '@/Components/Form/ToggleInput.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
@@ -24,6 +23,10 @@ defineOptions({ layout: AdminLayout });
 const props = defineProps({
     services: {
         type: Object as PropType<PaginatedData<Service>>,
+        required: true,
+    },
+    storesOptions: {
+        type: Object as PropType<Options>,
         required: true,
     },
     filters: {
@@ -106,16 +109,16 @@ const handleActiveStatusChange = (service: Service, event: Event) => {
     <Card class="mb-6 p-6">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <div class="w-full md:mb-0 md:w-1/4">
-                <InputLabel for="store_id" value="Store" />
                 <SelectInput
+                    label="Store"
                     v-model="filter.store_id"
-                    :options="storeOptions"
+                    :options="storesOptions"
                     placeholder="Filter by Store"
                 />
             </div>
             <div class="w-full md:mb-0 md:w-1/4">
-                <InputLabel for="active_status" value="Status" />
                 <SelectInput
+                    label="Status"
                     v-model="filter.active_status"
                     :options="statusOptions"
                     placeholder="Filter by Active Status"

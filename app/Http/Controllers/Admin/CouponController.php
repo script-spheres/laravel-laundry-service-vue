@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCouponRequest;
 use App\Http\Requests\Admin\UpdateCouponRequest;
-use App\Http\Resources\Api\CouponResource;
+use App\Http\Resources\Admin\CouponResource;
 use App\Models\Coupon;
 use App\Services\CouponService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CouponController extends Controller
 {
@@ -19,7 +20,7 @@ class CouponController extends Controller
     {
         $coupons = $couponService->getCoupons();
 
-        return inertia('Admin/Coupon/CouponIndex', [
+        return Inertia::render('Admin/Coupon/CouponIndex', [
             'coupons' => CouponResource::collection($coupons),
             'filters' => $request->get('filter'),
         ]);
@@ -30,7 +31,7 @@ class CouponController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Coupon/CouponForm');
+        return Inertia::render('Admin/Coupon/CouponForm');
     }
 
     /**
@@ -48,7 +49,7 @@ class CouponController extends Controller
      */
     public function show(Coupon $coupon)
     {
-        return inertia('Admin/Coupon/CouponForm', [
+        return Inertia::render('Admin/Coupon/CouponForm', [
             'coupon' => CouponResource::make($coupon)->resolve()
         ]);
     }
@@ -58,7 +59,7 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        return inertia('Admin/Coupon/CouponForm', [
+        return Inertia::render('Admin/Coupon/CouponForm', [
             'coupon' => CouponResource::make($coupon)->resolve()
         ]);
     }

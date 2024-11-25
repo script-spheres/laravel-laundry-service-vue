@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCustomerRequest;
 use App\Http\Requests\Admin\UpdateCustomerRequest;
-use App\Http\Resources\Api\CustomerResource;
+use App\Http\Resources\Admin\CustomerResource;
 use App\Models\Customer;
 use App\Services\CustomerService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
@@ -19,7 +20,7 @@ class CustomerController extends Controller
     {
         $customers = $customerService->getCustomers();
 
-        return inertia('Admin/Customer/CustomerIndex', [
+        return Inertia::render('Admin/Customer/CustomerIndex', [
             'customers' => CustomerResource::collection($customers),
             'filters' => $request->get('filter'),
         ]);
@@ -30,7 +31,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Customer/CustomerForm');
+        return Inertia::render('Admin/Customer/CustomerForm');
     }
 
     /**
@@ -48,7 +49,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        return inertia('Admin/Customer/CustomerForm', [
+        return Inertia::render('Admin/Customer/CustomerForm', [
             'customer' => CustomerResource::make($customer)->resolve()
         ]);
     }
@@ -58,7 +59,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        return inertia('Admin/Customer/CustomerForm', [
+        return Inertia::render('Admin/Customer/CustomerForm', [
             'customer' => CustomerResource::make($customer)->resolve()
         ]);
     }

@@ -1,5 +1,16 @@
 import { Config } from 'ziggy-js';
 
+export type NavigationItem = {
+    title: string;
+    url: string;
+    active: boolean;
+    attributes: {
+        icon: string;
+    };
+    children: NavigationItem[];
+    depth: number;
+};
+
 interface PaginationLink {
     label: string;
     url?: string;

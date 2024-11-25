@@ -11,6 +11,7 @@ use App\Models\Service;
 use App\Models\ServiceType;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
@@ -21,7 +22,7 @@ class OrderController extends Controller
     {
         $orders = $orderService->getOrders();
 
-        return inertia('Admin/Order/OrderIndex', [
+        return Inertia::render('Admin/Order/OrderIndex', [
             'orders' => OrderResource::collection($orders),
             'serviceTypes' => ServiceType::pluck('table_no','id'),
             'services' => Service::pluck('name','id'),
@@ -34,7 +35,7 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
-        return inertia('Admin/Order/OrderForm',[
+        return Inertia::render('Admin/Order/OrderForm',[
             'serviceTypes' => ServiceType::pluck('table_no','id'),
             'services' => Service::pluck('name','id'),
             'filters' => $request->get('filter'),
@@ -56,7 +57,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return inertia('Admin/Order/OrderShow', [
+        return Inertia::render('Admin/Order/OrderShow', [
             'order' => OrderResource::make($order)->resolve(),
             'serviceTypes' => ServiceType::pluck('table_no','id'),
             'services' => Service::pluck('name','id'),
@@ -68,7 +69,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        return inertia('Admin/Order/OrderForm', [
+        return Inertia::render('Admin/Order/OrderForm', [
             'order' => OrderResource::make($order)->resolve(),
             'serviceTypes' => ServiceType::pluck('table_no','id'),
             'services' => Service::pluck('name','id'),

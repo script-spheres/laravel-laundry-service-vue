@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useTableClasses } from '@/Components/DataTable/useTableClasses';
+import { useTableClasses } from '@/Composables/useTableClasses';
 
 const { tableCellClasses } = useTableClasses();
 </script>

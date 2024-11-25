@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreTimeslotRequest;
 use App\Http\Requests\Admin\UpdateTimeslotRequest;
-use App\Http\Resources\Api\TimeslotResource;
+use App\Http\Resources\Admin\TimeslotResource;
 use App\Models\Timeslot;
 use App\Services\TimeslotService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TimeslotController extends Controller
 {
@@ -19,7 +20,7 @@ class TimeslotController extends Controller
     {
         $timeslots = $timeslotService->getTimeslots();
 
-        return inertia('Admin/Timeslot/TimeslotIndex', [
+        return Inertia::render('Admin/Timeslot/TimeslotIndex', [
             'timeslots' => TimeslotResource::collection($timeslots),
             'filters' => $request->get('filter'),
         ]);
@@ -30,7 +31,7 @@ class TimeslotController extends Controller
      */
     public function create()
     {
-        return inertia('Admin/Timeslot/TimeslotForm');
+        return Inertia::render('Admin/Timeslot/TimeslotForm');
     }
 
     /**
@@ -48,7 +49,7 @@ class TimeslotController extends Controller
      */
     public function show(Timeslot $timeslot)
     {
-        return inertia('Admin/Timeslot/TimeslotForm', [
+        return Inertia::render('Admin/Timeslot/TimeslotForm', [
             'timeslot' => TimeslotResource::make($timeslot)->resolve()
         ]);
     }
@@ -58,7 +59,7 @@ class TimeslotController extends Controller
      */
     public function edit(Timeslot $timeslot)
     {
-        return inertia('Admin/Timeslot/TimeslotForm', [
+        return Inertia::render('Admin/Timeslot/TimeslotForm', [
             'timeslot' => TimeslotResource::make($timeslot)->resolve()
         ]);
     }

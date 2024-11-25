@@ -17,12 +17,12 @@ const id = useId();
 
 <template>
     <label
-        v-if="$attrs.value"
+        v-if="$attrs.label"
         :for="id"
         class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
         :data-test-id="`label-${id}`"
     >
-        {{ $attrs.value }} :
+        {{ $attrs.label }} :
     </label>
     <input
         v-bind="{ ...$attrs }"
