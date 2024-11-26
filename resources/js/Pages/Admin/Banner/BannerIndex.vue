@@ -43,6 +43,7 @@ watch(filter, (newFilters) => {
 
     router.get(route('admin.banners.index'), filterParams, {
         preserveScroll: true,
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 });
 
@@ -54,7 +55,7 @@ const deleteData = async (id: number) => {
 
     router.delete(route('admin.banners.destroy', id), {
         preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props?.flash?.message),
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 

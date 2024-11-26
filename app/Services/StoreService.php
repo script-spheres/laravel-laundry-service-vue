@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\Admin\StoreStoreRequest;
 use App\Http\Requests\Admin\UpdateStoreRequest;
 use App\Models\Store;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class StoreService
@@ -15,8 +16,15 @@ class StoreService
     public function getStores()
     {
         return QueryBuilder::for(Store::class)
-            ->allowedFilters(['id', 'name'])
+            ->allowedFilters([
+                AllowedFilter::exact('id'),
+                AllowedFilter::exact('name'),
+                AllowedFilter::exact('address'),
+                AllowedFilter::exact('email'),
+                AllowedFilter::exact('phone_number'),
+            ])
             ->allowedSorts(['name', 'created_at'])
+            ->latest()
             ->paginate()
             ->appends(request()->query());
     }
@@ -27,6 +35,7 @@ class StoreService
     public function create(StoreStoreRequest $request): Store
     {
         $attributes = $request->validated();
+
         return Store::create($attributes);
     }
 
@@ -36,7 +45,9 @@ class StoreService
     public function update(Store $store, UpdateStoreRequest $request): Store
     {
         $attributes = $request->validated();
+
         $store->update($attributes);
+
         return $store;
     }
 

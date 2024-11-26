@@ -66,7 +66,7 @@ const handleDelete = async (id: number) => {
 
     router.delete(route('admin.customers.destroy', id), {
         preserveScroll: true,
-        onSuccess: () => toast.success(props?.flash?.message),
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 

@@ -13,7 +13,7 @@ import ToggleInput from '@/Components/Form/ToggleInput.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { FlashMessage, PaginatedData, Store } from '@/types';
+import { PaginatedData, Store } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { PropType, reactive, watch } from 'vue';
 import { toast } from 'vue3-toastify';
@@ -29,10 +29,6 @@ const props = defineProps({
         type: Object as PropType<Filters>,
         required: false,
         default: () => ({}),
-    },
-    flash: {
-        type: Object as PropType<FlashMessage>,
-        required: false,
     },
 });
 
@@ -62,29 +58,27 @@ watch(filter, (newFilters) => {
     });
 });
 
-// Delete a store
 const deleteData = async (id: number) => {
     if (!window.confirm('Are you sure you want to delete this store?')) return;
 
     router.delete(route('admin.stores.destroy', id), {
         preserveScroll: true,
-        onSuccess: () => toast.success(props?.flash?.message),
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 
-// Clear all filters
 const handleClearFilter = () => {
     Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
 };
 
-// Toggle store active status
 const handleActiveStatusChange = (store: Store, event: Event) => {
     const newStatus = (event.target as HTMLInputElement).checked
         ? 'active'
         : 'inactive';
     const data = { ...store, active_status: newStatus };
     router.put(route('admin.stores.update', store.id), data, {
-        onSuccess: () => toast.success('Store status updated successfully.'),
+        preserveScroll: true,
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 </script>

@@ -17,10 +17,16 @@ class StoreResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'mobile' => $this->mobile,
             'address' => $this->address,
-            'credit_balance' => $this->credit_balance,
+            'address_lat' => $this->address_lat,
+            'address_long' => $this->address_long,
+            'email' => $this->email,
+            'phone_number' => $this->phone_number,
+            'manager_name' => $this->manager_name,
+            'manager_email' => $this->manager_email,
+            'manager_phone_number' => $this->manager_phone_number,
+            'additional_info' => $this->additional_info,
+            'store_code' => $this->store_code,
             'active_status' => $this->active_status,
         ];
     }

@@ -3,8 +3,8 @@ import Dropdown from '@/Components/Dropdown/Dropdown.vue';
 import DropdownLink from '@/Components/Dropdown/DropdownLink.vue';
 import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import SidebarLogo from '@/Components/Sidebar/SidebarLogo.vue';
-import { useSidebar } from '@/Composables/useSidebar';
 import { useDarkMode } from '@/Composables/useDarkMode';
+import { useSidebar } from '@/Composables/useSidebar';
 
 import {
     AkMoonFill,
@@ -31,7 +31,7 @@ const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
     <aside
         ref="sidebarRef"
         :class="[
-            'scrollbar-none fixed top-0 z-[99999] h-screen overflow-y-auto bg-white duration-300 lg:border-r lg:border-gray-200 dark:bg-gray-900 dark:lg:border-gray-700',
+            'scrollbar-none fixed top-0 z-[99999] h-screen overflow-y-auto bg-white duration-300 dark:bg-gray-900 lg:border-r lg:border-gray-200 dark:lg:border-gray-700',
             sidebarVisible ? 'lg:left-0 lg:w-[250px]' : 'lg:left-[-250px]',
         ]"
     >
@@ -53,7 +53,7 @@ const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
         ]"
     >
         <header
-            class="flex justify-between border-b bg-white px-3 py-4 text-black transition-all lg:px-8 dark:border-b-gray-700 dark:bg-gray-900 dark:text-white"
+            class="flex justify-between border-b bg-white px-3 py-4 text-black transition-all dark:border-b-gray-700 dark:bg-gray-900 dark:text-white lg:px-8"
         >
             <button
                 class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
@@ -123,7 +123,7 @@ const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
             </ul>
         </header>
         <section
-            class="relative min-h-screen w-full px-4 py-8 text-black lg:px-10 dark:bg-gray-900 dark:text-white"
+            class="relative min-h-screen w-full px-4 py-8 text-black dark:bg-gray-900 dark:text-white lg:px-10"
         >
             <slot />
         </section>

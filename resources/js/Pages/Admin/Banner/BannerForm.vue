@@ -12,7 +12,7 @@ import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Banner } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
-import { PropType, ref } from 'vue';
+import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AdminLayout });
@@ -34,46 +34,29 @@ const url = banner
 const form = useForm(method, url, {
     title: banner?.title || '',
     description: banner?.description || '',
-    image: banner?.image || [],
+    image: banner?.image || {},
     new_image: null as string | null,
     active_status: banner?.active_status || '',
 });
 
-const myFiles = ref([]);
-
-const handleFilePondInit = () => {
-    myFiles.value = (banner.image ? [banner.image] : []).map((file) => ({
-        source: file?.basename,
-        options: {
-            type: 'local',
-            metadata: {
-                poster: file?.url,
-            },
-        },
-    }));
-};
-
-// Update form image value
-const updateImage = (fileId: string | null) => {
-    if (banner) {
-        form.new_image = fileId; // Update `new_image` in edit mode
-    } else {
-        form.image = fileId; // Update `image` in create mode
-    }
-};
-
-// Handle file upload process
 const handleFileProcess = (error: any, file: any) => {
     if (!error && file?.serverId) {
-        updateImage(file.serverId);
+        if (banner) {
+            form.new_image = file.serverId;
+        } else {
+            form.image = file.serverId;
+        }
     } else {
         toast.error('Failed to process the file. Please try again.');
     }
 };
 
-// Handle file removal
 const handleFileRemoved = () => {
-    updateImage(null);
+    if (banner) {
+        form.new_image = null;
+    } else {
+        form.image = {};
+    }
 };
 
 // Submit the form
@@ -116,25 +99,24 @@ const submitForm = () => {
                 </div>
             </div>
             <div class="mb-6 flex flex-wrap">
-                <div class="mb-6 w-full px-3">
+                <div class="w-full px-3">
                     <InputLabel for="description" value="Description" />
                     <TextareaInput v-model="form.description" />
                     <InputError :message="form.errors.description" />
                 </div>
             </div>
             <div class="mb-6 flex flex-wrap">
-                <div class="w-full px-3 md:w-1/2">
+                <div class="md:w-1/1 w-full px-3">
                     <InputLabel for="image" value="Image" />
                     <FilepondInput
-                        :files="myFiles"
-                        @init="handleFilePondInit"
+                        :files="banner?.image"
                         @processfile="handleFileProcess"
                         @removefile="handleFileRemoved"
                     />
                     <InputError :message="form.errors.image" />
                 </div>
             </div>
-            <div class="flex gap-3">
+            <div class="flex gap-3 px-3">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"

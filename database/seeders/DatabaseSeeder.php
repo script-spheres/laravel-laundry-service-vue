@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Store;
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +20,11 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'admin@gmail.com',
+        ]);
+
+        $this->call([
+            FinancialYearSeeder::class,
+            StoreSeeder::class,
         ]);
     }
 }

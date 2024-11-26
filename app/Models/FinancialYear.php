@@ -20,6 +20,7 @@ class FinancialYear extends Model
      */
     protected $fillable = [
         'name',
+        'description',
         'start_date',
         'end_date',
         'is_active',
@@ -42,7 +43,7 @@ class FinancialYear extends Model
      * @param Builder $query
      * @return Builder
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
@@ -52,7 +53,7 @@ class FinancialYear extends Model
      *
      * @return void
      */
-    public function activate()
+    public function activate(): void
     {
         static::where('is_active', true)->update(['is_active' => false]);
         $this->update(['is_active' => true]);

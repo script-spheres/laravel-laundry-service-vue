@@ -46,6 +46,7 @@ const deleteData = async (id: number) => {
 
     router.delete(route('admin.accessories.destroy', id), {
         preserveScroll: true,
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 
@@ -60,7 +61,7 @@ const handleActiveStatusChange = async (accessory: Accessory, event: Event) => {
     const data = { ...accessory, active_status: newStatus };
     router.put(route('admin.accessories.update', accessory.id), data, {
         preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props?.flash?.message),
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 

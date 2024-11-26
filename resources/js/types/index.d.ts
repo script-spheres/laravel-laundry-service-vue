@@ -36,6 +36,15 @@ export type PaginatedData<T = never> = {
     meta: PaginationMeta;
 };
 
+export type Image = {
+    dirname: string;
+    basename: string;
+    extension: string;
+    filename: string;
+    location: string;
+    url: string;
+};
+
 export type User = {
     id: number;
     name: string;
@@ -60,12 +69,38 @@ export type Coupon = {
     active_status: ActiveStatus;
 };
 
-export interface Store {
+export interface FinancialYear {
     id: number;
     name: string;
+    start_date: string;
+    end_date: string;
+    description?: string;
+    active_status: ActiveStatus;
+}
+
+export type Banner = {
+    id: number;
+    title: string;
+    description: string;
+    image: Image;
+    active_status: ActiveStatus;
+};
+
+export interface Store {
+    id: number;
+    financial_year_id: number;
+    name: string;
     address?: string;
+    address_lat?: number;
+    address_long?: number;
     email: string;
     phone_number: string;
+    manager_name?: string;
+    manager_email?: string;
+    manager_phone_number?: string;
+    additional_info?: string;
+    store_code?: string;
+    active_status: ActiveStatus;
     created_at?: string;
     updated_at?: string;
 }
@@ -118,4 +153,8 @@ export type PageProps<
         user: User;
     };
     ziggy: Config & { location: string };
+    flash?: {
+        message?: string;
+    };
+    navigations?: NavigationItem[];
 };

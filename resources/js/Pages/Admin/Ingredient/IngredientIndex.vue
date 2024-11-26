@@ -71,7 +71,7 @@ const handleActiveStatusChange = async (
     const data = { ...ingredient, active_status: newStatus };
     router.put(route('admin.ingredients.update', ingredient.id), data, {
         preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props?.flash?.message),
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 

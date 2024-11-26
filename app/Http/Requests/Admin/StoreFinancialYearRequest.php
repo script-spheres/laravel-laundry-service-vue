@@ -23,16 +23,11 @@ class StoreFinancialYearRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'description' => 'required',
-            'image' => [
-                'required',
-                Rule::filepond([
-                    'max:1024',
-                    'image:jpeg,png',
-                ]),
-            ],
-            'active_status' => 'required',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'active_status' => 'required|in:active,inactive',
         ];
     }
 }

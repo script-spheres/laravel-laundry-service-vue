@@ -60,7 +60,7 @@ const deleteData = async (id: number) => {
 
     router.delete(route('admin.expenses.destroy', id), {
         preserveScroll: true,
-        onSuccess: () => toast.success(props?.flash?.message),
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 

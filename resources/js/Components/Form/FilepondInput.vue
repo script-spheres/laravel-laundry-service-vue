@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
 import FilePondPluginFilePoster from 'filepond-plugin-file-poster';
+import 'filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import vueFilePond from 'vue-filepond';
-
-import { usePage } from '@inertiajs/vue3';
-import 'filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import 'filepond/dist/filepond.min.css';
+import { ref } from 'vue';
+import vueFilePond from 'vue-filepond';
 
 // Register FilePond plugins
 const FilePond = vueFilePond(
@@ -15,6 +15,37 @@ const FilePond = vueFilePond(
     FilePondPluginImagePreview,
     FilePondPluginFilePoster,
 );
+
+const props = defineProps({
+    files: {
+        type: [Object, Array],
+        default: null,
+    },
+    maxFileSize: {
+        type: [Number, String],
+        default: null,
+    },
+});
+
+const filePondFiles = ref<any[]>([]);
+
+const handleFilePondInit = () => {
+    // Ensure the files are in an array format
+    const normalizedFiles = Array.isArray(props.files)
+        ? props.files
+        : [props.files];
+
+    // Map files to FilePond's required format
+    filePondFiles.value = normalizedFiles.map((file: any) => ({
+        source: file?.basename || file?.id,
+        options: {
+            type: 'local',
+            metadata: {
+                poster: file?.url,
+            },
+        },
+    }));
+};
 
 const serverConfig = {
     process: {
@@ -24,6 +55,14 @@ const serverConfig = {
             'X-CSRF-TOKEN': usePage().props.csrf_token,
         },
         withCredentials: false,
+        onerror: () => {},
+    },
+    revert: {
+        url: route('filepond-revert'),
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': usePage().props.csrf_token,
+        },
         onerror: () => {},
     },
 };
@@ -38,5 +77,12 @@ const serverConfig = {
     >
         {{ $attrs.label }} :
     </label>
-    <FilePond v-bind="{ ...$attrs }" :server="serverConfig" credits="false" />
+    <FilePond
+        :files="filePondFiles"
+        :maxFileSize="maxFileSize"
+        @init="handleFilePondInit"
+        :server="serverConfig"
+        credits="false"
+        filePosterHeight="260"
+    />
 </template>

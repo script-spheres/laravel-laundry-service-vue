@@ -2,11 +2,14 @@
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import InputError from '@/Components/Form/InputError.vue';
+import SelectInput from '@/Components/Form/SelectInput.vue';
 import TextareaInput from '@/Components/Form/TextareaInput.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 
+import NumberInput from '@/Components/Form/NumberInput.vue';
+import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Store } from '@/types';
 import { PropType } from 'vue';
@@ -31,14 +34,22 @@ const url = store
 const form = useForm(method, url, {
     name: store?.name || '',
     address: store?.address || '',
+    address_lat: store?.address_lat || '',
+    address_long: store?.address_long || '',
     email: store?.email || '',
     phone_number: store?.phone_number || '',
+    manager_name: store?.manager_name || '',
+    manager_email: store?.manager_email || '',
+    manager_phone_number: store?.manager_phone_number || '',
+    additional_info: store?.additional_info || '',
+    store_code: store?.store_code || '',
+    active_status: store?.active_status || 'active',
 });
 
 const submitForm = () => {
     form.submit({
         preserveScroll: true,
-        onSuccess: (page) => toast.success(page?.props?.flash?.message),
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 </script>
@@ -48,7 +59,7 @@ const submitForm = () => {
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    {{ store ? 'Edit Store' : 'Create New Store' }}
+                    {{ store ? 'Edit' : 'Create New' }} Store
                 </h2>
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                     Fill in the details for your
@@ -62,24 +73,47 @@ const submitForm = () => {
             <form @submit.prevent="submitForm">
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput value="Store Name" v-model="form.name" />
+                        <TextInput label="Store Name" v-model="form.name" />
                         <InputError :message="form.errors.name" />
+                    </div>
+                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                        <TextInput
+                            label="Store Code"
+                            v-model="form.store_code"
+                        />
+                        <InputError :message="form.errors.store_code" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0">
-                        <TextareaInput
-                            value="Address"
-                            v-model="form.address"
-                            placeholder="Store Address (optional)"
-                        />
+                        <TextareaInput label="Address" v-model="form.address" />
                         <InputError :message="form.errors.address" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                        <NumberInput
+                            label="Address Latitude"
+                            v-model="form.address_lat"
+                            type="number"
+                            step="0.0000001"
+                        />
+                        <InputError :message="form.errors.address_lat" />
+                    </div>
+                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                        <NumberInput
+                            label="Address Longitude"
+                            v-model="form.address_long"
+                            type="number"
+                            step="0.0000001"
+                        />
+                        <InputError :message="form.errors.address_long" />
+                    </div>
+                </div>
+                <div class="-mx-3 mb-6 flex flex-wrap">
+                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <TextInput
-                            value="Email"
+                            label="Email"
                             v-model="form.email"
                             type="email"
                         />
@@ -87,10 +121,55 @@ const submitForm = () => {
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <TextInput
-                            value="Phone Number"
+                            label="Phone Number"
                             v-model="form.phone_number"
                         />
                         <InputError :message="form.errors.phone_number" />
+                    </div>
+                </div>
+                <div class="-mx-3 mb-6 flex flex-wrap">
+                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                        <TextInput
+                            label="Manager Name"
+                            v-model="form.manager_name"
+                        />
+                        <InputError :message="form.errors.manager_name" />
+                    </div>
+                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                        <TextInput
+                            label="Manager Email"
+                            v-model="form.manager_email"
+                            type="email"
+                        />
+                        <InputError :message="form.errors.manager_email" />
+                    </div>
+                </div>
+                <div class="-mx-3 mb-6 flex flex-wrap">
+                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                        <TextInput
+                            label="Manager Phone Number"
+                            v-model="form.manager_phone_number"
+                        />
+                        <InputError
+                            :message="form.errors.manager_phone_number"
+                        />
+                    </div>
+                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                        <SelectInput
+                            label="Status"
+                            v-model="form.active_status"
+                            :options="statusOptions"
+                        />
+                        <InputError :message="form.errors.active_status" />
+                    </div>
+                </div>
+                <div class="-mx-3 mb-6 flex flex-wrap">
+                    <div class="md:w-1/1 mb-6 w-full px-3 md:mb-0">
+                        <TextareaInput
+                            label="Additional Info"
+                            v-model="form.additional_info"
+                        />
+                        <InputError :message="form.errors.additional_info" />
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3">
@@ -101,7 +180,7 @@ const submitForm = () => {
                     >
                         {{ store ? 'Update' : 'Submit' }}
                     </PrimaryButton>
-                    <LinkButton :href="route('admin.stores.index')" color="red">
+                    <LinkButton :href="route('admin.stores.index')">
                         Cancel
                     </LinkButton>
                 </div>

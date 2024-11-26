@@ -62,6 +62,7 @@ watch(filter, (newFilters) => {
 
     router.get(route('admin.deliveryScales.index'), filterParams, {
         preserveScroll: true,
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 });
 
@@ -91,8 +92,8 @@ const handleActiveStatusChange = (
         : 'inactive';
     const data = { ...deliveryScale, active_status: newStatus };
     router.put(route('admin.deliveryScales.update', deliveryScale.id), data, {
-        onSuccess: () =>
-            toast.success('Delivery scale status updated successfully.'),
+        preserveScroll: true,
+        onSuccess: (page) => toast.success(page.props.flash?.message),
     });
 };
 </script>

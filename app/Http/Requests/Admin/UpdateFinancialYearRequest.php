@@ -23,10 +23,10 @@ class UpdateFinancialYearRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|required',
-            'description' => 'sometimes|required',
-            'image' => 'required_without:new_image|sometimes',
-            'new_image' => 'nullable',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
             'active_status' => 'sometimes|required|in:active,inactive',
         ];
     }

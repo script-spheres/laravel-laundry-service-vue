@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Http\Requests\Admin\StoreFinancialYearRequest;
 use App\Http\Requests\Admin\UpdateFinancialYearRequest;
 use App\Models\FinancialYear;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -19,8 +17,9 @@ class FinancialYearService
     {
         return QueryBuilder::for(FinancialYear::class)
             ->allowedFilters([
-                AllowedFilter::exact('id'),
-                AllowedFilter::partial('title'),
+                AllowedFilter::exact('name'),
+                AllowedFilter::partial('start_date'),
+                AllowedFilter::partial('end_date'),
                 AllowedFilter::exact('active_status'),
             ])
             ->allowedSorts(['title', 'created_at'])

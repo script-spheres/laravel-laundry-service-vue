@@ -41,7 +41,7 @@ class FinancialYearController extends Controller
     {
         $financialYearService->create($request);
 
-        return redirect()->route('admin.financialYears.index')->with(['message' => 'Created successfully']);
+        return redirect()->route('admin.financial-years.index')->with(['message' => 'Created successfully']);
     }
 
     /**
@@ -71,7 +71,7 @@ class FinancialYearController extends Controller
     {
         $financialYearService->update($financialYear, $request);
 
-        return redirect()->route('admin.financialYears.index')->with(['message' => 'Updated successfully']);
+        return redirect()->route('admin.financial-years.index')->with(['message' => 'Updated successfully']);
     }
 
     /**
@@ -81,6 +81,6 @@ class FinancialYearController extends Controller
     {
         $financialYearService->delete($financialYear);
 
-        return redirect()->route('admin.financialYears.index')->with(['message' => 'Deleted successfully']);
+        return redirect()->route('admin.financial-years.index')->with(['message' => 'Deleted successfully']);
     }
 }
