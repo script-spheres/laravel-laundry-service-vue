@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreAddonServiceRequest;
-use App\Http\Requests\Admin\UpdateAddonServiceRequest;
-use App\Http\Resources\Admin\AddonServiceResource;
+use App\Http\Requests\StoreAddonServiceRequest;
+use App\Http\Requests\UpdateAddonServiceRequest;
+use App\Http\Resources\AddonServiceResource;
 use App\Models\AddonService;
 use App\Services\AddonServiceService;
 use Illuminate\Http\Request;
@@ -41,7 +41,7 @@ class AddonServiceController extends Controller
     {
         $addonServiceService->create($request);
 
-        return redirect()->route('admin.addonServices.index')->with(['message' => 'Created successfully']);
+        return redirect()->route('admin.addon-services.index')->with(['message' => 'Created successfully']);
     }
 
     /**
@@ -71,7 +71,7 @@ class AddonServiceController extends Controller
     {
         $addonServiceService->update($addonService, $request);
 
-        return redirect()->route('admin.addonServices.index')->with(['message' => 'Updated successfully']);
+        return redirect()->route('admin.addon-services.index')->with(['message' => 'Updated successfully']);
     }
 
     /**
@@ -81,6 +81,6 @@ class AddonServiceController extends Controller
     {
         $addonServiceService->delete($addonService);
 
-        return redirect()->route('admin.addonServices.index')->with(['message' => 'Deleted successfully']);
+        return redirect()->route('admin.addon-services.index')->with(['message' => 'Deleted successfully']);
     }
 }

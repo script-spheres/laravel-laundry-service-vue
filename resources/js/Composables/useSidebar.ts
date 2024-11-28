@@ -1,6 +1,5 @@
 import { onClickOutside } from '@vueuse/core';
 import { ref, watch } from 'vue';
-import { BsBagDashFill, FaBandsDashcube, IcDashboardDots, McRoundLine } from "@kalimahapps/vue-icons";
 
 export function useSidebar() {
     const sidebarVisible = ref(true);
@@ -10,7 +9,7 @@ export function useSidebar() {
     // Handle clicks outside the Sidebar to close it on mobile
     onClickOutside(sidebarRef, () => {
         if (isMobileDevice.value) {
-            sidebarVisible.value = false; // Close sidebar on mobile if clicked outside
+            sidebarVisible.value = false;
         }
     });
 
@@ -31,20 +30,6 @@ export function useSidebar() {
         sidebarVisible.value = !sidebarVisible.value;
     };
 
-    function getIconComponent(icon: string) {
-        switch (icon) {
-            case 'RiDashboard3Fill':
-                return IcDashboardDots;
-            case 'users':
-                return BsBagDashFill;
-            case 'box':
-                return FaBandsDashcube;
-            case 'settings':
-                return McRoundLine;
-            default:
-                return null;
-        }
-    }
     return {
         isMobileDevice,
         sidebarVisible,

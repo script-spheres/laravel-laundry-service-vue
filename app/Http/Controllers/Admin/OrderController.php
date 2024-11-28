@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreOrderRequest;
-use App\Http\Requests\Admin\UpdateOrderRequest;
-use App\Http\Resources\Admin\OrderResource;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use App\Models\Service;
 use App\Models\ServiceType;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -24,8 +23,7 @@ class OrderController extends Controller
 
         return Inertia::render('Admin/Order/OrderIndex', [
             'orders' => OrderResource::collection($orders),
-            'serviceTypes' => ServiceType::pluck('table_no','id'),
-            'services' => Service::pluck('name','id'),
+            'serviceTypes' => ServiceType::pluck('name','id'),
             'filters' => $request->get('filter'),
         ]);
     }

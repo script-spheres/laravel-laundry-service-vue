@@ -12,15 +12,15 @@ import SelectInput from '@/Components/Form/SelectInput.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import { useFilters } from '@/Composables/useFilters';
 import {
     kitchenStatusOptions,
     paymentStatusOptions,
 } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Order, PaginatedData } from '@/types';
+import { PropType } from 'vue';
 import { router } from '@inertiajs/vue3';
-import { PropType, reactive, watch } from 'vue';
-import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AdminLayout });
 
@@ -40,7 +40,7 @@ const props = defineProps({
     filters: Object as PropType<Filters>,
 });
 
-const filter = reactive({
+const { filter, handleClearFilter } = useFilters('admin.orders.index', {
     outlet_id: props.filters?.outlet_id || '',
     table_id: props.filters?.table_id || '',
     kitchen_status: props.filters?.kitchen_status || '',
@@ -48,38 +48,6 @@ const filter = reactive({
     order_uuid: props.filters?.order_uuid || '',
 });
 
-// Watch for filter changes and trigger API call
-watch(filter, (newFilters) => {
-    const { outlet_id, table_id, kitchen_status, payment_status, order_uuid } =
-        newFilters;
-
-    const filterParams = {
-        ...(outlet_id && { 'filter[outlet_id]': outlet_id }),
-        ...(table_id && { 'filter[table_id]': table_id }),
-        ...(kitchen_status && { 'filter[kitchen_status]': kitchen_status }),
-        ...(payment_status && { 'filter[payment_status]': payment_status }),
-        ...(order_uuid && { 'filter[order_uuid]': order_uuid }),
-    };
-
-    router.get(route('admin.orders.index'), filterParams, {
-        preserveState: true,
-        preserveScroll: true,
-        only: ['orders'],
-    });
-});
-
-const deleteData = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this order?')) return;
-
-    router.delete(route('admin.orders.destroy', id), {
-        preserveScroll: true,
-        onSuccess: () => toast.success(props?.flash?.message),
-    });
-};
-
-const clearFilters = () => {
-    Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
-};
 
 const handlePaymentStatusChange = (order: Order, event: Event) => {
     const target = event.target as HTMLSelectElement;
@@ -157,7 +125,7 @@ const handlePaymentStatusChange = (order: Order, event: Event) => {
 
             <!-- Clear Filters Button -->
             <div class="flex-none gap-2 self-end">
-                <PrimaryButton @click="clearFilters">
+                <PrimaryButton @click="handleClearFilter">
                     Clear Filter
                 </PrimaryButton>
             </div>

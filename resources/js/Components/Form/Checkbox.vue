@@ -26,4 +26,7 @@ const proxyChecked = computed({
         v-model="proxyChecked"
         class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
     />
+    <p v-show="$attrs.error" class="text-sm text-red-600 dark:text-red-400">
+        {{ $attrs.error }}
+    </p>
 </template>

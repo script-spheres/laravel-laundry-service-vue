@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\StoreServiceTypeRequest;
-use App\Http\Requests\Admin\UpdateServiceTypeRequest;
+use App\Http\Requests\StoreServiceTypeRequest;
+use App\Http\Requests\UpdateServiceTypeRequest;
 use App\Models\ServiceType;
 use Spatie\QueryBuilder\QueryBuilder;
 

@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\StoreExpenseRequest;
-use App\Http\Requests\Admin\UpdateExpenseRequest;
+use App\Http\Requests\StoreExpenseRequest;
+use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
 use Spatie\QueryBuilder\QueryBuilder;
 

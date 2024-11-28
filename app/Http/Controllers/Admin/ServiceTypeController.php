@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreServiceTypeRequest;
-use App\Http\Requests\Admin\UpdateServiceTypeRequest;
-use App\Http\Resources\Admin\ServiceTypeResource;
+use App\Http\Requests\StoreServiceTypeRequest;
+use App\Http\Requests\UpdateServiceTypeRequest;
+use App\Http\Resources\ServiceTypeResource;
 use App\Models\ServiceType;
 use App\Services\ServiceTypeService;
 use Illuminate\Http\Request;

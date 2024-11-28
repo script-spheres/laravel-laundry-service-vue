@@ -16,24 +16,31 @@ import {
 } from '@kalimahapps/vue-icons';
 
 const { isDark, toggleDark } = useDarkMode();
-const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
-    useSidebar();
+const { sidebarVisible, toggleSidebar, isMobileDevice } = useSidebar();
+
+// Ensure the sidebar starts open on desktop
+if (!isMobileDevice.value) {
+    sidebarVisible.value = true;
+}
 </script>
 
 <template>
+    <!-- Sidebar Overlay for Mobile -->
     <div
-        :class="{
-            'fixed inset-0 z-[99998] bg-black bg-opacity-50 transition-opacity':
-                isMobileDevice,
-        }"
-        @click="sidebarVisible = false"
+        v-if="isMobileDevice && sidebarVisible"
+        class="fixed inset-0 z-[99998] bg-black bg-opacity-50 transition-opacity"
+        @click="toggleSidebar"
     ></div>
+
+    <!-- Sidebar -->
     <aside
         ref="sidebarRef"
-        :class="[
-            'scrollbar-none fixed top-0 z-[99999] h-screen overflow-y-auto bg-white duration-300 dark:bg-gray-900 lg:border-r lg:border-gray-200 dark:lg:border-gray-700',
-            sidebarVisible ? 'lg:left-0 lg:w-[250px]' : 'lg:left-[-250px]',
-        ]"
+        class="scrollbar-none fixed top-0 z-[99999] h-screen overflow-y-auto bg-white duration-300 dark:bg-gray-900 lg:border-r lg:border-gray-700"
+        :class="{
+            'left-0': sidebarVisible || !isMobileDevice,
+            '-left-full': !sidebarVisible && isMobileDevice,
+            'lg:left-0 lg:w-[250px]': !isMobileDevice,
+        }"
     >
         <SidebarLogo @close-sidebar="toggleSidebar" />
         <div class="overflow-y-auto px-2 py-3">
@@ -46,31 +53,39 @@ const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
             </ul>
         </div>
     </aside>
+
+    <!-- Main Content -->
     <main
-        :class="[
-            sidebarVisible ? 'lg:ml-[250px]' : 'ml-0',
-            'transition-all duration-300',
-        ]"
+        class="pt-[4rem] transition-all duration-300"
+        :class="{
+            'lg:ml-[250px]': sidebarVisible && !isMobileDevice,
+            'ml-0': !sidebarVisible || isMobileDevice,
+        }"
     >
+        <!-- Header -->
         <header
-            class="flex justify-between border-b bg-white px-3 py-4 text-black transition-all dark:border-b-gray-700 dark:bg-gray-900 dark:text-white lg:px-8"
+            class="fixed top-0 left-0 z-[10000] w-full flex justify-between items-center border-b bg-white px-3 py-4 text-black transition-all dark:border-b-gray-700 dark:bg-gray-900 dark:text-white lg:px-8"
         >
+            <!-- Sidebar Toggle Button -->
             <button
                 class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
-                @click="toggleSidebar()"
+                @click="toggleSidebar"
             >
                 <FaBarsStaggered />
             </button>
             <ul class="flex items-center gap-4 lg:gap-6">
+                <!-- Dark Mode Toggle -->
                 <li>
                     <button
                         class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
-                        @click="toggleDark()"
+                        @click="toggleDark"
                     >
                         <AkSunFill v-if="isDark" />
                         <AkMoonFill v-else />
                     </button>
                 </li>
+
+                <!-- Mail Button -->
                 <li>
                     <button
                         class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
@@ -78,6 +93,8 @@ const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
                         <FeMail class="text-lg text-[#0f172a]" />
                     </button>
                 </li>
+
+                <!-- Notifications Button -->
                 <li>
                     <button
                         class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
@@ -85,12 +102,10 @@ const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
                         <MdNotificationsNone class="text-xl text-[#0f172a]" />
                     </button>
                 </li>
+
+                <!-- User Dropdown -->
                 <li>
-                    <Dropdown
-                        align="right"
-                        class="group cursor-pointer"
-                        width="48"
-                    >
+                    <Dropdown align="right" class="group cursor-pointer" width="48">
                         <template #trigger>
                             <div
                                 class="flex items-center rounded-md border border-transparent bg-white px-3 text-black transition duration-150 ease-in-out hover:text-gray-700 dark:bg-gray-900 dark:text-white"
@@ -122,6 +137,8 @@ const { sidebarRef, sidebarVisible, toggleSidebar, isMobileDevice } =
                 </li>
             </ul>
         </header>
+
+        <!-- Content Area -->
         <section
             class="relative min-h-screen w-full px-4 py-8 text-black dark:bg-gray-900 dark:text-white lg:px-10"
         >

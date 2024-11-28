@@ -33,4 +33,7 @@ const id = useId();
         type="time"
         v-bind="{ ...$attrs }"
     />
+    <p v-show="$attrs.error" class="text-sm text-red-600 dark:text-red-400">
+        {{ $attrs.error }}
+    </p>
 </template>

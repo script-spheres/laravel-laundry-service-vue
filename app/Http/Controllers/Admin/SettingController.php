@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreExpenseRequest;
-use App\Http\Requests\Admin\UpdateExpenseRequest;
-use App\Http\Resources\Admin\ExpenseResource;
+use App\Http\Requests\StoreExpenseRequest;
+use App\Http\Requests\UpdateExpenseRequest;
+use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
 use App\Models\Store;
 use App\Services\ExpenseService;

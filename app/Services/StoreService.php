@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\StoreStoreRequest;
-use App\Http\Requests\Admin\UpdateStoreRequest;
+use App\Http\Requests\StoreStoreRequest;
+use App\Http\Requests\UpdateStoreRequest;
 use App\Models\Store;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;

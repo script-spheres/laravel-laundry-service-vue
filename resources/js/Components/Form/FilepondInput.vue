@@ -6,10 +6,9 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import 'filepond/dist/filepond.min.css';
-import { ref } from 'vue';
+import { ref, useId } from 'vue';
 import vueFilePond from 'vue-filepond';
 
-// Register FilePond plugins
 const FilePond = vueFilePond(
     FilePondPluginFileValidateType,
     FilePondPluginImagePreview,
@@ -54,8 +53,7 @@ const serverConfig = {
         headers: {
             'X-CSRF-TOKEN': usePage().props.csrf_token,
         },
-        withCredentials: false,
-        onerror: () => {},
+        withCredentials: true,
     },
     revert: {
         url: route('filepond-revert'),
@@ -63,9 +61,9 @@ const serverConfig = {
         headers: {
             'X-CSRF-TOKEN': usePage().props.csrf_token,
         },
-        onerror: () => {},
     },
 };
+const id = useId();
 </script>
 
 <template>
@@ -78,11 +76,14 @@ const serverConfig = {
         {{ $attrs.label }} :
     </label>
     <FilePond
-        :files="filePondFiles"
+        v-bind="{ ...$attrs, files: props.files ? filePondFiles : [] }"
         :maxFileSize="maxFileSize"
         @init="handleFilePondInit"
         :server="serverConfig"
         credits="false"
         filePosterHeight="260"
     />
+    <p v-show="$attrs.error" class="text-sm text-red-600 dark:text-red-400">
+        {{ $attrs.error }}
+    </p>
 </template>

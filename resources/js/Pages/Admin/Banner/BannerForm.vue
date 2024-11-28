@@ -1,12 +1,13 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
 import FilepondInput from '@/Components/Form/FilepondInput.vue';
-import InputError from '@/Components/Form/InputError.vue';
-import InputLabel from '@/Components/Form/InputLabel.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
 import TextareaInput from '@/Components/Form/TextareaInput.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -17,14 +18,12 @@ import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AdminLayout });
 
-const props = defineProps({
+const { banner } = defineProps({
     banner: {
         type: Object as PropType<Banner>,
         required: false,
     },
 });
-
-const { banner } = props;
 
 const method = banner ? 'put' : 'post';
 const url = banner
@@ -40,14 +39,10 @@ const form = useForm(method, url, {
 });
 
 const handleFileProcess = (error: any, file: any) => {
-    if (!error && file?.serverId) {
-        if (banner) {
-            form.new_image = file.serverId;
-        } else {
-            form.image = file.serverId;
-        }
+    if (banner) {
+        form.new_image = file.serverId;
     } else {
-        toast.error('Failed to process the file. Please try again.');
+        form.image = file.serverId;
     }
 };
 
@@ -59,7 +54,6 @@ const handleFileRemoved = () => {
     }
 };
 
-// Submit the form
 const submitForm = () => {
     form.submit({
         preserveScroll: true,
@@ -69,64 +63,71 @@ const submitForm = () => {
 </script>
 
 <template>
-    <div class="mb-6 flex items-center justify-between">
-        <div>
-            <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                {{ banner ? 'Edit Banner' : 'Create New Banner' }}
-            </h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Fill in the details for your
-                {{ banner ? 'existing' : 'new' }} banner.
-            </p>
-        </div>
-        <LinkButton :href="route('admin.banners.index')">Back</LinkButton>
-    </div>
-    <Card class="mx-auto mt-6 p-4" variant="default">
+    <PageHeader>
+        <template #title>
+            {{ banner ? 'Edit ' : 'Create New' }} Banner
+        </template>
+        <template #subtitle>
+            Fill in the details for your
+            {{ banner ? 'existing' : 'new' }} banner.
+        </template>
+        <template #actions>
+            <LinkButton :href="route('admin.banners.index')">Back</LinkButton>
+        </template>
+    </PageHeader>
+
+    <Card class="mx-auto mt-6 p-4">
         <form @submit.prevent="submitForm">
-            <div class="mb-6 flex flex-wrap">
-                <div class="w-full px-3 md:w-1/2">
-                    <InputLabel for="name" value="Title" />
-                    <TextInput v-model="form.title" />
-                    <InputError :message="form.errors.title" />
-                </div>
-                <div class="w-full px-3 md:w-1/2">
-                    <InputLabel for="active_status" value="Status" />
+            <FieldRow class="grid-cols-2">
+                <FieldCol>
+                    <TextInput
+                        label="Title"
+                        v-model="form.title"
+                        :error="form.errors.title"
+                    />
+                </FieldCol>
+                <FieldCol>
                     <SelectInput
+                        label="Active Status"
                         v-model="form.active_status"
                         :options="statusOptions"
+                        :error="form.errors.active_status"
                     />
-                    <InputError :message="form.errors.active_status" />
-                </div>
-            </div>
-            <div class="mb-6 flex flex-wrap">
-                <div class="w-full px-3">
-                    <InputLabel for="description" value="Description" />
-                    <TextareaInput v-model="form.description" />
-                    <InputError :message="form.errors.description" />
-                </div>
-            </div>
-            <div class="mb-6 flex flex-wrap">
-                <div class="md:w-1/1 w-full px-3">
-                    <InputLabel for="image" value="Image" />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
+                    <TextareaInput
+                        label="Description"
+                        v-model="form.description"
+                        placeholder="Banner Description (optional)"
+                        :error="form.errors.description"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
                     <FilepondInput
+                        label="Image"
                         :files="banner?.image"
                         @processfile="handleFileProcess"
                         @removefile="handleFileRemoved"
+                        :error="form.errors.image"
                     />
-                    <InputError :message="form.errors.image" />
-                </div>
-            </div>
-            <div class="flex gap-3 px-3">
+                </FieldCol>
+            </FieldRow>
+            <FieldRow class="gap-2">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
+                    type="submit"
                 >
                     {{ banner ? 'Update' : 'Submit' }}
                 </PrimaryButton>
                 <LinkButton :href="route('admin.banners.index')">
                     Cancel
                 </LinkButton>
-            </div>
+            </FieldRow>
         </form>
     </Card>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, useId } from 'vue';
 
-const model = defineModel<string>({ required: true });
+const model = defineModel<string | null>({ required: true });
 
 const input = ref<HTMLInputElement | null>(null);
 
@@ -33,4 +33,7 @@ const id = useId();
         :data-test-id="`input-${id}`"
         v-bind="{ ...$attrs }"
     />
+    <p v-show="$attrs.error" class="text-sm text-red-600 dark:text-red-400">
+        {{ $attrs.error }}
+    </p>
 </template>

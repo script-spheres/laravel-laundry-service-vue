@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreBannerRequest;
-use App\Http\Requests\Admin\UpdateBannerRequest;
-use App\Http\Resources\Admin\BannerResource;
+use App\Http\Requests\StoreBannerRequest;
+use App\Http\Requests\UpdateBannerRequest;
+use App\Http\Resources\BannerResource;
 use App\Models\Banner;
 use App\Services\BannerService;
 use Illuminate\Http\Request;

@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\AddonService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AddonService>
+ * @extends Factory<AddonService>
  */
 class AddonServiceFactory extends Factory
 {
@@ -17,7 +18,10 @@ class AddonServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->word,
+            'description' => $this->faker->sentence,
+            'price' => $this->faker->randomFloat(2, 5, 100),
+            'active_status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

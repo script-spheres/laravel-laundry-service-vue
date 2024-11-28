@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('addon_services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('service_id')->constrained('services')->cascadeOnDelete();
-            $table->string('addon_name');
-            $table->decimal('addon_price', 10, 2);
+            $table->string('name');
             $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->enum('active_status', ['active', 'inactive']);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\StoreCouponRequest;
-use App\Http\Requests\Admin\UpdateCouponRequest;
+use App\Http\Requests\StoreCouponRequest;
+use App\Http\Requests\UpdateCouponRequest;
 use App\Models\Coupon;
 use Spatie\QueryBuilder\QueryBuilder;
 

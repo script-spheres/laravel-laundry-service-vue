@@ -7,14 +7,18 @@ import { Link } from '@inertiajs/vue3';
 defineProps<{ item: NavigationItem }>();
 </script>
 <template>
-    <li class="">
-        <SidebarDropdownItem v-if="item.children.length > 0" :item="item" />
+    <li class="px-0 py-2">
+        <SidebarDropdownItem
+            v-if="item.children.length > 0"
+            :item="item"
+            :active="item.active"
+        />
         <Link
             v-else
             preserve-scroll
             :href="item.url"
             :class="[
-                'flex items-center gap-2 rounded-md py-2 text-sm font-medium dark:text-white',
+                'flex items-center gap-2 rounded-md px-1 py-1 text-sm font-medium dark:text-white',
                 {
                     'bg-gray-900 text-white': item.active,
                 },

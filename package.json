@@ -30,7 +30,7 @@
         "typescript": "^5.5.3",
         "unplugin-vue-components": "^0.27.4",
         "vite": "^5.0",
-        "vue": "^3.4.0",
+        "vue": "^3.5.13",
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
@@ -47,6 +47,7 @@
         "pinia-plugin-persistedstate": "^4.1.2",
         "tailwind-merge": "^2.5.4",
         "tailwind-scrollbar": "^3.1.0",
+        "v-lazy-image": "^2.1.1",
         "vite-plugin-vue-devtools": "^7.6.4",
         "vue-filepond": "^7.0.4",
         "vue3-carousel": "^0.5.0",

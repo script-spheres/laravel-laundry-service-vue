@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\StoreFinancialYearRequest;
-use App\Http\Requests\Admin\UpdateFinancialYearRequest;
+use App\Http\Requests\StoreFinancialYearRequest;
+use App\Http\Requests\UpdateFinancialYearRequest;
 use App\Models\FinancialYear;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;

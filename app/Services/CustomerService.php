@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\StoreCustomerRequest;
-use App\Http\Requests\Admin\UpdateCustomerRequest;
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use Spatie\QueryBuilder\QueryBuilder;
 

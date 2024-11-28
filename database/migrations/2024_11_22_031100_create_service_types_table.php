@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('service_types', function (Blueprint $table) {
             $table->id();
-            $table->string('type_name');
+            $table->string('name');
             $table->text('description')->nullable();
             $table->enum('active_status', ['active', 'inactive']);
             $table->timestamps();

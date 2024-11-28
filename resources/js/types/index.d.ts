@@ -116,7 +116,7 @@ export interface Customer {
 
 export interface ServiceType {
     id: number;
-    type_name: string;
+    name: string;
     description: string;
     active_status: ActiveStatus;
 }
@@ -127,6 +127,14 @@ export interface Service {
     description: string | null;
     store_id: number;
     image: string | null;
+    service_price: array;
+    active_status: ActiveStatus;
+}
+export interface AddonService {
+    id: number;
+    name: string;
+    description: string | null;
+    price: number;
     active_status: ActiveStatus;
 }
 export interface Timeslot {

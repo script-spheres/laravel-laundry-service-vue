@@ -18,8 +18,9 @@ class ServiceTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'type_name' => $this->faker->word,
+            'name' => $this->faker->serviceTypeName,
             'description' => $this->faker->sentence,
+            'active_status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

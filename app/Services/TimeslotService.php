@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Admin\StoreTimeslotRequest;
-use App\Http\Requests\Admin\UpdateTimeslotRequest;
+use App\Http\Requests\StoreTimeslotRequest;
+use App\Http\Requests\UpdateTimeslotRequest;
 use App\Models\Timeslot;
 use Spatie\QueryBuilder\QueryBuilder;
 

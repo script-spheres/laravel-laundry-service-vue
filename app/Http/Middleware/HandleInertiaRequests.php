@@ -53,17 +53,15 @@ class HandleInertiaRequests extends Middleware
             ->add('Orders Management', route('admin.orders.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
             ->add('Orders Status Screen', route('admin.orders.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
             ->add('Banners Management', route('admin.banners.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
-            ->add('Service Management', '', function (Section $section) {
+            ->add('Customer Management', route('admin.customers.index'), fn($s) => $s->attributes(['icon' => 'PhUsersFour']))
+            ->add('Coupons Management', route('admin.coupons.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+            ->add('Services Management', '', function (Section $section) {
                 $section
-                    ->attributes(['icon' => 'CaCloudServices'])
+                    ->attributes(['icon' => 'MdLoyalty'])
                     ->add('Service Types', route('admin.service-types.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Services', route('admin.services.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+                    ->add('Service Items', route('admin.service-items.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Addon Services', route('admin.addon-services.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
-            ->add('Customer Management', route('admin.customers.index'), fn($s) => $s->attributes(['icon' => 'PhUsersFour']))
-            ->add('Packages Management', route('admin.packages.index'), fn($s) => $s->attributes(['icon' => 'IcPackages']))
-            ->add('Offers Management', route('admin.coupons.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-            ->add('Coupons Management', route('admin.coupons.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
             ->add('Customer Loyalty Program', '', function (Section $section) {
                 $section
                     ->attributes(['icon' => 'MdLoyalty'])
@@ -71,19 +69,12 @@ class HandleInertiaRequests extends Middleware
                     ->add('Rewards Management', route('admin.rewards.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Redemption History', route('admin.redemptions.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
-            ->add('Stock Management', '', function (Section $section) {
+            ->add('Expenses Management', '', function (Section $section) {
                 $section
-                    ->attributes(['icon' => 'MdInventory'])
-                    ->add('Accessory Management', route('admin.accessories.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Ingredient Management', route('admin.ingredients.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Brand Management', route('admin.brands.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Supplier Management', route('admin.suppliers.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Unit Management', route('admin.units.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Stock Overview', route('admin.stocks.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Purchases', route('admin.purchases.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Purchase Returns', route('admin.purchase-returns.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
+                    ->attributes(['icon' => 'MdLoyalty'])
+                    ->add('Expenses Management', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']))
+                    ->add('Expenses type Management', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']));
             })
-            ->add('Expenses Management', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']))
             ->add('Report Management', '', function (Section $section) {
                 $section
                     ->attributes(['icon' => 'BxSolidReport'])
