@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\ServiceTypeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ServicePrice extends Model
@@ -24,8 +25,8 @@ class ServicePrice extends Model
     /**
      * Get the service item associated with this price.
      */
-    public function serviceItem()
+    public function serviceType(): BelongsTo
     {
-        return $this->belongsTo(ServiceItem::class, 'service_type_id');
+        return $this->belongsTo(ServiceType::class, 'service_type_id');
     }
 }

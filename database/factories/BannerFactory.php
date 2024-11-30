@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use Alirezasedghi\LaravelImageFaker\ImageFaker;
+use Alirezasedghi\LaravelImageFaker\Services\Picsum;
 use App\Models\Banner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,6 +19,8 @@ class BannerFactory extends Factory
      */
     public function definition(): array
     {
+        $imageFaker = new ImageFaker(new Picsum());
+
         $storagePath = storage_path('app/public/banners');
 
         // Ensure the banners directory exists in the storage folder
@@ -25,10 +29,11 @@ class BannerFactory extends Factory
         }
 
         // Generate image in the correct directory
-        $filename = $this->faker->image($storagePath, 800, 600, 'business', false);
-
+//        $filename = $this->faker->image($storagePath, 800, 600, 'business', false);
+        $filename = $imageFaker->image( $storagePath, 800, 600, false);
+//        dd($filename);
         return [
-            'title' => $this->faker->unique()->word,
+            'title' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'image' => [
                 'dirname' => 'banners',

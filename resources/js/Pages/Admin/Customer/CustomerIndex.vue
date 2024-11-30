@@ -16,6 +16,7 @@ import { Customer, FlashMessage, PaginatedData } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { PropType, reactive, watch } from 'vue';
 import { toast } from 'vue3-toastify';
+import PageHeader from '@/Components/PageHeader.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -77,22 +78,18 @@ const handleClearFilter = () => {
 </script>
 
 <template>
-    <div class="flex items-center justify-between">
-        <div>
-            <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                Customer Management
-            </h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Overview of all customers and their details.
-            </p>
-        </div>
 
-        <div>
+    <PageHeader>
+        <template #title> Customer Management </template>
+        <template #subtitle>
+            Overview of all customers and their details.
+        </template>
+        <template #actions>
             <LinkButton :href="route('admin.customers.create')">
                 Add Customer
             </LinkButton>
-        </div>
-    </div>
+        </template>
+    </PageHeader>
 
     <Card class="mb-6 p-6">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">

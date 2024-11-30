@@ -18,6 +18,7 @@ class AddonServiceResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'price' => $this->price,
             'active_status' => $this->active_status,
         ];
     }

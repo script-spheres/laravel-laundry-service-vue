@@ -21,6 +21,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Order, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 import { router } from '@inertiajs/vue3';
+import PageHeader from '@/Components/PageHeader.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -60,16 +61,17 @@ const handlePaymentStatusChange = (order: Order, event: Event) => {
 </script>
 
 <template>
-    <div class="mb-4 flex items-center justify-between">
-        <div>
-            <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                Order Management
-            </h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Manage and view details of all orders.
-            </p>
-        </div>
-    </div>
+    <PageHeader>
+        <template #title> Order Management </template>
+        <template #subtitle>
+            Manage and view details of all orders.
+        </template>
+        <template #actions>
+            <LinkButton :href="route('admin.orders.create')">
+                Add Order
+            </LinkButton>
+        </template>
+    </PageHeader>
     <Card class="mb-6 p-4">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <!-- Order Number Input -->

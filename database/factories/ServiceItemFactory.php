@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use Alirezasedghi\LaravelImageFaker\ImageFaker;
+use Alirezasedghi\LaravelImageFaker\Services\Picsum;
 use App\Models\ServiceItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,6 +19,7 @@ class ServiceItemFactory extends Factory
      */
     public function definition(): array
     {
+        $imageFaker = new ImageFaker(new Picsum());
 
         $storagePath = storage_path('app/public/service-items');
 
@@ -26,7 +29,8 @@ class ServiceItemFactory extends Factory
         }
 
         // Generate image in the correct directory
-        $filename = $this->faker->image($storagePath, 800, 600, 'business', false);
+//        $filename = $this->faker->image($storagePath, 800, 600, 'business', false);
+        $filename = $imageFaker->image( $storagePath, 800, 600, false);
 
         return [
             'name' => $this->faker->word,

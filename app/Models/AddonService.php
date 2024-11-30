@@ -11,5 +11,5 @@ class AddonService extends Model
     /** @use HasFactory<AddonServiceFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price'];
+    protected $fillable = ['name', 'description', 'price','active_status'];
 }

@@ -66,7 +66,7 @@ class ServiceItemController extends Controller
     public function edit(ServiceItem $serviceItem): Response
     {
         return Inertia::render('Admin/ServiceItem/ServiceItemForm', [
-            'serviceItem' => ServiceItemResource::make($serviceItem)->resolve(),
+            'serviceItem' => ServiceItemResource::make($serviceItem->load('servicePrices'))->resolve(),
             'serviceTypeOptions' => ServiceType::pluck('name', 'id'),
         ]);
     }

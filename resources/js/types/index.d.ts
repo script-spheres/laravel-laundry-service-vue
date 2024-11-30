@@ -123,12 +123,26 @@ export interface ServiceType {
 
 export interface Service {
     id: number;
-    service_name: string;
+    name: string;
     description: string | null;
     store_id: number;
     image: string | null;
     service_price: array;
     active_status: ActiveStatus;
+}
+export interface ServiceItem {
+    id: number;
+    name: string;
+    description: string | null;
+    image: Image;
+    service_prices: ServicePrice[];
+    active_status: ActiveStatus;
+}
+export interface ServicePrice {
+    id: number;
+    service_type_id: number;
+    service_type?: ServiceType;
+    price: string;
 }
 export interface AddonService {
     id: number;

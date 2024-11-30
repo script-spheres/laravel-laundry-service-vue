@@ -16,7 +16,7 @@ class AddonServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, AddonServiceService $addonServiceService)
+    public function index(Request $request, AddonServiceService $addonServiceService): \Inertia\Response
     {
         $addonServices = $addonServiceService->getAddonServices();
 
@@ -29,7 +29,7 @@ class AddonServiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): \Inertia\Response
     {
         return Inertia::render('Admin/AddonService/AddonServiceForm');
     }
@@ -37,7 +37,7 @@ class AddonServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAddonServiceRequest $request, AddonServiceService $addonServiceService)
+    public function store(StoreAddonServiceRequest $request, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
     {
         $addonServiceService->create($request);
 
@@ -47,7 +47,7 @@ class AddonServiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AddonService $addonService)
+    public function show(AddonService $addonService): \Inertia\Response
     {
         return Inertia::render('Admin/AddonService/AddonServiceForm', [
             'addonService' => AddonServiceResource::make($addonService)->resolve()
@@ -57,7 +57,7 @@ class AddonServiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AddonService $addonService)
+    public function edit(AddonService $addonService): \Inertia\Response
     {
         return Inertia::render('Admin/AddonService/AddonServiceForm', [
             'addonService' => AddonServiceResource::make($addonService)->resolve()
@@ -67,7 +67,7 @@ class AddonServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAddonServiceRequest $request, AddonService $addonService, AddonServiceService $addonServiceService)
+    public function update(UpdateAddonServiceRequest $request, AddonService $addonService, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
     {
         $addonServiceService->update($addonService, $request);
 
@@ -77,7 +77,7 @@ class AddonServiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AddonService $addonService, AddonServiceService $addonServiceService)
+    public function destroy(AddonService $addonService, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
     {
         $addonServiceService->delete($addonService);
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Badge from '@/Components/Badges/Badge.vue';
 import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
@@ -15,7 +16,6 @@ import { useFilters } from '@/Composables/useFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Banner, PaginatedData } from '@/types';
 import { PropType } from 'vue';
-import Badge from '@/Components/Badges/Badge.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -45,13 +45,13 @@ console.log(filter);
             Manage your banners with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('admin.banners.create')"
-                >Add Banner</LinkButton
-            >
+            <LinkButton :href="route('admin.banners.create')">
+                Add Banner
+            </LinkButton>
         </template>
     </PageHeader>
     <Card class="mb-6 p-6">
-        <FieldRow class="flex grid-cols-4">
+        <FieldRow class="flex md:grid-cols-4">
             <FieldCol>
                 <TextInput
                     label="Banner Title"
@@ -82,7 +82,10 @@ console.log(filter);
                     :src="banner.image?.url"
                 />
                 <div class="">
-                    <strong>{{ banner.title }} <Badge>{{ banner.active_status }}</Badge></strong>
+                    <strong
+                        >{{ banner.title }}
+                        <Badge>{{ banner.active_status }}</Badge></strong
+                    >
                     <p>{{ banner.description }}</p>
                     <div class="flex gap-2">
                         <LinkButton

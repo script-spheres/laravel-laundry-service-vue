@@ -21,6 +21,7 @@
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
+        "alirezasedghi/laravel-image-faker": "^1.0",
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.2",
         "laravel/dusk": "^8.2",

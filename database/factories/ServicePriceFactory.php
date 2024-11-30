@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Service;
+use App\Models\ServiceItem;
 use App\Models\ServicePrice;
 use App\Models\ServiceType;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,8 +20,8 @@ class ServicePriceFactory extends Factory
     public function definition(): array
     {
         return [
-            'service_id' => Service::factory(),
-            'type_id' => ServiceType::factory(),
+            'service_item_id' => ServiceItem::factory(),
+            'service_type_id' => ServiceType::factory(),
             'price' => $this->faker->randomFloat(2, 10, 200),
         ];
     }

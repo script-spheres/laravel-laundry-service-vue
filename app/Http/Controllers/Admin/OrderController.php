@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
+use App\Models\AddonService;
 use App\Models\Order;
+use App\Models\ServiceItem;
 use App\Models\ServiceType;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -34,8 +36,9 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Admin/Order/OrderForm',[
-            'serviceTypes' => ServiceType::pluck('table_no','id'),
-            'services' => Service::pluck('name','id'),
+            'serviceTypes' => ServiceType::get(),
+            'addonServices' => AddonService::get(),
+            'serviceItems' => ServiceItem::with(['servicePrices','servicePrices.serviceType'])->get(),
             'filters' => $request->get('filter'),
         ]);
     }

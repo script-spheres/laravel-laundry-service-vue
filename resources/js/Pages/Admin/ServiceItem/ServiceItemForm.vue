@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import DangerButton from '@/Components/Buttons/DangerButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import FilepondInput from '@/Components/Form/FilepondInput.vue';
+import NumberInput from '@/Components/Form/NumberInput.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
 import TextareaInput from '@/Components/Form/TextareaInput.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
@@ -11,17 +13,16 @@ import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import ServicePrice from '@/Pages/Admin/ServiceItem/ServicePrice.vue';
-import { Service } from '@/types';
+import { ServiceItem } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AdminLayout });
 
-const { serviceItem } = defineProps({
+const { serviceItem, serviceTypeOptions } = defineProps({
     serviceItem: {
-        type: Object as PropType<Service>,
+        type: Object as PropType<ServiceItem>,
         required: false,
     },
     serviceTypeOptions: {
@@ -36,12 +37,14 @@ const url = serviceItem
     : route('admin.service-items.store');
 
 const form = useForm(method, url, {
-    name: serviceItem?.service_name || '',
+    name: serviceItem?.name || '',
     description: serviceItem?.description || '',
     image: serviceItem?.image || {},
     new_image: null as string | null,
+    service_prices: serviceItem?.service_prices || [
+        { service_type_id: '', price: '' },
+    ],
     active_status: serviceItem?.active_status || '',
-    service_price: serviceItem?.service_price || [{ item: '', value: '' }],
 });
 
 const handleFileProcess = (error: any, file: any) => {
@@ -58,6 +61,14 @@ const handleFileRemoved = () => {
     } else {
         form.image = {};
     }
+};
+
+const addRow = () => {
+    form.service_prices.push({ service_type_id: '', price: '' });
+};
+
+const removeRow = (index: number) => {
+    form.service_prices.splice(index, 1);
 };
 
 const submitForm = () => {
@@ -125,10 +136,38 @@ const submitForm = () => {
                 </FieldCol>
             </FieldRow>
 
-            <ServicePrice
-                v-model="form.service_price"
-                :serviceTypeOptions="serviceTypeOptions"
-            />
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700">
+                    Service Price
+                </label>
+                <div class="space-y-2">
+                    <div
+                        v-for="(info, index) in form.service_prices"
+                        :key="index"
+                        class="flex items-center space-x-2"
+                    >
+                        <SelectInput
+                            v-model="info.service_type_id"
+                            :options="serviceTypeOptions"
+                            placeholder="Select Service Type"
+                        />
+                        <NumberInput
+                            v-model="info.price"
+                            placeholder="Enter price"
+                        />
+                        <DangerButton
+                            v-if="form.service_prices.length > 1"
+                            @click.prevent="removeRow(index)"
+                            type="button"
+                        >
+                            Remove
+                        </DangerButton>
+                    </div>
+                    <PrimaryButton @click.prevent="addRow" type="button">
+                        Add Service Price
+                    </PrimaryButton>
+                </div>
+            </div>
 
             <FieldRow class="gap-2">
                 <PrimaryButton

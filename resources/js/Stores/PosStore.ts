@@ -1,180 +1,94 @@
-import { ActiveStatus, Category, Outlet } from '@/types';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
-interface Item {
-    id: number;
-    name: string;
-    quantity: number;
-    sl_no?: number;
-    item_total?: number;
-    product_uuid: string;
-    category_id: number;
-    outlet_id: number;
-    outlet: Outlet;
-    category: Category;
-    title: string;
-    description: string;
-    image: Array<any> | null;
-    market_price: number;
-    selling_price: number;
-    offer_price: number;
-    notes: string;
-    cooking_time: string;
-    nutritional_information: Array<any>;
-    ingredients: Array<any>;
-    food_type: string;
-    dietary: string;
-    service_type: string;
-    menu_type: string;
-    delivery_type: string;
-    active_status: ActiveStatus;
-}
+export const usePosStore = defineStore('pos-cart', () => {
+    const items = reactive([]);
+    const totalItems = ref(0);
+    const subTotalCost = ref(0);
+    const taxRate = ref(0.05);
+    const discountRate = ref(0.1);
+    const cash = ref(0);
 
-interface PosCartState {
-    items: Item[];
-    table: number | null;
-    totalItems: number;
-    subTotalCost: number;
-    taxRate: number;
-    discountRate: number;
-    cash: number;
-    customerId: number | null;
-    orderType: 'in-store' | 'takeaway' | 'delivery';
-}
-
-export const usePosStore = defineStore(
-    'pos-cart',
-    () => {
-        const items = ref<Item[]>([]);
-        const table = ref<number | null>(null);
-        const totalItems = ref<number>(0);
-        const subTotalCost = ref<number>(0);
-        const taxRate = ref<number>(0.05);
-        const discountRate = ref<number>(0.1);
-        const cash = ref<number>(0);
-        const customerId = ref<number | null>(null);
-        const orderType = ref<'in-store' | 'takeaway' | 'delivery'>('in-store');
-
-        // Computed properties
-        const totalCost = computed(() =>
+    const totalCost = computed(() =>
+        parseFloat(
             (
                 subTotalCost.value *
                 (1 + taxRate.value) *
                 (1 - discountRate.value)
             ).toFixed(2),
+        ),
+    );
+
+    const change = computed(() =>
+        parseFloat((cash.value - totalCost.value).toFixed(2)),
+    );
+
+    const addItem = (item: {
+        id: number;
+        name: string;
+        price: number;
+        type: 'service' | 'addon';
+    }) => {
+        const existingItem = items.value.find(
+            (cartItem) =>
+                cartItem.id === item.id && cartItem.type === item.type,
         );
 
-        const grandTotal = computed(() => parseFloat(totalCost.value));
-        const change = computed(() =>
-            (cash.value - grandTotal.value).toFixed(2),
+        if (existingItem) {
+            existingItem.quantity += 1;
+            existingItem.total = parseFloat(
+                (existingItem.quantity * existingItem.price).toFixed(2),
+            );
+        } else {
+            items.value.push({
+                ...item,
+                quantity: 1,
+                total: parseFloat(item.price.toFixed(2)),
+            });
+        }
+
+        totalItems.value += 1;
+        subTotalCost.value = parseFloat(
+            (subTotalCost.value + item.price).toFixed(2),
+        );
+    };
+
+    const removeItem = (id: number, type: 'service' | 'addon') => {
+        const index = items.value.findIndex(
+            (cartItem) => cartItem.id === id && cartItem.type === type,
         );
 
-        // Methods
-        const adjustItem = (item: Item, quantity: number) => {
-            const index = items.value.findIndex((i) => i.id === item.id);
+        if (index !== -1) {
+            const item = items.value[index];
+            totalItems.value -= item.quantity;
+            subTotalCost.value = parseFloat(
+                (subTotalCost.value - item.total).toFixed(2),
+            );
 
-            if (index === -1 && quantity > 0) {
-                // Add new item
-                items.value.push({
-                    ...item,
-                    quantity,
-                    sl_no: items.value.length + 1,
-                    item_total: parseFloat(
-                        (item.offer_price * quantity).toFixed(2),
-                    ),
-                });
-                totalItems.value += quantity;
-                subTotalCost.value += item.offer_price * quantity;
-            } else if (index !== -1) {
-                // Update existing item
-                const existingItem = items.value[index];
-                const newQuantity = existingItem.quantity + quantity;
+            items.value.splice(index, 1);
+        }
+    };
 
-                if (newQuantity <= 0) {
-                    // Remove item
-                    totalItems.value -= existingItem.quantity;
-                    subTotalCost.value -=
-                        existingItem.offer_price * existingItem.quantity;
-                    items.value.splice(index, 1);
-                } else {
-                    existingItem.quantity = newQuantity;
-                    existingItem.item_total = parseFloat(
-                        (existingItem.offer_price * newQuantity).toFixed(2),
-                    );
-                    totalItems.value += quantity;
-                    subTotalCost.value += item.offer_price * quantity;
-                }
+    const clearCart = () => {
+        items.value = [];
+        totalItems.value = 0;
+        subTotalCost.value = 0;
+        cash.value = 0;
+    };
 
-                // Update serial numbers
-                items.value.forEach((i, idx) => (i.sl_no = idx + 1));
-            }
-            subTotalCost.value = parseFloat(subTotalCost.value.toFixed(2));
-        };
+    const addCash = (amount: number) => {
+        cash.value += amount;
+    };
 
-        const addItem = (item: Item) => adjustItem(item, 1);
-
-        const updateItem = (id: number, newQuantity: number) => {
-            const item = items.value.find((i) => i.id === id);
-            if (item) {
-                const quantityChange = newQuantity - item.quantity;
-                adjustItem(item, quantityChange);
-            }
-        };
-
-        const removeItem = (id: number) => {
-            const item = items.value.find((i) => i.id === id);
-            if (item) {
-                adjustItem(item, -item.quantity);
-            }
-        };
-
-        const clearCart = () => {
-            items.value = [];
-            table.value = null;
-            totalItems.value = 0;
-            subTotalCost.value = 0;
-            cash.value = 0;
-        };
-
-        const addCash = (amount: number) => {
-            cash.value += amount;
-        };
-
-        const setCustomer = (id: number | null) => {
-            customerId.value = id;
-        };
-
-        const setOrderType = (type: 'in-store' | 'takeaway' | 'delivery') => {
-            orderType.value = type;
-        };
-
-        const setTable = (tableNumber: number | null) => {
-            table.value = tableNumber;
-        };
-
-        return {
-            items,
-            table,
-            totalItems,
-            subTotalCost,
-            totalCost,
-            grandTotal,
-            cash,
-            change,
-            customerId,
-            orderType,
-            addItem,
-            updateItem,
-            removeItem,
-            clearCart,
-            addCash,
-            setTable,
-            setCustomer,
-            setOrderType,
-        };
-    },
-    {
-        persist: true,
-    },
-);
+    return {
+        items,
+        totalItems,
+        subTotalCost,
+        totalCost,
+        change,
+        addItem,
+        removeItem,
+        clearCart,
+        addCash,
+    };
+});

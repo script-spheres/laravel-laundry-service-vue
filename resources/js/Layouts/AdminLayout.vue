@@ -27,115 +27,126 @@ if (!isMobileDevice.value) {
 <template>
     <!-- Sidebar Overlay for Mobile -->
     <div
-        v-if="isMobileDevice && sidebarVisible"
-        class="fixed inset-0 z-[99998] bg-black bg-opacity-50 transition-opacity"
+        class="fixed left-0 top-0 z-40 h-full w-full bg-teal-950 bg-opacity-20 transition-opacity duration-300 lg:hidden"
+        v-show="sidebarVisible"
         @click="toggleSidebar"
     ></div>
 
     <!-- Sidebar -->
     <aside
         ref="sidebarRef"
-        class="scrollbar-none fixed top-0 z-[99999] h-screen overflow-y-auto bg-white duration-300 dark:bg-gray-900 lg:border-r lg:border-gray-700"
+        class="fixed z-50 w-64 flex-none bg-teal-950 transition-transform duration-300"
         :class="{
-            'left-0': sidebarVisible || !isMobileDevice,
-            '-left-full': !sidebarVisible && isMobileDevice,
-            'lg:left-0 lg:w-[250px]': !isMobileDevice,
+            '-translate-x-full': !sidebarVisible,
         }"
     >
-        <SidebarLogo @close-sidebar="toggleSidebar" />
-        <div class="overflow-y-auto px-2 py-3">
-            <ul class="flex flex-col">
+        <div class="flex h-full flex-col">
+            <SidebarLogo @close-sidebar="toggleSidebar" />
+        </div>
+        <nav
+            class="scrollbar h-[calc(100vh-100px)] flex-auto overflow-y-auto px-4 pb-4"
+        >
+            <ul class="space-y-1">
                 <SidebarItem
                     v-for="(item, index) in $page.props.navigations"
                     :key="index"
                     :item="item"
                 />
             </ul>
-        </div>
+        </nav>
     </aside>
 
     <!-- Main Content -->
     <main
-        class="pt-[4rem] transition-all duration-300"
+        class="flex min-h-screen grow flex-col transition-[margin-left] duration-300"
         :class="{
-            'lg:ml-[250px]': sidebarVisible && !isMobileDevice,
-            'ml-0': !sidebarVisible || isMobileDevice,
+            'lg:ml-64': sidebarVisible,
+            'lg:ml-0': !sidebarVisible,
         }"
     >
         <!-- Header -->
         <header
-            class="fixed top-0 left-0 z-[10000] w-full flex justify-between items-center border-b bg-white px-3 py-4 text-black transition-all dark:border-b-gray-700 dark:bg-gray-900 dark:text-white lg:px-8"
+            class="sticky top-0 z-30 flex-none border-b border-gray-200 bg-white px-4 xl:px-6"
         >
-            <!-- Sidebar Toggle Button -->
-            <button
-                class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
-                @click="toggleSidebar"
-            >
-                <FaBarsStaggered />
-            </button>
-            <ul class="flex items-center gap-4 lg:gap-6">
-                <!-- Dark Mode Toggle -->
-                <li>
-                    <button
-                        class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
-                        @click="toggleDark"
-                    >
-                        <AkSunFill v-if="isDark" />
-                        <AkMoonFill v-else />
-                    </button>
-                </li>
+            <div class="flex h-16 items-center justify-between">
+                <button
+                    class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
+                    @click="toggleSidebar"
+                >
+                    <FaBarsStaggered />
+                </button>
+                <ul class="flex items-center gap-4 lg:gap-6">
+                    <!-- Dark Mode Toggle -->
+                    <li>
+                        <button
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
+                            @click="toggleDark()"
+                        >
+                            <AkSunFill v-if="isDark" />
+                            <AkMoonFill v-else />
+                        </button>
+                    </li>
 
-                <!-- Mail Button -->
-                <li>
-                    <button
-                        class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
-                    >
-                        <FeMail class="text-lg text-[#0f172a]" />
-                    </button>
-                </li>
+                    <!-- Mail Button -->
+                    <li>
+                        <button
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
+                        >
+                            <FeMail class="text-lg text-[#0f172a]" />
+                        </button>
+                    </li>
 
-                <!-- Notifications Button -->
-                <li>
-                    <button
-                        class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
-                    >
-                        <MdNotificationsNone class="text-xl text-[#0f172a]" />
-                    </button>
-                </li>
+                    <!-- Notifications Button -->
+                    <li>
+                        <button
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
+                        >
+                            <MdNotificationsNone
+                                class="text-xl text-[#0f172a]"
+                            />
+                        </button>
+                    </li>
 
-                <!-- User Dropdown -->
-                <li>
-                    <Dropdown align="right" class="group cursor-pointer" width="48">
-                        <template #trigger>
-                            <div
-                                class="flex items-center rounded-md border border-transparent bg-white px-3 text-black transition duration-150 ease-in-out hover:text-gray-700 dark:bg-gray-900 dark:text-white"
-                            >
-                                <img
-                                    alt="User Avatar"
-                                    class="h-8 w-8 rounded-full"
-                                    src="https://i.pravatar.cc/300"
-                                />
-                                <p class="hidden text-sm font-medium lg:block">
-                                    {{ $page.props.auth.user.name }}
-                                </p>
-                                <FaAngleDown class="ms-2 h-4 w-4" />
-                            </div>
-                        </template>
-                        <template #content>
-                            <DropdownLink :href="route('profile.edit')">
-                                Profile
-                            </DropdownLink>
-                            <DropdownLink
-                                :href="route('admin.logout')"
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
-                            </DropdownLink>
-                        </template>
-                    </Dropdown>
-                </li>
-            </ul>
+                    <!-- User Dropdown -->
+                    <li>
+                        <Dropdown
+                            align="right"
+                            class="group cursor-pointer"
+                            width="48"
+                        >
+                            <template #trigger>
+                                <div
+                                    class="flex items-center rounded-md border border-transparent bg-white px-3 text-black transition duration-150 ease-in-out hover:text-gray-700 dark:bg-gray-900 dark:text-white"
+                                >
+                                    <img
+                                        alt="User Avatar"
+                                        class="h-8 w-8 rounded-full"
+                                        src="https://i.pravatar.cc/300"
+                                    />
+                                    <p
+                                        class="hidden text-sm font-medium lg:block"
+                                    >
+                                        {{ $page.props.auth.user.name }}
+                                    </p>
+                                    <FaAngleDown class="ms-2 h-4 w-4" />
+                                </div>
+                            </template>
+                            <template #content>
+                                <DropdownLink :href="route('profile.edit')">
+                                    Profile
+                                </DropdownLink>
+                                <DropdownLink
+                                    :href="route('admin.logout')"
+                                    method="post"
+                                    as="button"
+                                >
+                                    Log Out
+                                </DropdownLink>
+                            </template>
+                        </Dropdown>
+                    </li>
+                </ul>
+            </div>
         </header>
 
         <!-- Content Area -->

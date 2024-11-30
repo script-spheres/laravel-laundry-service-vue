@@ -12,13 +12,13 @@ defineProps({
     },
 });
 
-const model = defineModel<{ item: string; value: string }[]>({
+const model = defineModel<{ service_type_id: string; price: string }[]>({
     required: true,
-    default: () => [{ item: '', value: '' }],
+    default: () => [{ service_type_id: '', price: '' }],
 });
 
 const addNutritionalInfo = () => {
-    model.value.push({ item: '', value: '' });
+    model.value.push({ service_type_id: '', price: '' });
 };
 
 const removeNutritionalInfo = (index: number) => {
@@ -38,12 +38,12 @@ const removeNutritionalInfo = (index: number) => {
                 class="flex items-center space-x-2"
             >
                 <SelectInput
-                    v-model="info.item"
+                    v-model="info.service_type_id"
                     type="text"
                     :options="serviceTypeOptions"
                 />
                 <NumberInput
-                    v-model="info.value"
+                    v-model="info.price"
                     type="text"
                     :placeholder="'Enter price ' + (index + 1)"
                 />

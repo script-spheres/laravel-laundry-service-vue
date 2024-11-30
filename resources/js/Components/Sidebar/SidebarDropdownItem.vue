@@ -23,7 +23,7 @@ const svgClasses = computed(() => [
         <button
             @click="toggleCollapse"
             :class="[
-                'flex w-full items-center py-3 text-sm font-medium dark:text-white',
+                'flex w-full transform items-center rounded-md px-4 py-2 text-left text-sm font-normal text-white text-opacity-60 duration-200 hover:bg-white hover:bg-opacity-10 hover:text-opacity-100',
                 isCollapsed ? 'rounded-t-md bg-gray-800 text-white' : '',
             ]"
         >
