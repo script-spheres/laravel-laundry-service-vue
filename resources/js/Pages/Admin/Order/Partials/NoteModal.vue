@@ -59,7 +59,7 @@ const toggleCartItem = (item: AddonService) => {
                     <TableCell class="flex justify-end gap-2">
                         <template v-if="isInCart(addonService.id)">
                             <DangerButton @click="toggleCartItem(addonService)">
-                                Del
+                                Remove
                             </DangerButton>
                         </template>
                         <template v-else>

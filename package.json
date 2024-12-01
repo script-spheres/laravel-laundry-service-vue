@@ -37,6 +37,7 @@
         "@kalimahapps/vue-icons": "^1.7.1",
         "@vueuse/core": "^11.3.0",
         "classnames": "^2.5.1",
+        "clsx": "^2.1.1",
         "filepond": "^4.31.4",
         "filepond-plugin-file-poster": "^2.5.1",
         "filepond-plugin-file-validate-size": "^2.2.8",

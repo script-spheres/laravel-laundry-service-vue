@@ -9,82 +9,94 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import Modal from '@/Components/Modal/Modal.vue';
 import { usePosStore } from '@/Stores/PosStore';
-import { AddonService, ServiceItem } from '@/types';
-import { inject, Reactive, Ref } from 'vue';
+import { ServiceItem, ServicePrice } from '@/types';
+import { inject, Ref } from 'vue';
 
-// Inject the provided values
+// Inject values from the parent
 const showServiceTypeModal = inject('showServiceTypeModal') as Ref<boolean>;
-const selectedServiceItem = inject('selectedServiceItem') as Reactive<
-    ServiceItem | {}
->;
+const selectedServiceItem = inject(
+    'selectedServiceItem',
+) as Ref<ServiceItem | null>;
 
-// Access POS store
+// Access the POS store
 const posStore = usePosStore();
 
+// Handle modal close
 const handleClose = () => {
     showServiceTypeModal.value = false;
 };
 
-const addToCart = (
-    item: ServiceItem | AddonService,
-    type: 'service' | 'addon',
-) => {
-    posStore.addItem({
-        id: item.id,
-        name: item.name,
-        price:
-            type === 'service'
-                ? parseFloat(item.service_prices?.[0]?.price || '0')
-                : (item as AddonService).price,
-        type,
-    });
-    console.log('Added to cart:', item);
+// Check if a service type is already in the cart
+const isInCart = (id: number) => {
+    return posStore.items.some((item) => item.id === id);
 };
 
-const removeCart = (
-    item: ServiceItem | AddonService,
-    type: 'service' | 'addon',
-) => {
-    posStore.removeItem(item.id, type);
-    console.log('Removed from cart:', item);
+// Add item to cart
+const addToCart = (servicePrice: ServicePrice) => {
+    posStore.addItem({
+        id: servicePrice.id,
+        image: servicePrice.service_item?.image,
+        name: servicePrice.service_type?.name,
+        price: servicePrice.price,
+    });
+};
+
+// Remove item from cart
+const removeFromCart = (id: number) => {
+    posStore.removeItem(id);
 };
 </script>
 
 <template>
+    <!-- Modal Wrapper -->
     <Modal :show="showServiceTypeModal" @close="handleClose" class="p-4">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            Select A Service Type
+            Select a Service Type
         </h2>
 
-        <!-- Service Prices Table -->
-        <DataTable>
-            <TableHead>
-                <TableHeadCell>Service Type</TableHeadCell>
-                <TableHeadCell>Price</TableHeadCell>
-                <TableHeadCell class="text-right">Actions</TableHeadCell>
-            </TableHead>
-            <TableBody>
-                <TableRow
-                    v-for="servicePrice in selectedServiceItem?.service_prices ??
-                    []"
-                    :key="servicePrice.id"
-                >
-                    <TableCell>{{ servicePrice.service_type.name }}</TableCell>
-                    <TableCell>{{ servicePrice.price }}</TableCell>
-                    <TableCell class="flex justify-end gap-2">
-                        <PrimaryButton
-                            @click="addToCart(servicePrice, 'service')"
-                        >
-                            Add
-                        </PrimaryButton>
-                        <DangerButton
-                            @click="removeCart(servicePrice, 'service')"
-                        >
-                            Remove
-                        </DangerButton>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </DataTable>
+        <!-- Conditional Rendering -->
+        <div v-if="selectedServiceItem?.service_prices?.length > 0">
+            <!-- Data Table -->
+            <DataTable>
+                <TableHead>
+                    <TableHeadCell>Service Type</TableHeadCell>
+                    <TableHeadCell>Price</TableHeadCell>
+                    <TableHeadCell class="text-right">Actions</TableHeadCell>
+                </TableHead>
+                <TableBody>
+                    <TableRow
+                        v-for="servicePrice in selectedServiceItem.service_prices"
+                        :key="servicePrice.id"
+                    >
+                        <TableCell>
+                            {{ servicePrice.service_type?.name }}
+                        </TableCell>
+                        <TableCell>
+                            {{ servicePrice.price }}
+                        </TableCell>
+                        <TableCell class="flex justify-end gap-2">
+                            <!-- Conditional Add/Remove Buttons -->
+                            <template v-if="isInCart(servicePrice.id)">
+                                <DangerButton
+                                    @click="removeFromCart(servicePrice.id)"
+                                >
+                                    Remove
+                                </DangerButton>
+                            </template>
+                            <template v-else>
+                                <PrimaryButton @click="addToCart(servicePrice)">
+                                    Add
+                                </PrimaryButton>
+                            </template>
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            </DataTable>
+        </div>
+
+        <!-- No Data Message -->
+        <div v-else class="text-center text-gray-500 dark:text-gray-400">
+            No service prices available for the selected service.
+        </div>
     </Modal>
 </template>

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import Checkbox from '@/Components/Form/Checkbox.vue';
-import InputError from '@/Components/Form/InputError.vue';
-import InputLabel from '@/Components/Form/InputLabel.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
@@ -37,34 +35,28 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
-
                 <TextInput
-                    id="email"
+                    label="Email"
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
                     required
                     autofocus
                     autocomplete="username"
+                    :error="form.errors.email"
                 />
-
-                <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
                 <TextInput
-                    id="password"
+                    value="Password"
                     type="password"
                     class="mt-1 block w-full"
                     v-model="form.password"
                     required
                     autocomplete="current-password"
+                    :error="form.errors.password"
                 />
-
-                <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="mt-4 block">

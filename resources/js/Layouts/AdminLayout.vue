@@ -35,12 +35,12 @@ if (!isMobileDevice.value) {
     <!-- Sidebar -->
     <aside
         ref="sidebarRef"
-        class="fixed z-50 w-64 flex-none bg-teal-950 transition-transform duration-300"
+        class="fixed z-50 h-screen w-64 flex-none bg-teal-950 transition-transform duration-300"
         :class="{
             '-translate-x-full': !sidebarVisible,
         }"
     >
-        <div class="flex h-full flex-col">
+        <div class="flex flex-col">
             <SidebarLogo @close-sidebar="toggleSidebar" />
         </div>
         <nav
@@ -151,7 +151,7 @@ if (!isMobileDevice.value) {
 
         <!-- Content Area -->
         <section
-            class="relative min-h-screen w-full px-4 py-8 text-black dark:bg-gray-900 dark:text-white lg:px-10"
+            class="relative w-full px-4 py-8 text-black dark:bg-gray-900 dark:text-white lg:px-10"
         >
             <slot />
         </section>

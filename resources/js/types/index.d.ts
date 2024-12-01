@@ -120,16 +120,6 @@ export interface ServiceType {
     description: string;
     active_status: ActiveStatus;
 }
-
-export interface Service {
-    id: number;
-    name: string;
-    description: string | null;
-    store_id: number;
-    image: string | null;
-    service_price: array;
-    active_status: ActiveStatus;
-}
 export interface ServiceItem {
     id: number;
     name: string;
@@ -142,7 +132,8 @@ export interface ServicePrice {
     id: number;
     service_type_id: number;
     service_type?: ServiceType;
-    price: string;
+    service_item?: ServiceItem;
+    price: number;
 }
 export interface AddonService {
     id: number;
@@ -168,6 +159,24 @@ export interface Expense {
     store_name: string;
     receipt: string | null;
 }
+
+export interface CartItem {
+    id: number;
+    name: string;
+    image: Image;
+    price: number;
+    quantity: number;
+    total: number;
+}
+
+export interface CartAddonItem {
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+    total: number;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {

@@ -6,6 +6,7 @@ import PosRightSidebar from '@/Pages/Admin/Order/Partials/PosRightSidebar.vue';
 import ServiceTypeModal from '@/Pages/Admin/Order/Partials/ServiceTypeModal.vue';
 import { ServiceItem, ServiceType } from '@/types';
 import { PropType, provide, ref } from 'vue';
+import LinkButton from '@/Components/Buttons/LinkButton.vue';
 
 // Props
 const props = defineProps({
@@ -32,9 +33,6 @@ const { filter, handleClearFilter } = useFilters('admin.orders.create', {
 
 // Modal State
 const showServiceTypeModal = ref(false);
-const showAddonServiceModal = ref(false);
-const showDiscountModal = ref(false);
-const showCustomerModal = ref(false);
 const selectedServiceItem = ref<ServiceItem | null>(null);
 
 // Methods
@@ -51,9 +49,6 @@ const handleIServiceTypeClick = (serviceTypeId: string) => {
 // Provide state to child components
 provide('addonServices', props.addonServices);
 provide('showServiceTypeModal', showServiceTypeModal);
-provide('showAddonServiceModal', showAddonServiceModal);
-provide('showDiscountModal', showDiscountModal);
-provide('showCustomerModal', showCustomerModal);
 provide('selectedServiceItem', selectedServiceItem);
 </script>
 
@@ -61,8 +56,10 @@ provide('selectedServiceItem', selectedServiceItem);
     <div class="grid h-screen grid-cols-3">
         <!-- Left Sidebar -->
         <div class="col-span-2 flex flex-col p-4">
+
             <!-- Search and Reset -->
             <div class="mb-4 flex items-center gap-2">
+                <LinkButton :href="route('admin.orders.index')">Back</LinkButton>
                 <TextInput
                     v-model="filter.name"
                     class="w-full rounded-md bg-white text-lg shadow transition-shadow focus:shadow-2xl focus:outline-none"
