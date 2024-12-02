@@ -36,6 +36,7 @@
     "dependencies": {
         "@kalimahapps/vue-icons": "^1.7.1",
         "@vueuse/core": "^11.3.0",
+        "chart.js": "^4.4.7",
         "classnames": "^2.5.1",
         "clsx": "^2.1.1",
         "filepond": "^4.31.4",
@@ -50,9 +51,11 @@
         "tailwind-scrollbar": "^3.1.0",
         "v-lazy-image": "^2.1.1",
         "vite-plugin-vue-devtools": "^7.6.4",
+        "vue-draggable-next": "^2.2.1",
         "vue-filepond": "^7.0.4",
         "vue3-carousel": "^0.5.0",
         "vue3-lazyload": "^0.3.8",
-        "vue3-toastify": "^0.2.4"
+        "vue3-toastify": "^0.2.4",
+        "vuedraggable": "^4.1.0"
     }
 }

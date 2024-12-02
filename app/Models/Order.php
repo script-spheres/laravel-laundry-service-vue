@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderFactory> */
+    /** @use HasFactory<OrderFactory> */
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
@@ -16,36 +18,27 @@ class Order extends Model
         'store_id',
         'timeslot_id',
         'coupon_id',
-        'status',
+        'order_status',
         'total_weight_kg',
         'total_price',
         'tax',
         'discount',
         'delivery_date',
         'quick_note',
+        'paid_amount',
     ];
 
     protected $casts = [
         'delivery_date' => 'date',
     ];
 
-    public function customer()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function store()
+    public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
-    }
-
-    public function timeslot()
-    {
-        return $this->belongsTo(Timeslot::class);
-    }
-
-    public function coupon()
-    {
-        return $this->belongsTo(Coupon::class);
     }
 }

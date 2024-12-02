@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import Modal from '@/Components/modal/Modal.vue';
-import { nextTick, ref } from 'vue';
-import PrimaryButton from '../@/Components/Buttons/PrimaryButton.vue';
+import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { usePosStore } from '@/stores/PosStore.ts';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+import DataTable from '@/Components/DataTable/DataTable.vue';
+import Modal from '@/Components/Modal/Modal.vue';
+import { usePosStore } from '@/Stores/PosStore';
+import { useForm } from '@inertiajs/vue3';
 
 const cartStore = usePosStore();
 
@@ -35,8 +37,8 @@ const setPaymentMode = (mode) => {
             <button
                 @click="setPaymentMode('Cash')"
                 :class="{
-                            'bg-blue-600 text-white': paymentMode === 'Cash',
-                        }"
+                    'bg-blue-600 text-white': paymentMode === 'Cash',
+                }"
                 class="rounded-md bg-gray-100 py-1 text-center text-gray-600 hover:bg-blue-500 hover:text-white"
             >
                 Cash
@@ -44,8 +46,8 @@ const setPaymentMode = (mode) => {
             <button
                 @click="setPaymentMode('Card')"
                 :class="{
-                            'bg-blue-600 text-white': paymentMode === 'Card',
-                        }"
+                    'bg-blue-600 text-white': paymentMode === 'Card',
+                }"
                 class="rounded-md bg-gray-100 py-1 text-center text-gray-600 hover:bg-blue-500 hover:text-white"
             >
                 Card
@@ -53,8 +55,8 @@ const setPaymentMode = (mode) => {
             <button
                 @click="setPaymentMode('UPI')"
                 :class="{
-                            'bg-blue-600 text-white': paymentMode === 'UPI',
-                        }"
+                    'bg-blue-600 text-white': paymentMode === 'UPI',
+                }"
                 class="rounded-md bg-gray-100 py-1 text-center text-gray-600 hover:bg-blue-500 hover:text-white"
             >
                 UPI
@@ -62,8 +64,8 @@ const setPaymentMode = (mode) => {
             <button
                 @click="setPaymentMode('Check')"
                 :class="{
-                            'bg-blue-600 text-white': paymentMode === 'Check',
-                        }"
+                    'bg-blue-600 text-white': paymentMode === 'Check',
+                }"
                 class="rounded-md bg-gray-100 py-1 text-center text-gray-600 hover:bg-blue-500 hover:text-white"
             >
                 Check
@@ -71,9 +73,8 @@ const setPaymentMode = (mode) => {
             <button
                 @click="setPaymentMode('Bank Transfer')"
                 :class="{
-                            'bg-blue-600 text-white':
-                                paymentMode === 'Bank Transfer',
-                        }"
+                    'bg-blue-600 text-white': paymentMode === 'Bank Transfer',
+                }"
                 class="col-span-2 rounded-md bg-gray-100 py-1 text-center text-gray-600 hover:bg-blue-500 hover:text-white"
             >
                 Bank Transfer
@@ -97,14 +98,12 @@ const setPaymentMode = (mode) => {
         <div v-if="posStore.change !== 0" class="mt-3">
             <div
                 :class="{
-                            'bg-cyan-50 text-cyan-600': posStore.change > 0,
-                            'bg-pink-100 text-pink-600': posStore.change < 0,
-                        }"
+                    'bg-cyan-50 text-cyan-600': posStore.change > 0,
+                    'bg-pink-100 text-pink-600': posStore.change < 0,
+                }"
                 class="rounded-lg p-2 text-sm font-semibold"
             >
-                        <span>{{
-                                posStore.change > 0 ? 'CHANGE' : 'DUE'
-                            }}</span>
+                <span>{{ posStore.change > 0 ? 'CHANGE' : 'DUE' }}</span>
                 <span class="float-right">{{ posStore.change }}</span>
             </div>
         </div>

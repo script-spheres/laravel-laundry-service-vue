@@ -13,14 +13,9 @@ return new class extends Migration {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('quantity');
-            $table->string('price');
-            $table->string('subtotal');
-            $table->string('restaurant_notes')->nullable();
-            $table->string('request_notes')->nullable();
-            $table->enum('serve_status', ['placed', 'offline'])->nullable()->default('placed');
-            $table->enum('kitchen_status', ['pending', 'processing', 'completed', 'cancel', 'reject'])->nullable()->default('pending');
+            $table->morphs('serviceable');
+            $table->integer('quantity');
+            $table->decimal('price', 5, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

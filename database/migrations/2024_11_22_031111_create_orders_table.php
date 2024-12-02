@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->uuid('order_uuid');
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->foreignId('store_id')->constrained('stores')->cascadeOnDelete();
-            $table->foreignId('timeslot_id')->nullable()->constrained('timeslots')->nullOnDelete();
-            $table->foreignId('coupon_id')->nullable()->constrained('coupons')->nullOnDelete();
-            $table->enum('status', ['Pending', 'In Progress', 'Completed', 'Cancelled'])->default('Pending');
-            $table->decimal('total_weight_kg', 5, 2);
-            $table->decimal('total_price', 10, 2);
+            $table->decimal('total_weight_kg', 5, 2)->default(0);
+            $table->decimal('sub_total', 5, 2)->default(0);
+            $table->decimal('total_price', 5, 2)->default(0);
             $table->decimal('tax', 5, 2)->default(0);
             $table->decimal('discount', 5, 2)->default(0);
+            $table->decimal('paid_amount', 5, 2)->default(0);
             $table->date('delivery_date');
             $table->text('quick_note')->nullable();
+            $table->enum('order_status', ['pending', 'in-progress', 'ready-to-deliver', 'delivered'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });

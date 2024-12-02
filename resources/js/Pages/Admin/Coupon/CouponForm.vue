@@ -1,18 +1,19 @@
 <script lang="ts" setup>
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import InputError from '@/Components/Form/InputError.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
+import NumberInput from '@/Components/Form/NumberInput.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
 import TextareaInput from '@/Components/Form/TextareaInput.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
-import { useForm } from 'laravel-precognition-vue-inertia';
-
-import NumberInput from '@/Components/Form/NumberInput.vue';
-import { statusOptions } from '@/Constants/options';
+import { discountTypeOptions, statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Coupon } from '@/types';
-import { PropType } from 'vue';
+import { useForm } from 'laravel-precognition-vue-inertia';
+import { computed, PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AdminLayout });
@@ -35,17 +36,17 @@ const form = useForm(method, url, {
     title: coupon?.title || '',
     description: coupon?.description || '',
     code: coupon?.code || '',
-    discount_type: coupon?.discount_type || '',
+    discount_type: coupon?.discount_type || 'flat',
     discount_amount: coupon?.discount_amount || '',
     discount_percentage: coupon?.discount_percentage || '',
     min_amount: coupon?.min_amount || '',
     max_amount: coupon?.max_amount || '',
-    valid_from: coupon?.valid_from || '',
-    valid_to: coupon?.valid_to || '',
-    usage_limit: coupon?.usage_limit || '',
-    used_count: coupon?.used_count || 0,
     active_status: coupon?.active_status || '',
 });
+
+// Watch for changes in discount type and handle the dynamic fields
+const isDiscountAmountVisible = computed(() => form.discount_type === 'flat');
+const isDiscountPercentageVisible = computed(() => form.discount_type === 'percentage');
 
 const submitForm = () => {
     form.submit({
@@ -56,142 +57,114 @@ const submitForm = () => {
 </script>
 
 <template>
-    <div>
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    {{ coupon ? 'Edit' : 'Create New' }} Coupon
-                </h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                    Fill in the details for your
-                    {{ coupon ? 'existing' : 'new' }} coupon.
-                </p>
-            </div>
+    <PageHeader>
+        <template #title>
+            {{ coupon ? 'Edit ' : 'Create New' }} Coupon
+        </template>
+        <template #subtitle>
+            Fill in the details for your
+            {{ coupon ? 'existing' : 'new' }} coupon.
+        </template>
+        <template #actions>
             <LinkButton :href="route('admin.coupons.index')">Back</LinkButton>
-        </div>
+        </template>
+    </PageHeader>
 
-        <Card class="mx-auto mt-6 p-4">
-            <form @submit.prevent="submitForm">
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput value="Title" v-model="form.title" />
-                        <InputError :message="form.errors.title" />
-                    </div>
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput value="Coupon Code" v-model="form.code" />
-                        <InputError :message="form.errors.code" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0">
-                        <TextareaInput
-                            value="Description"
-                            v-model="form.description"
-                        />
-                        <InputError :message="form.errors.description" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <SelectInput
-                            value="Discount Type"
-                            v-model="form.discount_type"
-                            :options="[
-                                { value: 'flat', label: 'Flat' },
-                                { value: 'percentage', label: 'Percentage' },
-                            ]"
-                        />
-                        <InputError :message="form.errors.discount_type" />
-                    </div>
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <NumberInput
-                            value="Discount Amount"
-                            v-model="form.discount_amount"
-                            type="number"
-                            step="0.01"
-                        />
-                        <InputError :message="form.errors.discount_amount" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <NumberInput
-                            value="Minimum Amount"
-                            v-model="form.min_amount"
-                            type="number"
-                            step="0.01"
-                        />
-                        <InputError :message="form.errors.min_amount" />
-                    </div>
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <NumberInput
-                            value="Maximum Amount"
-                            v-model="form.max_amount"
-                            type="number"
-                            step="0.01"
-                        />
-                        <InputError :message="form.errors.max_amount" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Valid From"
-                            v-model="form.valid_from"
-                            type="date"
-                        />
-                        <InputError :message="form.errors.valid_from" />
-                    </div>
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            value="Valid To"
-                            v-model="form.valid_to"
-                            type="date"
-                        />
-                        <InputError :message="form.errors.valid_to" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <NumberInput
-                            value="Usage Limit"
-                            v-model="form.usage_limit"
-                            type="number"
-                        />
-                        <InputError :message="form.errors.usage_limit" />
-                    </div>
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <NumberInput
-                            value="Used Count"
-                            v-model="form.used_count"
-                            type="number"
-                        />
-                        <InputError :message="form.errors.used_count" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <SelectInput
-                            value="Status"
-                            v-model="form.active_status"
-                            :options="statusOptions"
-                        />
-                        <InputError :message="form.errors.active_status" />
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <PrimaryButton
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                        type="submit"
-                    >
-                        {{ coupon ? 'Update' : 'Submit' }}
-                    </PrimaryButton>
-                    <LinkButton :href="route('admin.coupons.index')">
-                        Cancel
-                    </LinkButton>
-                </div>
-            </form>
-        </Card>
-    </div>
+    <Card class="mx-auto mt-6 p-4">
+        <form @submit.prevent="submitForm">
+            <FieldRow class="grid-cols-2">
+                <FieldCol>
+                    <TextInput
+                        label="Title"
+                        v-model="form.title"
+                        :error="form.errors.title"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <TextInput
+                        label="Coupon Code"
+                        v-model="form.code"
+                        :error="form.errors.code"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
+                    <TextareaInput
+                        label="Description"
+                        v-model="form.description"
+                        :error="form.errors.description"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow class="grid-cols-2">
+                <FieldCol>
+                    <SelectInput
+                        label="Discount Type"
+                        v-model="form.discount_type"
+                        :options="discountTypeOptions"
+                        :error="form.errors.discount_type"
+                    />
+                </FieldCol>
+                <FieldCol v-if="isDiscountAmountVisible">
+                    <NumberInput
+                        label="Discount Amount"
+                        v-model="form.discount_amount"
+                        type="number"
+                        step="0.01"
+                        :error="form.errors.discount_amount"
+                    />
+                </FieldCol>
+                <FieldCol v-if="isDiscountPercentageVisible">
+                    <NumberInput
+                        label="Discount Percentage"
+                        v-model="form.discount_percentage"
+                        type="number"
+                        step="0.01"
+                        :error="form.errors.discount_percentage"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow class="grid-cols-3">
+                <FieldCol>
+                    <NumberInput
+                        label="Minimum Amount"
+                        v-model="form.min_amount"
+                        type="number"
+                        step="0.01"
+                        :error="form.errors.min_amount"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <NumberInput
+                        label="Maximum Amount"
+                        v-model="form.max_amount"
+                        type="number"
+                        step="0.01"
+                        :error="form.errors.max_amount"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <SelectInput
+                        label="Active Status"
+                        v-model="form.active_status"
+                        :options="statusOptions"
+                        :error="form.errors.active_status"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <div class="flex gap-2">
+                <PrimaryButton
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                    type="submit"
+                >
+                    {{ coupon ? 'Update' : 'Submit' }}
+                </PrimaryButton>
+                <LinkButton :href="route('admin.coupons.index')" color="danger">
+                    Cancel
+                </LinkButton>
+            </div>
+        </form>
+    </Card>
 </template>

@@ -22,17 +22,17 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
+            'order_uuid' => $this->faker->uuid(),
             'customer_id' => Customer::factory(),
             'store_id' => Store::factory(),
-            'timeslot_id' => Timeslot::factory(),
-            'coupon_id' => Coupon::factory(),
-            'status' => $this->faker->randomElement(['Pending', 'In Progress', 'Completed', 'Cancelled']),
             'total_weight_kg' => $this->faker->randomFloat(2, 1, 20),
             'total_price' => $this->faker->randomFloat(2, 10, 200),
             'tax' => $this->faker->randomFloat(2, 1, 10),
             'discount' => $this->faker->randomFloat(2, 1, 50),
+            'paid_amount' => $this->faker->randomFloat(2, 1, 50),
             'delivery_date' => $this->faker->date(),
             'quick_note' => $this->faker->text,
+            'order_status' => $this->faker->randomElement(['pending', 'in-progress', 'ready-to-deliver', 'delivered']),
         ];
     }
 }

@@ -11,6 +11,7 @@ import Modal from '@/Components/Modal/Modal.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { AddonService, ServiceItem } from '@/types';
 import { inject, Ref } from 'vue';
+import RadioInput from '@/Components/Form/RadioInput.vue';
 
 // Inject the provided values
 const addonServices = inject('addonServices') as AddonService[];
@@ -49,38 +50,33 @@ const removeCart = (
 </script>
 
 <template>
-    <Modal :show="showDiscountModal" @close="handleClose" class="p-4">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            Select A Service Type
-        </h2>
-        <!-- Addon Services Table -->
-        <DataTable>
-            <TableHead>
-                <TableHeadCell>Addon Service</TableHeadCell>
-                <TableHeadCell>Price</TableHeadCell>
-                <TableHeadCell class="text-right">Actions</TableHeadCell>
-            </TableHead>
-            <TableBody>
-                <TableRow
-                    v-for="addonService in addonServices"
-                    :key="addonService.id"
-                >
-                    <TableCell>{{ addonService.name }}</TableCell>
-                    <TableCell>{{ addonService.price }}</TableCell>
-                    <TableCell class="flex justify-end gap-2">
-                        <PrimaryButton
-                            @click="addToCart(addonService, 'addon')"
-                        >
-                            Add
-                        </PrimaryButton>
-                        <DangerButton
-                            @click="removeCart(addonService, 'addon')"
-                        >
-                            Remove
-                        </DangerButton>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </DataTable>
+    <Modal :show="showDiscountModal" @close="handleClose">
+        <div class="p-4">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Select A Service Type
+            </h2>
+            <!-- Addon Services Table -->
+            <DataTable>
+                <TableHead>
+                    <TableHeadCell>Addon Service</TableHeadCell>
+                    <TableHeadCell>Price</TableHeadCell>
+                    <TableHeadCell class="text-right">Actions</TableHeadCell>
+                </TableHead>
+                <TableBody>
+                    <TableRow
+                        v-for="addonService in addonServices"
+                        :key="addonService.id"
+                    >
+                        <TableCell>{{ addonService.name }}</TableCell>
+                        <TableCell>{{ addonService.price }}</TableCell>
+                        <TableCell class="flex justify-end gap-2">
+                            <RadioInput
+                                @click="addToCart(addonService, 'addon')"
+                            >
+                            </RadioInput>
+                    </TableRow>
+                </TableBody>
+            </DataTable>
+        </div>
     </Modal>
 </template>

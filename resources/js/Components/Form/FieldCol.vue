@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class="w-full">
+    <div class="mb-2 w-full">
         <slot />
     </div>
 </template>

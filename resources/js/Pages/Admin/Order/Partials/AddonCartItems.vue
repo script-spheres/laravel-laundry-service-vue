@@ -2,45 +2,39 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { AkCart, AkTrashCan, BxPackage } from '@kalimahapps/vue-icons';
+import { inject, Ref } from 'vue';
 
 const posStore = usePosStore();
-
-const updateItemQuantity = (id: number, currentQuantity: number) => {
-    if (currentQuantity > 1) {
-        posStore.updateItem(id, currentQuantity);
-    } else {
-        posStore.removeItem(id);
-    }
-};
+const showAddonServiceModal = inject('showAddonServiceModal') as Ref<boolean>;
 </script>
 
 <template>
     <div class="flex justify-between p-4">
-        <p class="text-xl font-bold">Addon Items</p>
         <div class="flex gap-4">
+            <p class="text-xl font-bold">Addon Items</p>
             <div class="relative text-left text-lg">
                 <AkCart class="h-6 w-6" />
                 <div
-                    v-if="posStore.totalAttonItems > 0"
+                    v-if="posStore.totalAddonItems > 0"
                     class="absolute -right-2 top-3 h-5 w-5 rounded-full bg-cyan-500 p-0 text-center text-xs leading-5 text-white"
                 >
                     {{ posStore.totalAddonItems }}
                 </div>
             </div>
-            <div class="text-right">
-                <button
-                    @click="showAddonServiceModal = true"
-                    class="rounded-md bg-blue-500 p-1.5 text-white shadow hover:bg-blue-600"
-                >
-                    <BxPackage />
-                </button>
-                <PrimaryButton
-                    class="hover:text-pink-500 focus:outline-none"
-                    @click="posStore.clearAddonCart()"
-                >
-                    <AkTrashCan class="inline-block h-6 w-6" />
-                </PrimaryButton>
-            </div>
+        </div>
+        <div class="text-right">
+            <PrimaryButton
+                @click="showAddonServiceModal = true"
+                class="rounded-md bg-blue-500 text-white shadow hover:bg-blue-600"
+            >
+                <BxPackage />
+            </PrimaryButton>
+            <PrimaryButton
+                class="hover:text-pink-500 focus:outline-none"
+                @click="posStore.clearAddonCart()"
+            >
+                <AkTrashCan class="inline-block h-6 w-6" />
+            </PrimaryButton>
         </div>
     </div>
 

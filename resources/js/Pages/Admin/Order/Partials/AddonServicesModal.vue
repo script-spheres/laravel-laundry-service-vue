@@ -10,13 +10,18 @@ import TableRow from '@/Components/DataTable/TableRow.vue';
 import Modal from '@/Components/Modal/Modal.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { AddonService } from '@/types';
-import { inject, Ref } from 'vue';
+import { inject, PropType, Ref } from 'vue';
 
-const addonServices = inject('addonServices') as AddonService[];
 const showAddonServiceModal = inject('showAddonServiceModal') as Ref<boolean>;
 
 const posStore = usePosStore();
 
+defineProps({
+    addonServices: {
+        type: Object as PropType<AddonService>,
+        required: true,
+    },
+});
 const handleClose = () => {
     showAddonServiceModal.value = false;
 };
@@ -39,39 +44,43 @@ const toggleCartItem = (item: AddonService) => {
 </script>
 
 <template>
-    <Modal :show="showAddonServiceModal" @close="handleClose" class="p-4">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            Select An Addon Service
-        </h2>
-        <DataTable>
-            <TableHead>
-                <TableHeadCell>Addon Service</TableHeadCell>
-                <TableHeadCell>Price</TableHeadCell>
-                <TableHeadCell class="text-right">Actions</TableHeadCell>
-            </TableHead>
-            <TableBody>
-                <TableRow
-                    v-for="addonService in addonServices"
-                    :key="addonService.id"
-                >
-                    <TableCell>{{ addonService.name }}</TableCell>
-                    <TableCell>{{ addonService.price }}</TableCell>
-                    <TableCell class="flex justify-end gap-2">
-                        <template v-if="isInCart(addonService.id)">
-                            <DangerButton @click="toggleCartItem(addonService)">
-                                Del
-                            </DangerButton>
-                        </template>
-                        <template v-else>
-                            <PrimaryButton
-                                @click="toggleCartItem(addonService)"
-                            >
-                                Add
-                            </PrimaryButton>
-                        </template>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </DataTable>
+    <Modal :show="showAddonServiceModal" @close="handleClose">
+        <div class="p-4">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Select An Addon Service
+            </h2>
+            <DataTable>
+                <TableHead>
+                    <TableHeadCell>Addon Service</TableHeadCell>
+                    <TableHeadCell>Price</TableHeadCell>
+                    <TableHeadCell class="text-right">Actions</TableHeadCell>
+                </TableHead>
+                <TableBody>
+                    <TableRow
+                        v-for="addonService in addonServices"
+                        :key="addonService.id"
+                    >
+                        <TableCell>{{ addonService.name }}</TableCell>
+                        <TableCell>{{ addonService.price }}</TableCell>
+                        <TableCell class="flex justify-end gap-2">
+                            <template v-if="isInCart(addonService.id)">
+                                <DangerButton
+                                    @click="toggleCartItem(addonService)"
+                                >
+                                    Del
+                                </DangerButton>
+                            </template>
+                            <template v-else>
+                                <PrimaryButton
+                                    @click="toggleCartItem(addonService)"
+                                >
+                                    Add
+                                </PrimaryButton>
+                            </template>
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            </DataTable>
+        </div>
     </Modal>
 </template>

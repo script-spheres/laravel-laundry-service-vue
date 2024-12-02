@@ -23,18 +23,23 @@ class StoreCouponRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required'],
-            'description' => ['required'],
-            'code' => ['required'],
-            'discount_type' => ['required'],
-            'discount_amount' => ['nullable', 'numeric'],
-            'discount_percentage' => ['nullable', 'numeric'],
-            'min_amount' => ['required', 'numeric'],
-            'max_amount' => ['required', 'numeric'],
-            'valid_from' => ['required', 'date'],
-            'valid_to' => ['required', 'date'],
-            'usage_limit' => ['nullable', 'integer'],
-            'used_count' => ['required', 'integer'],
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'code' => 'required|string|unique:coupons,code,' . $this->coupon,
+            'discount_type' => 'required|in:flat,percentage',
+            'discount_amount' => [
+                'required_if:discount_type,flat',
+                'numeric',
+                'min:0',
+            ],
+            'discount_percentage' => [
+                'required_if:discount_type,percentage',
+                'numeric',
+                'min:0',
+                'max:100',
+            ],
+            'min_amount' => 'nullable|numeric|min:0',
+            'max_amount' => 'nullable|numeric|min:0',
             'active_status' => 'required|in:active,inactive',
         ];
     }

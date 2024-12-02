@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\FinancialYearController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ServiceItemController;
 use App\Http\Controllers\Admin\ServiceTypeController;
@@ -62,6 +63,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('coupons', CouponController::class);
     Route::resource('timeslots', TimeslotController::class);
     Route::resource('orders', OrderController::class);
+    Route::get('orders-status', [OrderStatusController::class, 'index'])->name('orders.status');
+
     Route::resource('expenses', ExpenseController::class);
     Route::resource('financial-years', FinancialYearController::class);
     Route::resource('users', UserController::class);

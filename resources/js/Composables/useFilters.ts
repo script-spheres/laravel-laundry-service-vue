@@ -3,7 +3,7 @@ import { reactive, watch } from 'vue';
 
 export function useFilters(
     routeName: string,
-    initialFilters: Record<string, string | undefined> = {},
+    initialFilters: Record<string, string> = {},
 ) {
     const filter = reactive({ ...initialFilters });
 

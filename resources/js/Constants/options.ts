@@ -41,9 +41,7 @@ export const deliveryTypeOptions: Record<string, string> = {
 
 export const discountTypeOptions: Record<string, string> = {
     percentage: 'Percentage',
-    fixed_amount: 'Fixed Amount',
-    buy_one_get_one: 'Buy One Get One',
-    seasonal: 'Seasonal',
+    flat: 'Fixed Amount',
 };
 
 export const foodTypeOptions: Record<string, string> = {
@@ -76,6 +74,10 @@ export const orderStatusOptions: Record<string, string> = {
     completed: 'Completed',
     cancelled: 'Cancelled',
     refunded: 'Refunded',
+    all: 'All Orders',
+    'ready-to-deliver': 'Ready To Deliver',
+    delivered: 'Delivered',
+    returned: 'Returned',
 };
 
 export const orderTypeOptions: Record<string, string> = {

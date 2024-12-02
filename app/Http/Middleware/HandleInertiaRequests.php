@@ -51,7 +51,7 @@ class HandleInertiaRequests extends Middleware
             ->add('Dashboard', route('admin.dashboard'), fn($s) => $s->attributes(['icon' => 'IcDashboardDots']))
             ->add('Stores Management', route('admin.stores.index'), fn($s) => $s->attributes(['icon' => 'AnFilledDatabase']))
             ->add('Orders Management', route('admin.orders.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
-            ->add('Orders Status Screen', route('admin.orders.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
+            ->add('Orders Status Screen', route('admin.orders.status'), fn($s) => $s->attributes(['icon' => 'GlWork']))
             ->add('Banners Management', route('admin.banners.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
             ->add('Customer Management', route('admin.customers.index'), fn($s) => $s->attributes(['icon' => 'PhUsersFour']))
             ->add('Coupons Management', route('admin.coupons.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
@@ -72,8 +72,8 @@ class HandleInertiaRequests extends Middleware
             ->add('Expenses Management', '', function (Section $section) {
                 $section
                     ->attributes(['icon' => 'MdLoyalty'])
-                    ->add('Expenses Management', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']))
-                    ->add('Expenses type Management', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']));
+                    ->add('Expenses Type', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']))
+                    ->add('Expenses Management', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']));
             })
             ->add('Report Management', '', function (Section $section) {
                 $section

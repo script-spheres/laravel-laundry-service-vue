@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
@@ -10,15 +11,14 @@ import TableRow from '@/Components/DataTable/TableRow.vue';
 import DateInput from '@/Components/Form/DateInput.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
-import ToggleInput from '@/Components/Form/ToggleInput.vue';
+import StatusToggleInput from '@/Components/Form/StatusToggleInput.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Coupon, FlashMessage, PaginatedData } from '@/types';
-import { router } from '@inertiajs/vue3';
-import { PropType, reactive, watch } from 'vue';
-import { toast } from 'vue3-toastify';
+import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -39,56 +39,13 @@ const props = defineProps({
 });
 
 // Initialize reactive filters with default values or passed props
-const filter = reactive<Filters>({
+const { filter, handleClearFilter } = useFilters('admin.coupons.index', {
     valid_form: props.filters?.valid_form ?? '',
     valid_to: props.filters?.valid_to ?? '',
     active_status: props.filters?.active_status ?? '',
     type: props.filters?.type ?? '',
     title: props.filters?.title ?? '',
 });
-
-// Watch for filter changes and trigger data refresh
-watch(filter, (newFilters) => {
-    const { valid_form, valid_to, active_status, type, title } = newFilters;
-
-    const filterParams: Record<string, string> = {
-        ...(valid_form && { 'filter[valid_form]': valid_form }),
-        ...(valid_to && { 'filter[valid_to]': valid_to }),
-        ...(active_status && { 'filter[active_status]': active_status }),
-        ...(type && { 'filter[discount_type]': type }),
-        ...(title && { 'filter[title]': title }),
-    };
-
-    router.get(route('admin.coupons.index'), filterParams, {
-        preserveScroll: true,
-    });
-});
-
-// Delete a coupon
-const deleteData = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this coupon?')) return;
-
-    router.delete(route('admin.coupons.destroy', id), {
-        preserveScroll: true,
-        onSuccess: () => toast.success(props?.flash?.message),
-    });
-};
-
-// Clear all filters
-const handleClearFilter = () => {
-    Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
-};
-
-// Toggle coupon active status
-const handleActiveStatusChange = (coupon: Coupon, event: Event) => {
-    const newStatus = (event.target as HTMLInputElement).checked
-        ? 'active'
-        : 'inactive';
-    const data = { ...coupon, active_status: newStatus };
-    router.put(route('admin.coupons.update', coupon.id), data, {
-        onSuccess: () => toast.success('Coupon status updated successfully.'),
-    });
-};
 </script>
 
 <template>
@@ -139,8 +96,6 @@ const handleActiveStatusChange = (coupon: Coupon, event: Event) => {
         <DataTable>
             <TableHead>
                 <TableHeadCell>Title</TableHeadCell>
-                <TableHeadCell>Start Date</TableHeadCell>
-                <TableHeadCell>End Date</TableHeadCell>
                 <TableHeadCell>Min Amount</TableHeadCell>
                 <TableHeadCell>Max Amount</TableHeadCell>
                 <TableHeadCell>Discount Type</TableHeadCell>
@@ -150,15 +105,13 @@ const handleActiveStatusChange = (coupon: Coupon, event: Event) => {
             <TableBody>
                 <TableRow v-for="coupon in coupons.data" :key="coupon.id">
                     <TableCell>{{ coupon.title }}</TableCell>
-                    <TableCell>{{ coupon.valid_from }}</TableCell>
-                    <TableCell>{{ coupon.valid_to }}</TableCell>
                     <TableCell>{{ coupon.min_amount }}</TableCell>
                     <TableCell>{{ coupon.max_amount }}</TableCell>
                     <TableCell>{{ coupon.discount_type }}</TableCell>
                     <TableCell class="text-right">
-                        <ToggleInput
-                            :modelValue="coupon.active_status === 'active'"
-                            @change="handleActiveStatusChange(coupon, $event)"
+                        <StatusToggleInput
+                            :action="route('admin.coupons.update', coupon.id)"
+                            :data="coupon"
                         />
                     </TableCell>
                     <TableCell class="flex justify-end gap-2">
@@ -167,9 +120,11 @@ const handleActiveStatusChange = (coupon: Coupon, event: Event) => {
                         >
                             Edit
                         </LinkButton>
-                        <PrimaryButton @click="deleteData(coupon.id)">
+                        <DeleteButton
+                            :action="route('admin.coupons.destroy', coupon.id)"
+                        >
                             Delete
-                        </PrimaryButton>
+                        </DeleteButton>
                     </TableCell>
                 </TableRow>
             </TableBody>

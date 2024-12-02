@@ -2,6 +2,7 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { AkCart, AkMinus, AkPlus, AkTrashCan } from '@kalimahapps/vue-icons';
+import { toRaw } from 'vue';
 
 const posStore = usePosStore();
 
@@ -12,6 +13,8 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
         posStore.removeItem(id);
     }
 };
+console.log(toRaw(posStore.totalItems));
+
 </script>
 
 <template>
@@ -32,7 +35,7 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
             <div class="text-right">
                 <PrimaryButton
                     class="hover:text-pink-500 focus:outline-none"
-                    @click="posStore.clearCart()"
+                    @click="posStore.clearItemCart()"
                 >
                     <AkTrashCan class="inline-block h-6 w-6" />
                 </PrimaryButton>
@@ -47,11 +50,11 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
             <div
                 v-for="item in posStore.items"
                 :key="item.id"
-                class="mb-2 flex w-full items-center rounded-lg bg-white p-2 shadow"
+                class="mb-1 flex w-full items-center rounded bg-white p-2 shadow"
             >
                 <img
                     :src="item?.image?.url"
-                    alt=""
+                    :alt="item?.image?.url"
                     class="mr-2 h-10 w-10 rounded-lg shadow"
                 />
                 <div class="flex-grow">
@@ -60,7 +63,7 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
                         Selling Price: {{ item.price }}
                     </p>
                 </div>
-                <div class="ml-2 flex items-center gap-2">
+                <div class="flex items-center gap-2">
                     <PrimaryButton
                         class="bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
                         @click="updateItemQuantity(item.id, item.quantity + 1)"

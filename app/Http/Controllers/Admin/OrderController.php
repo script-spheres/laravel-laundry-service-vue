@@ -7,6 +7,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\AddonService;
+use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\ServiceItem;
@@ -40,6 +41,7 @@ class OrderController extends Controller
             'serviceTypes' => ServiceType::get(),
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
+            'coupons' => Coupon::get(),
             'serviceItems' => ServiceItem::with(['servicePrices','servicePrices.serviceType'])->get(),
             'filters' => $request->get('filter'),
         ]);
@@ -62,8 +64,11 @@ class OrderController extends Controller
     {
         return Inertia::render('Admin/Order/OrderShow', [
             'order' => OrderResource::make($order)->resolve(),
-            'serviceTypes' => ServiceType::pluck('table_no','id'),
-            'services' => Service::pluck('name','id'),
+            'serviceTypes' => ServiceType::get(),
+            'customerOptions' => Customer::get(),
+            'addonServices' => AddonService::get(),
+            'coupons' => Coupon::get(),
+            'serviceItems' => ServiceItem::with(['servicePrices','servicePrices.serviceType'])->get(),
         ]);
     }
 
@@ -73,9 +78,11 @@ class OrderController extends Controller
     public function edit(Request $request,Order $order)
     {
         return Inertia::render('Admin/Order/OrderForm', [
+            'order' => OrderResource::make($order)->resolve(),
             'serviceTypes' => ServiceType::get(),
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
+            'coupons' => Coupon::get(),
             'serviceItems' => ServiceItem::with(['servicePrices','servicePrices.serviceType'])->get(),
             'filters' => $request->get('filter'),
         ]);

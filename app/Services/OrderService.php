@@ -15,6 +15,7 @@ class OrderService
     public function getOrders()
     {
         return QueryBuilder::for(Order::class)
+            ->with(['customer', 'store'])
             ->allowedFilters(['id', 'customer_id', 'status'])
             ->allowedSorts(['created_at', 'status'])
             ->paginate()

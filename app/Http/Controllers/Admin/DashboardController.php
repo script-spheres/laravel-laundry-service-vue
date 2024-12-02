@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Dashboard', [
-            'accessories' => Order::count(),
+            'orders' => Order::get(),
         ]);
     }
 }

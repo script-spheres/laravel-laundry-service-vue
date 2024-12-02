@@ -10,13 +10,17 @@ import TableRow from '@/Components/DataTable/TableRow.vue';
 import Modal from '@/Components/Modal/Modal.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { ServiceItem, ServicePrice } from '@/types';
-import { inject, Ref } from 'vue';
+import { inject, PropType, Ref } from 'vue';
 
 // Inject values from the parent
 const showServiceTypeModal = inject('showServiceTypeModal') as Ref<boolean>;
-const selectedServiceItem = inject(
-    'selectedServiceItem',
-) as Ref<ServiceItem | null>;
+
+defineProps({
+    selectedServiceItem: {
+        type: Object as PropType<ServiceItem>,
+        required: false,
+    },
+});
 
 // Access the POS store
 const posStore = usePosStore();
@@ -49,54 +53,60 @@ const removeFromCart = (id: number) => {
 
 <template>
     <!-- Modal Wrapper -->
-    <Modal :show="showServiceTypeModal" @close="handleClose" class="p-4">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            Select a Service Type
-        </h2>
+    <Modal :show="showServiceTypeModal" @close="handleClose">
+        <div class="p-4">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Select a Service Type
+            </h2>
 
-        <!-- Conditional Rendering -->
-        <div v-if="selectedServiceItem?.service_prices?.length > 0">
-            <!-- Data Table -->
-            <DataTable>
-                <TableHead>
-                    <TableHeadCell>Service Type</TableHeadCell>
-                    <TableHeadCell>Price</TableHeadCell>
-                    <TableHeadCell class="text-right">Actions</TableHeadCell>
-                </TableHead>
-                <TableBody>
-                    <TableRow
-                        v-for="servicePrice in selectedServiceItem.service_prices"
-                        :key="servicePrice.id"
-                    >
-                        <TableCell>
-                            {{ servicePrice.service_type?.name }}
-                        </TableCell>
-                        <TableCell>
-                            {{ servicePrice.price }}
-                        </TableCell>
-                        <TableCell class="flex justify-end gap-2">
-                            <!-- Conditional Add/Remove Buttons -->
-                            <template v-if="isInCart(servicePrice.id)">
-                                <DangerButton
-                                    @click="removeFromCart(servicePrice.id)"
-                                >
-                                    Remove
-                                </DangerButton>
-                            </template>
-                            <template v-else>
-                                <PrimaryButton @click="addToCart(servicePrice)">
-                                    Add
-                                </PrimaryButton>
-                            </template>
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
-            </DataTable>
-        </div>
+            <!-- Conditional Rendering -->
+            <div v-if="selectedServiceItem?.service_prices?.length > 0">
+                <!-- Data Table -->
+                <DataTable>
+                    <TableHead>
+                        <TableHeadCell>Service Type</TableHeadCell>
+                        <TableHeadCell>Price</TableHeadCell>
+                        <TableHeadCell class="text-right"
+                            >Actions</TableHeadCell
+                        >
+                    </TableHead>
+                    <TableBody>
+                        <TableRow
+                            v-for="servicePrice in selectedServiceItem.service_prices"
+                            :key="servicePrice.id"
+                        >
+                            <TableCell>
+                                {{ servicePrice.service_type?.name }}
+                            </TableCell>
+                            <TableCell>
+                                {{ servicePrice.price }}
+                            </TableCell>
+                            <TableCell class="flex justify-end gap-2">
+                                <!-- Conditional Add/Remove Buttons -->
+                                <template v-if="isInCart(servicePrice.id)">
+                                    <DangerButton
+                                        @click="removeFromCart(servicePrice.id)"
+                                    >
+                                        Del
+                                    </DangerButton>
+                                </template>
+                                <template v-else>
+                                    <PrimaryButton
+                                        @click="addToCart(servicePrice)"
+                                    >
+                                        Add
+                                    </PrimaryButton>
+                                </template>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </DataTable>
+            </div>
 
-        <!-- No Data Message -->
-        <div v-else class="text-center text-gray-500 dark:text-gray-400">
-            No service prices available for the selected service.
+            <!-- No Data Message -->
+            <div v-else class="text-center text-gray-500 dark:text-gray-400">
+                No service prices available for the selected service.
+            </div>
         </div>
     </Modal>
 </template>
