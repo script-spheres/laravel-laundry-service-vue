@@ -25,7 +25,7 @@ class UpdateServiceTypeRequest extends FormRequest
         return [
             'name' => ['required'],
             'description' => ['nullable'],
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('manager_phone_number')->nullable();
             $table->text('additional_info')->nullable();
             $table->string('store_code')->nullable();
-            $table->enum('active_status', ['active', 'inactive'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
         });

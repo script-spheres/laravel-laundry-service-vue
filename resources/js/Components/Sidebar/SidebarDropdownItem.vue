@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import { NavigationItem } from '@/types';
 import getIcon from '@/Utility/icons';
-import { Link } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
 defineProps<{ item: NavigationItem }>();
@@ -23,8 +23,8 @@ const svgClasses = computed(() => [
         <button
             @click="toggleCollapse"
             :class="[
-                'flex w-full transform items-center rounded-md px-4 py-2 text-left text-sm font-normal text-white text-opacity-60 duration-200 hover:bg-white hover:bg-opacity-10 hover:text-opacity-100',
-                isCollapsed ? 'rounded-t-md bg-gray-800 text-white' : '',
+                'flex w-full transform items-center gap-0 rounded-md px-2 py-2 text-left text-sm font-medium duration-200 hover:bg-gray-300 dark:text-gray-200 dark:hover:bg-gray-600',
+                isCollapsed ? 'rounded-t-md' : '',
             ]"
         >
             <component
@@ -47,28 +47,12 @@ const svgClasses = computed(() => [
                 ></path>
             </svg>
         </button>
-        <ul
-            v-if="isCollapsed"
-            class="mb-3 flex flex-col rounded-b bg-red-200 dark:bg-gray-700"
-        >
-            <li v-for="(childItem, index) in item.children" :key="index">
-                <Link
-                    preserve-scroll
-                    :href="childItem.url"
-                    :class="[
-                        'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-300 dark:text-gray-200 dark:hover:bg-gray-600',
-                        {
-                            'text-white': childItem.active,
-                        },
-                    ]"
-                >
-                    <component
-                        :is="getIcon(childItem.attributes.icon)"
-                        class="h-4 w-4"
-                    />
-                    {{ childItem.title }}
-                </Link>
-            </li>
+        <ul v-if="isCollapsed" class="space-y-1">
+            <SidebarItem
+                v-for="(childItem, index) in item.children"
+                :key="index"
+                :item="childItem"
+            />
         </ul>
     </div>
 </template>

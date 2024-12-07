@@ -40,7 +40,7 @@ class StoreCouponRequest extends FormRequest
             ],
             'min_amount' => 'nullable|numeric|min:0',
             'max_amount' => 'nullable|numeric|min:0',
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

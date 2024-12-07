@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('discount_percentage', 2, 2)->nullable();
             $table->decimal('min_amount');
             $table->decimal('max_amount');
-            $table->enum('active_status', ['active', 'inactive']);
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -27,7 +27,7 @@ if (!isMobileDevice.value) {
 <template>
     <!-- Sidebar Overlay for Mobile -->
     <div
-        class="fixed left-0 top-0 z-40 h-full w-full bg-teal-950 bg-opacity-20 transition-opacity duration-300 lg:hidden"
+        class="fixed left-0 top-0 z-40 h-full w-full bg-teal-950 bg-opacity-60 transition-opacity duration-300 lg:hidden"
         v-show="sidebarVisible"
         @click="toggleSidebar"
     ></div>
@@ -35,7 +35,7 @@ if (!isMobileDevice.value) {
     <!-- Sidebar -->
     <aside
         ref="sidebarRef"
-        class="fixed z-50 h-screen w-64 flex-none bg-teal-950 transition-transform duration-300"
+        class="fixed z-50 h-screen w-64 flex-none border-r bg-white transition-transform duration-300"
         :class="{
             '-translate-x-full': !sidebarVisible,
         }"
@@ -44,7 +44,7 @@ if (!isMobileDevice.value) {
             <SidebarLogo @close-sidebar="toggleSidebar" />
         </div>
         <nav
-            class="scrollbar h-[calc(100vh-100px)] flex-auto overflow-y-auto px-4 pb-4"
+            class="scrollbar h-[calc(100vh-64px)] flex-auto overflow-y-auto p-4"
         >
             <ul class="space-y-1">
                 <SidebarItem
@@ -70,7 +70,7 @@ if (!isMobileDevice.value) {
         >
             <div class="flex h-16 items-center justify-between">
                 <button
-                    class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
+                    class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700"
                     @click="toggleSidebar"
                 >
                     <FaBarsStaggered />
@@ -79,7 +79,7 @@ if (!isMobileDevice.value) {
                     <!-- Dark Mode Toggle -->
                     <li>
                         <button
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700"
                             @click="toggleDark()"
                         >
                             <AkSunFill v-if="isDark" />
@@ -90,7 +90,7 @@ if (!isMobileDevice.value) {
                     <!-- Mail Button -->
                     <li>
                         <button
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700"
                         >
                             <FeMail class="text-lg text-[#0f172a]" />
                         </button>
@@ -99,7 +99,7 @@ if (!isMobileDevice.value) {
                     <!-- Notifications Button -->
                     <li>
                         <button
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700"
                         >
                             <MdNotificationsNone
                                 class="text-xl text-[#0f172a]"

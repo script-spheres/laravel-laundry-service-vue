@@ -49,9 +49,10 @@ class HandleInertiaRequests extends Middleware
     {
         return app(Navigation::class)
             ->add('Dashboard', route('admin.dashboard'), fn($s) => $s->attributes(['icon' => 'IcDashboardDots']))
-            ->add('Stores Management', route('admin.stores.index'), fn($s) => $s->attributes(['icon' => 'AnFilledDatabase']))
+            ->add('Orders Pos Portal', route('admin.orders.create'), fn($s) => $s->attributes(['icon' => 'GlWork']))
+            ->add('Orders Status Screen', route('admin.orders-status.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
             ->add('Orders Management', route('admin.orders.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
-            ->add('Orders Status Screen', route('admin.orders.status'), fn($s) => $s->attributes(['icon' => 'GlWork']))
+            ->add('Stores Management', route('admin.stores.index'), fn($s) => $s->attributes(['icon' => 'AnFilledDatabase']))
             ->add('Banners Management', route('admin.banners.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
             ->add('Customer Management', route('admin.customers.index'), fn($s) => $s->attributes(['icon' => 'PhUsersFour']))
             ->add('Coupons Management', route('admin.coupons.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
@@ -62,17 +63,17 @@ class HandleInertiaRequests extends Middleware
                     ->add('Service Items', route('admin.service-items.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Addon Services', route('admin.addon-services.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
-            ->add('Customer Loyalty Program', '', function (Section $section) {
-                $section
-                    ->attributes(['icon' => 'MdLoyalty'])
-                    ->add('Points Management', route('admin.points.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Rewards Management', route('admin.rewards.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Redemption History', route('admin.redemptions.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
-            })
+//            ->add('Customer Loyalty Program', '', function (Section $section) {
+//                $section
+//                    ->attributes(['icon' => 'MdLoyalty'])
+//                    ->add('Points Management', route('admin.points.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+//                    ->add('Rewards Management', route('admin.rewards.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+//                    ->add('Redemption History', route('admin.redemptions.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
+//            })
             ->add('Expenses Management', '', function (Section $section) {
                 $section
                     ->attributes(['icon' => 'MdLoyalty'])
-                    ->add('Expenses Type', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']))
+                    ->add('Expenses Type', route('admin.expense-types.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']))
                     ->add('Expenses Management', route('admin.expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']));
             })
             ->add('Report Management', '', function (Section $section) {

@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('min_order_amount');
             $table->string('delivery_charges');
             $table->string('min_order_free_delivery');
-            $table->enum('active_status', ['active', 'inactive']);
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
         });

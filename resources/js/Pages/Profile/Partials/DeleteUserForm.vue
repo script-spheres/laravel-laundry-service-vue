@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DangerButton from '@/Components/Buttons/DangerButton.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
@@ -54,7 +54,7 @@ const closeModal = () => {
             </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <PrimaryButton @click="confirmUserDeletion">Delete Account</PrimaryButton>
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">
@@ -95,14 +95,14 @@ const closeModal = () => {
                         Cancel
                     </SecondaryButton>
 
-                    <DangerButton
+                    <PrimaryButton
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                         @click="deleteUser"
                     >
                         Delete Account
-                    </DangerButton>
+                    </PrimaryButton>
                 </div>
             </div>
         </Modal>

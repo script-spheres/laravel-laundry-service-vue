@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Badge from '@/Components/Badges/Badge.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
@@ -19,7 +20,6 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Order, PaginatedData } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { PropType } from 'vue';
-import StatusToggleInput from '@/Components/Form/StatusToggleInput.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -84,7 +84,7 @@ const handleOrderStatusChange = (order: Order, event: Event) => {
                 <InputLabel for="customer_name" value="Customer" />
                 <TextInput
                     v-model="filter.customer_name"
-                placeholder="Filter by Customer"
+                    placeholder="Filter by Customer"
                 />
             </div>
 
@@ -130,36 +130,45 @@ const handleOrderStatusChange = (order: Order, event: Event) => {
                 <TableRow v-for="order in orders.data" :key="order.id">
                     <TableCell>
                         <p><strong>Order ID:</strong> {{ order.order_uuid }}</p>
-                        <p><strong>Order Date:</strong> {{ order.created_at }}</p>
-                        <p><strong>Delivery Date:</strong> {{ order.delivery_date }}</p>
+                        <p>
+                            <strong>Order Date:</strong> {{ order.created_at }}
+                        </p>
+                        <p>
+                            <strong>Delivery Date:</strong>
+                            {{ order.delivery_date }}
+                        </p>
                     </TableCell>
                     <TableCell>
                         <p><strong>Name:</strong> {{ order.customer?.name }}</p>
-                        <p><strong>Email:</strong> {{ order.customer?.email }}</p>
-                        <p><strong>Mobile:</strong> {{ order.customer?.mobile }}</p>
+                        <p>
+                            <strong>Email:</strong> {{ order.customer?.email }}
+                        </p>
+                        <p>
+                            <strong>Mobile:</strong>
+                            {{ order.customer?.phone_number }}
+                        </p>
                     </TableCell>
-
                     <TableCell class="text-right">
-                        <SelectInput
-                            :options="orderStatusOptions"
-                            v-model="order.status"
-                            @change="handleOrderStatusChange(order, $event)"
-                        />
+                        <Badge>{{ order.order_status }}</Badge>
                     </TableCell>
                     <TableCell>
-                        <p><strong>Total Amount:</strong>{{ order.total_amount }}</p>
-                        <p><strong>Paid Amount:</strong>{{ order.paid_amount }}</p>
-                        <SelectInput
-                            v-model="order.payment_status"
-                            :options="paymentStatusOptions"
-                            @change="handlePaymentStatusChange(order, $event)"
-                        />
+                        <p>
+                            <strong>Total Amount:</strong
+                            >{{ order.total_amount }}
+                        </p>
+                        <p>
+                            <strong>Paid Amount:</strong>{{ order.paid_amount }}
+                        </p>
                     </TableCell>
                     <TableCell class="flex justify-end gap-2">
-                        <LinkButton :href="route('admin.orders.show', order.id)">
+                        <LinkButton
+                            :href="route('admin.orders.show', order.id)"
+                        >
                             View
                         </LinkButton>
-                        <LinkButton :href="route('admin.orders.edit', order.id)">
+                        <LinkButton
+                            :href="route('admin.orders.edit', order.id)"
+                        >
                             Edit
                         </LinkButton>
                     </TableCell>

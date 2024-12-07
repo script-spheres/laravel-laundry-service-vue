@@ -38,19 +38,19 @@ const filter = reactive<Filters>({
     address: props.filters?.address ?? '',
     email: props.filters?.email ?? '',
     phone_number: props.filters?.phone_number ?? '',
-    active_status: props.filters?.active_status ?? '',
+    status: props.filters?.status ?? '',
 });
 
 // Watch for filter changes and trigger data refresh
 watch(filter, (newFilters) => {
-    const { name, address, email, phone_number, active_status } = newFilters;
+    const { name, address, email, phone_number, status } = newFilters;
 
     const filterParams: Record<string, string> = {
         ...(name && { 'filter[name]': name }),
         ...(address && { 'filter[address]': address }),
         ...(email && { 'filter[email]': email }),
         ...(phone_number && { 'filter[phone_number]': phone_number }),
-        ...(active_status && { 'filter[active_status]': active_status }),
+        ...(status && { 'filter[status]': status }),
     };
 
     router.get(route('admin.stores.index'), filterParams, {
@@ -75,7 +75,7 @@ const handleActiveStatusChange = (store: Store, event: Event) => {
     const newStatus = (event.target as HTMLInputElement).checked
         ? 'active'
         : 'inactive';
-    const data = { ...store, active_status: newStatus };
+    const data = { ...store, status: newStatus };
     router.put(route('admin.stores.update', store.id), data, {
         preserveScroll: true,
         onSuccess: (page) => toast.success(page.props.flash?.message),
@@ -154,7 +154,7 @@ const handleActiveStatusChange = (store: Store, event: Event) => {
                     <TableCell>{{ store.phone_number }}</TableCell>
                     <TableCell class="text-right">
                         <ToggleInput
-                            :modelValue="store.active_status === 'active'"
+                            :modelValue="store.status === 'active'"
                             @change="handleActiveStatusChange(store, $event)"
                         />
                     </TableCell>

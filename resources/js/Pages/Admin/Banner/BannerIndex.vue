@@ -33,7 +33,7 @@ const { filters } = defineProps({
 
 const { filter, handleClearFilter } = useFilters('admin.banners.index', {
     title: filters?.title ?? '',
-    active_status: filters?.active_status ?? '',
+    status: filters?.status ?? '',
 });
 console.log(filter);
 </script>
@@ -62,7 +62,7 @@ console.log(filter);
             <FieldCol>
                 <SelectInput
                     label="Status"
-                    v-model="filter.active_status"
+                    v-model="filter.status"
                     :options="{ active: 'Active', inactive: 'Inactive' }"
                     placeholder="Filter by Active Status"
                 />
@@ -84,7 +84,7 @@ console.log(filter);
                 <div class="">
                     <strong
                         >{{ banner.title }}
-                        <Badge>{{ banner.active_status }}</Badge></strong
+                        <Badge>{{ banner.status }}</Badge></strong
                     >
                     <p>{{ banner.description }}</p>
                     <div class="flex gap-2">

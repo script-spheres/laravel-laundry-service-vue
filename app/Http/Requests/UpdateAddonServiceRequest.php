@@ -26,7 +26,7 @@ class UpdateAddonServiceRequest extends FormRequest
             'name' => ['required'],
             'description' => ['nullable'],
             'price' => ['required'],
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

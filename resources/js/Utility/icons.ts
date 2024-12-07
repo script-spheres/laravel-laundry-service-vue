@@ -1,14 +1,18 @@
-import { IcBox, IcDashboardDots, McRoundLine } from '@kalimahapps/vue-icons';
-import { BySettings } from '@kalimahapps/vue-icons';
-import { BxSolidReport } from '@kalimahapps/vue-icons';
-import { PhUsersFour } from '@kalimahapps/vue-icons';
-import { CaCloudServices } from '@kalimahapps/vue-icons';
-import { IcPackages } from '@kalimahapps/vue-icons';
-import { AnFilledDatabase } from '@kalimahapps/vue-icons';
-import { MdInventory } from '@kalimahapps/vue-icons';
-import { MdLoyalty } from '@kalimahapps/vue-icons';
-import { GlWork } from '@kalimahapps/vue-icons';
-import { CaFinance } from '@kalimahapps/vue-icons';
+import {
+    AnFilledDatabase,
+    BxSolidReport,
+    BySettings,
+    CaCloudServices,
+    CaFinance,
+    GlWork,
+    IcBox,
+    IcDashboardDots,
+    IcPackages,
+    McRoundLine,
+    MdInventory,
+    MdLoyalty,
+    PhUsersFour,
+} from '@kalimahapps/vue-icons';
 const getIcon = (icon: string) => {
     switch (icon) {
         case 'IcDashboardDots':

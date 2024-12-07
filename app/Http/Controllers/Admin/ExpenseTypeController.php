@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreExpenseRequest;
-use App\Http\Requests\UpdateExpenseRequest;
-use App\Http\Resources\ExpenseResource;
-use App\Models\Expense;
-use App\Models\Store;
-use App\Services\ExpenseService;
+use App\Http\Requests\StoreExpenseTypeRequest;
+use App\Http\Requests\UpdateExpenseTypeRequest;
+use App\Http\Resources\ExpenseTypeResource;
+use App\Models\ExpenseType;
+use App\Services\ExpenseTypeService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,12 +16,12 @@ class ExpenseTypeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, ExpenseService $expenseService)
+    public function index(Request $request, ExpenseTypeService $expenseTypeService)
     {
-        $expenses = $expenseService->getExpenses();
+        $expenseTypes = $expenseTypeService->getExpenseTypes();
 
-        return Inertia::render('Admin/Expense/ExpenseIndex', [
-            'expenses' => ExpenseResource::collection($expenses),
+        return Inertia::render('Admin/ExpenseType/ExpenseTypeIndex', [
+            'expenseTypes' => ExpenseTypeResource::collection($expenseTypes),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -30,11 +29,11 @@ class ExpenseTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreExpenseRequest $request, ExpenseService $expenseService)
+    public function store(StoreExpenseTypeRequest $request, ExpenseTypeService $expenseTypeService)
     {
-        $expenseService->create($request);
+        $expenseTypeService->create($request);
 
-        return redirect()->route('admin.expenses.index')->with(['message' => 'Created successfully']);
+        return redirect()->route('admin.expense-types.index')->with(['message' => 'Created successfully']);
     }
 
     /**
@@ -42,49 +41,46 @@ class ExpenseTypeController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Expense/ExpenseForm', [
-            'storesOptions' => Store::pluck('name', 'id'),
-        ]);
+        return Inertia::render('Admin/ExpenseType/ExpenseTypeForm');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Expense $expense)
+    public function show(ExpenseType $expenseType)
     {
-        return Inertia::render('Admin/Expense/ExpenseForm', [
-            'expense' => ExpenseResource::make($expense)->resolve()
+        return Inertia::render('Admin/ExpenseType/ExpenseTypeForm', [
+            'expenseType' => ExpenseTypeResource::make($expenseType)->resolve()
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Expense $expense)
+    public function edit(ExpenseType $expenseType)
     {
-        return Inertia::render('Admin/Expense/ExpenseForm', [
-            'storesOptions' => Store::pluck('name', 'id'),
-            'expense' => ExpenseResource::make($expense)->resolve()
+        return Inertia::render('Admin/ExpenseType/ExpenseTypeForm', [
+            'expenseType' => ExpenseTypeResource::make($expenseType)->resolve()
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateExpenseRequest $request, Expense $expense, ExpenseService $expenseService)
+    public function update(UpdateExpenseTypeRequest $request, ExpenseType $expenseType, ExpenseTypeService $expenseTypeService)
     {
-        $expenseService->update($expense, $request);
+        $expenseTypeService->update($expenseType, $request);
 
-        return redirect()->route('admin.expenses.index')->with(['message' => 'Updated successfully']);
+        return redirect()->route('admin.expense-types.index')->with(['message' => 'Updated successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Expense $expense, ExpenseService $expenseService)
+    public function destroy(ExpenseType $expenseType, ExpenseTypeService $expenseTypeService)
     {
-        $expenseService->delete($expense);
+        $expenseTypeService->delete($expenseType);
 
-        return redirect()->route('admin.expenses.index')->with(['message' => 'Deleted successfully']);
+        return redirect()->route('admin.expense-types.index')->with(['message' => 'Deleted successfully']);
     }
 }

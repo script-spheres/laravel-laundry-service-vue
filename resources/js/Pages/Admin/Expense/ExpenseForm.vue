@@ -1,18 +1,19 @@
 <script lang="ts" setup>
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import InputError from '@/Components/Form/InputError.vue';
-import TextareaInput from '@/Components/Form/TextareaInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
-import Card from '@/Components/Panel/Card.vue';
-import { useForm } from 'laravel-precognition-vue-inertia';
-
+import DateInput from '@/Components/Form/DateInput.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
+import TextInput from '@/Components/Form/TextInput.vue';
+import TextareaInput from '@/Components/Form/TextareaInput.vue';
+import PageHeader from '@/Components/PageHeader.vue';
+import Card from '@/Components/Panel/Card.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Expense } from '@/types';
+import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
-import NumberInput from "@/Components/Form/NumberInput.vue";
 
 defineOptions({ layout: AdminLayout });
 
@@ -21,8 +22,12 @@ const props = defineProps({
         type: Object as PropType<Expense>,
         required: false,
     },
-    storesOptions: {
-        type: Object as PropType<Options>,
+    expenseTypeOptions: {
+        type: Object as PropType<Object>,
+        required: true,
+    },
+    storeOptions: {
+        type: Object as PropType<Object>,
         required: true,
     },
 });
@@ -35,10 +40,11 @@ const url = expense
     : route('admin.expenses.store');
 
 const form = useForm(method, url, {
-    category: expense?.category || '',
+    expense_type_id: expense?.expense_type_id || null,
+    store_id: expense?.store_id || null,
+    date: expense?.date || '',
     amount: expense?.amount || '',
-    store_id: expense?.store_id || '',
-    receipt: expense?.receipt || '',
+    note: expense?.note || '',
 });
 
 const submitForm = () => {
@@ -50,58 +56,69 @@ const submitForm = () => {
 </script>
 
 <template>
-    <div class="flex items-center justify-between">
-        <div>
-            <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                {{ expense ? 'Edit Expense' : 'Create New Expense' }}
-            </h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Fill in the details for your
-                {{ expense ? 'existing' : 'new' }} expense.
-            </p>
-        </div>
-        <LinkButton :href="route('admin.expenses.index')">Back</LinkButton>
-    </div>
+    <PageHeader>
+        <template #title>
+            {{ expense ? 'Edit ' : 'Create New' }} Expense
+        </template>
+        <template #subtitle>
+            Fill in the details for your
+            {{ expense ? 'existing' : 'new' }} expense.
+        </template>
+        <template #actions>
+            <LinkButton :href="route('admin.expenses.index')">Back</LinkButton>
+        </template>
+    </PageHeader>
 
     <Card class="mx-auto mt-6 p-4">
         <form @submit.prevent="submitForm">
-            <div class="-mx-3 mb-6 flex flex-wrap">
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                    <TextInput label="Category" v-model="form.category" />
-                    <InputError :message="form.errors.category" />
-                </div>
-            </div>
-            <div class="-mx-3 mb-6 flex flex-wrap">
-                <div class="mb-6 w-full px-3 md:mb-0">
-                    <TextareaInput
-                        label="Receipt (optional)"
-                        v-model="form.receipt"
-                        placeholder="Expense Receipt (optional)"
+            <FieldRow>
+                <FieldCol>
+                    <SelectInput
+                        label="Expense Type"
+                        v-model="form.expense_type_id"
+                        :options="expenseTypeOptions"
+                        :error="form.errors.expense_type_id"
                     />
-                    <InputError :message="form.errors.receipt" />
-                </div>
-            </div>
-            <div class="-mx-3 mb-6 flex flex-wrap">
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                    <NumberInput
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
+                    <SelectInput
+                        label="Store (Optional)"
+                        v-model="form.store_id"
+                        :options="storeOptions"
+                        :error="form.errors.store_id"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
+                    <DateInput
+                        label="Date"
+                        v-model="form.date"
+                        :error="form.errors.date"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <TextInput
                         label="Amount"
                         v-model="form.amount"
                         type="number"
                         step="0.01"
-                        placeholder="Expense Amount"
+                        :error="form.errors.amount"
                     />
-                    <InputError :message="form.errors.amount" />
-                </div>
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                    <SelectInput
-                        v-model="form.store_id"
-                        :options="storesOptions"
-                        label="Select Store"
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
+                    <TextareaInput
+                        label="Note (Optional)"
+                        v-model="form.note"
+                        :error="form.errors.note"
                     />
-                    <InputError :message="form.errors.store_id" />
-                </div>
-            </div>
-            <div class="flex flex-wrap gap-3">
+                </FieldCol>
+            </FieldRow>
+            <div class="flex gap-2">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
@@ -109,7 +126,10 @@ const submitForm = () => {
                 >
                     {{ expense ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('admin.expenses.index')" color="red">
+                <LinkButton
+                    :href="route('admin.expenses.index')"
+                    color="danger"
+                >
                     Cancel
                 </LinkButton>
             </div>

@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
+            $table->foreignId('expense_type_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('store_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->date('date');
             $table->decimal('amount', 10, 2);
-            $table->foreignId('store_id')->constrained('stores')->cascadeOnDelete();
-            $table->string('receipt')->nullable();
+            $table->longText('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

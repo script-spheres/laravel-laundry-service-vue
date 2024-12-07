@@ -34,7 +34,7 @@ class UpdateStoreRequest extends FormRequest
             'manager_phone_number' => 'nullable|string',
             'additional_info' => 'nullable|string',
             'store_code' => 'nullable|string',
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

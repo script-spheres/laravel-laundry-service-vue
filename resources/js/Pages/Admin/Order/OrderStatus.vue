@@ -8,7 +8,7 @@ import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { paymentStatusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Filters, Order } from '@/types';
+import { Order } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { PropType, reactive } from 'vue';
 import draggable from 'vuedraggable';
@@ -49,49 +49,47 @@ const columns = reactive([
         orders: props.readyToDeliverOrders,
         order_status: 'ready-to-deliver',
     },
-    { name: 'Delivered', orders: props.deliveredOrders, order_status: 'delivered' },
+    {
+        name: 'Delivered',
+        orders: props.deliveredOrders,
+        order_status: 'delivered',
+    },
 ]);
 
 // Filters Reactive State
-const { filter, handleClearFilter } = useFilters('admin.orders.index', {
+const { filter, handleClearFilter } = useFilters('admin.orders-status.index', {
     order_date: props.filters?.order_date || '',
     payment_status: props.filters?.payment_status || '',
     order_uuid: props.filters?.order_uuid || '',
 });
 
-// Dragging state
-let drag = false;
+let targetColumn = '';
+let selectedOrder: Order | null = null;
 
-// Handle Drag End Event
-const onDragEnd = (evt: any) => {
-    drag = false;
+// When drag ends, update the status
+const end = (evt: any) => {
+    console.log('Drag ended');
+    targetColumn = evt.to.dataset.column;
 
-    const { item, to } = evt; // Extracting the dragged item and target column
-    const draggedOrder = item; // The order object being dragged
-    const targetColumn = columns.find((column) => column.orders === to); // Identify the target column
-    console.log(draggedOrder);
-    console.log(targetColumn);
-    if (draggedOrder && targetColumn) {
-        // Update order status using Inertia
-        router.put(`/orders/${draggedOrder.id}/update-status`, {
-            status: targetColumn.order_status,
-        });
+    console.log('selectedOrder', selectedOrder);
+    if (selectedOrder) {
+        const dataSet = { ...selectedOrder, order_status: targetColumn };
+        router.put(
+            route('admin.orders-status.update', selectedOrder.id),
+            dataSet,
+            {
+                preserveScroll: true,
+                preserveState: true,
+            },
+        );
     }
 };
-const cloneDog = (evt: any) => {
-    const { item, to } = evt; // Extracting the dragged item and target column
-    const draggedOrder = item; // The order object being dragged
-    const targetColumn = columns.find((column) => column.orders === to); // Identify the target column
-    console.log(evt);
-    if (draggedOrder && targetColumn) {
-        // Update order status using Inertia
-        router.put(`/orders/${draggedOrder.id}/update-status`, {
-            status: targetColumn.order_status,
-        });
-    }
+
+const cloneDog = (order: Order) => {
+    selectedOrder = order;
+    return order;
 };
 </script>
-
 <template>
     <div class="mb-4 flex items-center justify-between">
         <div>
@@ -145,7 +143,7 @@ const cloneDog = (evt: any) => {
         <div
             v-for="(column, columnIndex) in columns"
             :key="columnIndex"
-            class="flex flex-col gap-4 rounded-lg bg-gray-100 p-4 shadow-md"
+            class="flex flex-col gap-4 rounded-lg bg-gray-100 p-4"
         >
             <h2
                 class="mb-4 rounded-lg bg-gray-200 p-2 text-center text-lg font-semibold"
@@ -155,17 +153,17 @@ const cloneDog = (evt: any) => {
 
             <!-- Draggable container for orders -->
             <draggable
-                v-model="column.orders"
-                group="tasks"
-                @start="drag = true"
-                @end="onDragEnd"
+                :list="column.orders"
+                group="orders"
                 :clone="cloneDog"
-                item-key="id"
+                @end="end"
+                item-key="name"
                 class="space-y-4"
+                :data-column="column.order_status"
             >
                 <template #item="{ element }">
                     <div
-                        class="rounded-lg bg-white p-4 shadow-md transition hover:shadow-lg"
+                        class="list-group-item rounded-lg bg-white p-4 shadow-md transition hover:shadow-lg"
                     >
                         <div class="flex flex-col space-y-2">
                             <h3 class="text-md font-bold text-gray-700">
@@ -177,7 +175,7 @@ const cloneDog = (evt: any) => {
                             </p>
                             <p class="text-sm text-gray-500">
                                 <strong>Customer:</strong>
-                                {{ element.customer_name }}
+                                {{ element.customer?.name }}
                             </p>
                         </div>
                     </div>

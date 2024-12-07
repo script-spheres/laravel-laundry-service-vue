@@ -70,14 +70,9 @@ export const menuTypeOptions: Record<string, string> = {
 
 export const orderStatusOptions: Record<string, string> = {
     pending: 'Pending',
-    processing: 'Processing',
-    completed: 'Completed',
-    cancelled: 'Cancelled',
-    refunded: 'Refunded',
-    all: 'All Orders',
+    'in-progress': 'In Progress',
     'ready-to-deliver': 'Ready To Deliver',
     delivered: 'Delivered',
-    returned: 'Returned',
 };
 
 export const orderTypeOptions: Record<string, string> = {

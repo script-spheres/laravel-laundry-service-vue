@@ -42,7 +42,7 @@ class BannerFactory extends Factory
                 'location' => 'banners/' . $filename,
                 'url' => url('storage/banners/' . $filename),
             ],
-            'active_status' => $this->faker->randomElement(['active', 'inactive']),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

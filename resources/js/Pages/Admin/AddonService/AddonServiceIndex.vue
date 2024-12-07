@@ -19,7 +19,7 @@ import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { PaginatedData, AddonService } from '@/types';
+import { AddonService, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
@@ -38,7 +38,7 @@ const props = defineProps({
 
 const { filter, handleClearFilter } = useFilters('admin.addon-services.index', {
     name: props.filters?.name ?? '',
-    active_status: props.filters?.active_status ?? '',
+    status: props.filters?.status ?? '',
     type: props.filters?.type ?? '',
     title: props.filters?.title ?? '',
 });
@@ -68,7 +68,7 @@ const { filter, handleClearFilter } = useFilters('admin.addon-services.index', {
             <FieldCol>
                 <SelectInput
                     label="Status"
-                    v-model="filter.active_status"
+                    v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Filter by Active Status"
                 />
@@ -98,7 +98,10 @@ const { filter, handleClearFilter } = useFilters('admin.addon-services.index', {
                     <StatusToggleInput
                         :data="addonService"
                         :action="
-                            route('admin.addon-services.update', addonService.id)
+                            route(
+                                'admin.addon-services.update',
+                                addonService.id,
+                            )
                         "
                     />
                 </TableCell>
@@ -112,7 +115,10 @@ const { filter, handleClearFilter } = useFilters('admin.addon-services.index', {
                     </LinkButton>
                     <DeleteButton
                         :action="
-                            route('admin.addon-services.destroy', addonService.id)
+                            route(
+                                'admin.addon-services.destroy',
+                                addonService.id,
+                            )
                         "
                     >
                         Delete

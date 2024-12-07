@@ -23,7 +23,7 @@ class BannerService
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('title'),
-                AllowedFilter::exact('active_status'),
+                AllowedFilter::exact('status'),
             ])
             ->allowedSorts(['title', 'created_at'])
             ->latest()

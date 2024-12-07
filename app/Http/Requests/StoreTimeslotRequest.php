@@ -27,7 +27,7 @@ class StoreTimeslotRequest extends FormRequest
             'end_time' => ['required'],
             'day' => ['nullable'],
             'capacity' => ['required', 'integer'],
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

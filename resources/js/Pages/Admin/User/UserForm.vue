@@ -41,7 +41,7 @@ const form = useForm(method, url, {
     email: user.email ?? '',
     image: user.image ?? '',
     mobile: user.mobile ?? '',
-    active_status: user.active_status ?? '',
+    status: user.status ?? '',
 });
 
 const submitForm = () => {
@@ -107,12 +107,12 @@ const submitForm = () => {
                     <InputError :message="form.errors.mobile" />
                 </div>
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-                    <InputLabel for="active_status" value="Status" />
+                    <InputLabel for="status" value="Status" />
                     <SelectInput
-                        v-model="form.active_status"
+                        v-model="form.status"
                         :options="statusOptions"
                     />
-                    <InputError :message="form.errors.active_status" />
+                    <InputError :message="form.errors.status" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap gap-3 px-3 md:mb-0">

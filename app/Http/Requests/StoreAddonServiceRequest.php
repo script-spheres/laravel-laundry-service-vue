@@ -26,7 +26,7 @@ class StoreAddonServiceRequest extends FormRequest
             'name' => ['required'],
             'description' => ['nullable'],
             'price' => ['required'],
-            'active_status' => ['required'],
+            'status' => ['required'],
         ];
     }
 }

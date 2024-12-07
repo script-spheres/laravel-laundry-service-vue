@@ -20,7 +20,7 @@ class ServiceTypeFactory extends Factory
         return [
             'name' => $this->faker->serviceTypeName,
             'description' => $this->faker->sentence,
-            'active_status' => $this->faker->randomElement(['active', 'inactive']),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

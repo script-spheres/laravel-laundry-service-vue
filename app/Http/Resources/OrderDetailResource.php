@@ -24,7 +24,6 @@ class OrderDetailResource extends JsonResource
             'serve_status' => $this->serve_status,
             'kitchen_status' => $this->kitchen_status,
             'order_status' => $this->order_status,
-            'product' => ProductResource::make($this->whenLoaded('product')),
             'order' => OrderResource::make($this->whenLoaded('order')),
         ];
     }

@@ -23,17 +23,17 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => ['required', 'exists:customers'],
-            'store_id' => ['required', 'exists:stores'],
-            'timeslot_id' => ['nullable', 'exists:timeslots'],
-            'coupon_id' => ['nullable', 'exists:coupons'],
-            'status' => ['required'],
-            'total_weight_kg' => ['required', 'numeric'],
-            'total_price' => ['required', 'numeric'],
-            'tax' => ['required', 'numeric'],
-            'discount' => ['required', 'numeric'],
-            'delivery_date' => ['required', 'date'],
-            'quick_note' => ['nullable'],
+            'customer_id' => 'required|exists:App\Models\Customer,id',
+            'store_id' => 'required|exists:App\Models\Store,id',
+            'order_status' => 'required|in:pending,in-progress,ready-to-deliver,delivered',
+            'total_weight_kg' => 'required|numeric|min:0',
+            'sub_total' => 'required|numeric|min:0',
+            'total_amount' => 'required|numeric|min:0',
+            'tax_amount' => 'required|numeric|min:0',
+            'discount_amount' => 'nullable|numeric|min:0',
+            'paid_amount' => 'required|numeric|min:0',
+            'delivery_date' => 'nullable|date|after_or_equal:today',
+            'quick_note' => 'nullable|string|max:255',
         ];
     }
 }

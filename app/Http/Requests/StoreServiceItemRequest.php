@@ -25,7 +25,7 @@ class StoreServiceItemRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
             'service_prices' => 'nullable|array',
             'service_prices.*.service_type_id' => 'required|exists:service_types,id',
             'service_prices.*.price' => 'required|numeric',

@@ -42,7 +42,7 @@ class ServiceItemFactory extends Factory
                 'location' => 'service-items/' . $filename,
                 'url' => url('storage/service-items/' . $filename),
             ],
-            'active_status' => $this->faker->randomElement(['active', 'inactive']),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

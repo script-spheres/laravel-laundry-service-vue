@@ -23,15 +23,17 @@ class OrderFactory extends Factory
     {
         return [
             'order_uuid' => $this->faker->uuid(),
+            'order_display_id' => 'ORD-' . $this->faker->unique()->numerify('#####'),
             'customer_id' => Customer::factory(),
             'store_id' => Store::factory(),
-            'total_weight_kg' => $this->faker->randomFloat(2, 1, 20),
-            'total_price' => $this->faker->randomFloat(2, 10, 200),
-            'tax' => $this->faker->randomFloat(2, 1, 10),
-            'discount' => $this->faker->randomFloat(2, 1, 50),
-            'paid_amount' => $this->faker->randomFloat(2, 1, 50),
-            'delivery_date' => $this->faker->date(),
-            'quick_note' => $this->faker->text,
+            'total_weight_kg' => $this->faker->randomFloat(2, 1, 10),
+            'sub_total' => $this->faker->randomFloat(2, 50, 500),
+            'total_amount' => $this->faker->randomFloat(2, 50, 500),
+            'tax_amount' => $this->faker->randomFloat(2, 5, 50),
+            'discount_amount' => $this->faker->randomFloat(2, 0, 20),
+            'paid_amount' => $this->faker->randomFloat(2, 0, 500),
+            'delivery_date' => now()->addDays(5)->toDateString(),  // Adds 5 days to today's date
+            'quick_note' => $this->faker->sentence(),
             'order_status' => $this->faker->randomElement(['pending', 'in-progress', 'ready-to-deliver', 'delivered']),
         ];
     }

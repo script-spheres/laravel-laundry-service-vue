@@ -7,6 +7,7 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
+import DateInput from '@/Components/Form/DateInput.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 import ToggleInput from '@/Components/Form/ToggleInput.vue';
@@ -17,7 +18,6 @@ import { FinancialYear, PaginatedData } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { PropType, reactive, watch } from 'vue';
 import { toast } from 'vue3-toastify';
-import DateInput from "@/Components/Form/DateInput.vue";
 
 defineOptions({ layout: AdminLayout });
 
@@ -38,18 +38,18 @@ const filter = reactive<Filters>({
     name: props.filters?.name ?? '',
     start_date: props.filters?.start_date ?? '',
     end_date: props.filters?.end_date ?? '',
-    active_status: props.filters?.active_status ?? '',
+    status: props.filters?.status ?? '',
 });
 
 // Watch for filter changes and trigger data refresh
 watch(filter, (newFilters) => {
-    const { name, start_date, end_date, active_status } = newFilters;
+    const { name, start_date, end_date, status } = newFilters;
 
     const filterParams: Record<string, string> = {
         ...(name && { 'filter[name]': name }),
         ...(start_date && { 'filter[start_date]': start_date }),
         ...(end_date && { 'filter[end_date]': end_date }),
-        ...(active_status && { 'filter[active_status]': active_status }),
+        ...(status && { 'filter[status]': status }),
     };
 
     router.get(route('admin.financial-years.index'), filterParams, {
@@ -78,7 +78,7 @@ const handleActiveStatusChange = (
     const newStatus = (event.target as HTMLInputElement).checked
         ? 'active'
         : 'inactive';
-    const data = { ...financialYear, active_status: newStatus };
+    const data = { ...financialYear, status: newStatus };
     router.put(route('admin.financial-years.update', financialYear.id), data, {
         preserveScroll: true,
         onSuccess: (page) => toast.success(page.props.flash?.message),
@@ -152,7 +152,7 @@ const handleActiveStatusChange = (
                     <TableCell class="text-right">
                         <ToggleInput
                             :modelValue="
-                                financialYear.active_status === 'active'
+                                financialYear.status === 'active'
                             "
                             @change="
                                 handleActiveStatusChange(financialYear, $event)

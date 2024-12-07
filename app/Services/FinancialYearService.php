@@ -20,7 +20,7 @@ class FinancialYearService
                 AllowedFilter::exact('name'),
                 AllowedFilter::partial('start_date'),
                 AllowedFilter::partial('end_date'),
-                AllowedFilter::exact('active_status'),
+                AllowedFilter::exact('status'),
             ])
             ->allowedSorts(['title', 'created_at'])
             ->latest()

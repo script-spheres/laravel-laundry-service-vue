@@ -34,7 +34,7 @@ const filter = reactive<Filters>({
     name: props.filters?.name ?? '',
     email: props.filters?.email ?? '',
     role: props.filters?.role ?? '',
-    active_status: props.filters?.active_status ?? '',
+    status: props.filters?.status ?? '',
 });
 
 const deleteData = async (id: number) => {
@@ -53,7 +53,7 @@ const handleActiveStatusChange = async (user: User, event: Event) => {
     const newStatus = (event.target as HTMLInputElement).checked
         ? 'active'
         : 'inactive';
-    const data = { ...user, active_status: newStatus };
+    const data = { ...user, status: newStatus };
     router.put(route('admin.users.update', user.id), data, {
         preserveScroll: true,
         onSuccess: (page) => toast.success(page.props?.flash?.message),
@@ -61,13 +61,13 @@ const handleActiveStatusChange = async (user: User, event: Event) => {
 };
 
 watch(filter, (newFilters) => {
-    const { name, email, role, active_status } = newFilters;
+    const { name, email, role, status } = newFilters;
 
     const filterParams: Record<string, string> = {
         ...(name && { 'filter[name]': name }),
         ...(email && { 'filter[email]': email }),
         ...(role && { 'filter[role]': role }),
-        ...(active_status && { 'filter[active_status]': active_status }),
+        ...(status && { 'filter[status]': status }),
     };
 
     router.get(route('admin.users.index'), filterParams, {
@@ -115,9 +115,9 @@ watch(filter, (newFilters) => {
                 />
             </div>
             <div class="mb-6 w-full md:w-1/2">
-                <InputLabel for="active_status" value="Status" />
+                <InputLabel for="status" value="Status" />
                 <SelectInput
-                    v-model="filter.active_status"
+                    v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Select status"
                 />
@@ -146,7 +146,7 @@ watch(filter, (newFilters) => {
                     <TableCell>{{ user.role }}</TableCell>
                     <TableCell>
                         <ToggleInput
-                            :modelValue="user.active_status === 'active'"
+                            :modelValue="user.status === 'active'"
                             @change="handleActiveStatusChange(user, $event)"
                         />
                     </TableCell>

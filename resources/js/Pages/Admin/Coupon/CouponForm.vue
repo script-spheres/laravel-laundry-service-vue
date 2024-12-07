@@ -41,12 +41,14 @@ const form = useForm(method, url, {
     discount_percentage: coupon?.discount_percentage || '',
     min_amount: coupon?.min_amount || '',
     max_amount: coupon?.max_amount || '',
-    active_status: coupon?.active_status || '',
+    status: coupon?.status || '',
 });
 
 // Watch for changes in discount type and handle the dynamic fields
 const isDiscountAmountVisible = computed(() => form.discount_type === 'flat');
-const isDiscountPercentageVisible = computed(() => form.discount_type === 'percentage');
+const isDiscountPercentageVisible = computed(
+    () => form.discount_type === 'percentage',
+);
 
 const submitForm = () => {
     form.submit({
@@ -147,9 +149,9 @@ const submitForm = () => {
                 <FieldCol>
                     <SelectInput
                         label="Active Status"
-                        v-model="form.active_status"
+                        v-model="form.status"
                         :options="statusOptions"
-                        :error="form.errors.active_status"
+                        :error="form.errors.status"
                     />
                 </FieldCol>
             </FieldRow>

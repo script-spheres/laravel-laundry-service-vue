@@ -15,6 +15,7 @@ class ExpenseService
     public function getExpenses()
     {
         return QueryBuilder::for(Expense::class)
+            ->with(['expenseType','store'])
             ->allowedFilters(['id', 'amount', 'description'])
             ->allowedSorts(['amount', 'created_at'])
             ->paginate()
@@ -27,6 +28,7 @@ class ExpenseService
     public function create(StoreExpenseRequest $request): Expense
     {
         $attributes = $request->validated();
+
         return Expense::create($attributes);
     }
 
@@ -37,6 +39,7 @@ class ExpenseService
     {
         $attributes = $request->validated();
         $expense->update($attributes);
+
         return $expense;
     }
 

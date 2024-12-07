@@ -30,7 +30,7 @@ class StoreFactory extends Factory
             'manager_phone_number' => $this->faker->unique()->phoneNumber,
             'additional_info' => $this->faker->optional()->sentence,
             'store_code' => $this->faker->unique()->bothify('??-####'),
-            'active_status' => $this->faker->randomElement(['active', 'inactive']),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

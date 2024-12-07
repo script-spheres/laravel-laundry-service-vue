@@ -6,6 +6,7 @@ use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
@@ -14,23 +15,34 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'order_uuid',
+        'order_display_id',
         'customer_id',
         'store_id',
-        'timeslot_id',
-        'coupon_id',
-        'order_status',
         'total_weight_kg',
-        'total_price',
-        'tax',
-        'discount',
+        'sub_total',
+        'total_amount',
+        'tax_amount',
+        'discount_amount',
+        'paid_amount',
         'delivery_date',
         'quick_note',
-        'paid_amount',
+        'order_status',
     ];
 
     protected $casts = [
         'delivery_date' => 'date',
     ];
+
+    public function orderDetails(): HasMany
+    {
+        return $this->hasMany(OrderDetails::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 
     public function customer(): BelongsTo
     {

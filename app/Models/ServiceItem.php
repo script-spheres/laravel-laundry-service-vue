@@ -21,7 +21,7 @@ class ServiceItem extends Model
         'description',
         'image',
         'price',
-        'active_status',
+        'status',
     ];
 
     protected function casts(): array

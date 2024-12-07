@@ -21,6 +21,6 @@ class Coupon extends Model
         'discount_percentage',
         'min_amount',
         'max_amount',
-        'active_status',
+        'status',
     ];
 }

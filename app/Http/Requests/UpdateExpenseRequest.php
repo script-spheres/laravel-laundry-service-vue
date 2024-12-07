@@ -23,10 +23,11 @@ class UpdateExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category' => ['required'],
-            'amount' => ['required', 'numeric'],
-            'store_id' => ['required', 'exists:stores'],
-            'receipt' => ['nullable'],
+            'expense_type_id' => 'required|exists:App\Models\ExpenseType,id',
+            'store_id' => 'nullable|exists:App\Models\Store,id',
+            'date' => 'required|date',
+            'amount' => 'required|numeric|min:0.01',
+            'note' => 'nullable|string',
         ];
     }
 }

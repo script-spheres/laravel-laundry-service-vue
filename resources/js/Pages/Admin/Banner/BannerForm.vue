@@ -35,7 +35,7 @@ const form = useForm(method, url, {
     description: banner?.description || '',
     image: banner?.image || {},
     new_image: null as string | null,
-    active_status: banner?.active_status || '',
+    status: banner?.status || '',
 });
 
 const handleFileProcess = (error: any, file: any) => {
@@ -89,9 +89,9 @@ const submitForm = () => {
                 <FieldCol>
                     <SelectInput
                         label="Active Status"
-                        v-model="form.active_status"
+                        v-model="form.status"
                         :options="statusOptions"
-                        :error="form.errors.active_status"
+                        :error="form.errors.status"
                     />
                 </FieldCol>
             </FieldRow>
@@ -116,7 +116,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
             </FieldRow>
-            <FieldRow class="gap-2">
+            <div class="flex gap-2">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
@@ -124,10 +124,10 @@ const submitForm = () => {
                 >
                     {{ banner ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('admin.banners.index')">
+                <LinkButton :href="route('admin.banners.index')" color="danger">
                     Cancel
                 </LinkButton>
-            </FieldRow>
+            </div>
         </form>
     </Card>
 </template>

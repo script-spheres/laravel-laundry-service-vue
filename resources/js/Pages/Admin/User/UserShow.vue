@@ -10,7 +10,7 @@ const form = useForm({
     title: banner.title ?? '',
     description: banner.description ?? '',
     image: banner.image ?? '',
-    active_status: banner.active_status ?? '',
+    status: banner.status ?? '',
 });
 
 const update = () => form.post(route('admin.Banner.update', banner.id));
@@ -42,7 +42,7 @@ const update = () => form.post(route('admin.Banner.update', banner.id));
                 <div class="flex items-center gap-x-3">
                     <Link
                         :to="{ name: 'admin.Banner.index' }"
-                        class="flex w-1/2 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-blue-500 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 hover:bg-blue-600 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-500"
+                        class="flex w-1/2 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-blue-500 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 sm:w-auto"
                     >
                         <span>Back</span>
                     </Link>
@@ -52,7 +52,7 @@ const update = () => form.post(route('admin.Banner.update', banner.id));
         <div class="pb-20 pt-6">
             <div class="mx-auto px-4">
                 <div
-                    class="w-full overflow-hidden bg-white p-4 shadow-sm sm:rounded-lg dark:bg-gray-800"
+                    class="w-full overflow-hidden bg-white p-4 shadow-sm dark:bg-gray-800 sm:rounded-lg"
                 >
                     <form class="w-full" @submit.prevent="update">
                         <div class="-mx-3 mb-6 flex flex-wrap">
@@ -84,11 +84,11 @@ const update = () => form.post(route('admin.Banner.update', banner.id));
                         <div class="-mx-3 mb-2 flex flex-wrap">
                             <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
                                 <Select
-                                    v-model="form.active_status"
+                                    v-model="form.status"
                                     :label="'Status'"
                                 />
                                 <InputError
-                                    :message="form.errors.active_status"
+                                    :message="form.errors.status"
                                 />
                             </div>
                         </div>

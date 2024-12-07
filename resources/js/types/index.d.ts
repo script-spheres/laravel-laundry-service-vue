@@ -52,6 +52,13 @@ export type User = {
     email_verified_at?: string;
 };
 
+export type ExpenseType = {
+    id: number;
+    name: string;
+    description: string;
+    status: Status;
+};
+
 export type Coupon = {
     id: number;
     title: string;
@@ -66,7 +73,7 @@ export type Coupon = {
     discount_percentage: number;
     usage_limit: number;
     used_count: number;
-    active_status: ActiveStatus;
+    status: Status;
 };
 
 export interface FinancialYear {
@@ -75,7 +82,7 @@ export interface FinancialYear {
     start_date: string;
     end_date: string;
     description?: string;
-    active_status: ActiveStatus;
+    status: Status;
 }
 
 export type Banner = {
@@ -83,7 +90,7 @@ export type Banner = {
     title: string;
     description: string;
     image: Image;
-    active_status: ActiveStatus;
+    status: Status;
 };
 
 export interface Store {
@@ -100,7 +107,7 @@ export interface Store {
     manager_phone_number?: string;
     additional_info?: string;
     store_code?: string;
-    active_status: ActiveStatus;
+    status: Status;
     created_at?: string;
     updated_at?: string;
 }
@@ -118,16 +125,18 @@ export interface ServiceType {
     id: number;
     name: string;
     description: string;
-    active_status: ActiveStatus;
+    status: Status;
 }
+
 export interface ServiceItem {
     id: number;
     name: string;
     description: string | null;
     image: Image;
     service_prices: ServicePrice[];
-    active_status: ActiveStatus;
+    status: Status;
 }
+
 export interface ServicePrice {
     id: number;
     service_type_id: number;
@@ -135,29 +144,63 @@ export interface ServicePrice {
     service_item?: ServiceItem;
     price: number;
 }
+
 export interface AddonService {
     id: number;
     name: string;
     description: string | null;
     price: number;
-    active_status: ActiveStatus;
+    status: Status;
 }
+
 export interface Timeslot {
     id: number;
     start_time: string;
     end_time: string;
     day: string | null;
     capacity: number;
-    active_status: ActiveStatus;
+    status: Status;
+}
+
+export interface Order {
+    id: number;
+    order_uuid: string;
+    sub_total: number;
+    tax_amount: number;
+    total_amount: number;
+    discount_amount: number;
+    paid_amount: number;
+    order_status: string;
+    delivery_date: string;
+    payment_status: string;
+    created_at: string;
+    payments: Payment[];
+    store: Store;
+    customer: Customer;
+    order_details: OrderDetail[];
+}
+
+export interface OrderDetail {
+    id: number;
+    product_id: number;
+    quantity: number;
+    price: number;
+}
+
+export interface Payment {
+    id: number;
+    amount: number;
+    status: string;
 }
 
 export interface Expense {
     id: number;
-    category: string;
+    expense_type: ExpenseType;
     amount: number;
-    store_id: number;
+    store: Store;
     store_name: string;
-    receipt: string | null;
+    date: string;
+    note: string;
 }
 
 export interface CartItem {
@@ -176,6 +219,8 @@ export interface CartAddonItem {
     quantity: number;
     total: number;
 }
+
+export type Status = 'active' | 'inactive';
 
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,

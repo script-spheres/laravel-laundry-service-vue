@@ -63,7 +63,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         return Inertia::render('Admin/Order/OrderShow', [
-            'order' => OrderResource::make($order)->resolve(),
+            'order' => OrderResource::make($order->load(['orderDetails','customer','payments'])),
             'serviceTypes' => ServiceType::get(),
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),

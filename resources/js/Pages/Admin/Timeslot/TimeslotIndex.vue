@@ -35,54 +35,12 @@ const props = defineProps({
 
 // Initialize reactive filters with default values or passed props
 const filter = reactive<Filters>({
-    active_status: props.filters?.active_status ?? '',
+    status: props.filters?.status ?? '',
     day: props.filters?.day ?? '',
     start_time: props.filters?.start_time ?? '',
     end_time: props.filters?.end_time ?? '',
 });
 
-// Watch for filter changes and trigger data refresh
-watch(filter, (newFilters) => {
-    const { active_status, day, start_time, end_time } = newFilters;
-
-    const filterParams: Record<string, string> = {
-        ...(active_status && { 'filter[active_status]': active_status }),
-        ...(day && { 'filter[day]': day }),
-        ...(start_time && { 'filter[start_time]': start_time }),
-        ...(end_time && { 'filter[end_time]': end_time }),
-    };
-
-    router.get(route('admin.timeslots.index'), filterParams, {
-        preserveScroll: true,
-    });
-});
-
-// Delete a timeslot
-const deleteData = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this timeslot?'))
-        return;
-
-    router.delete(route('admin.timeslots.destroy', id), {
-        preserveScroll: true,
-        onSuccess: () => toast.success(props?.flash?.message),
-    });
-};
-
-// Clear all filters
-const handleClearFilter = () => {
-    Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
-};
-
-// Toggle timeslot active status
-const handleActiveStatusChange = (timeslot: Timeslot, event: Event) => {
-    const newStatus = (event.target as HTMLInputElement).checked
-        ? 'active'
-        : 'inactive';
-    const data = { ...timeslot, active_status: newStatus };
-    router.put(route('admin.timeslots.update', timeslot.id), data, {
-        onSuccess: () => toast.success('Timeslot status updated successfully.'),
-    });
-};
 </script>
 
 <template>
@@ -114,9 +72,9 @@ const handleActiveStatusChange = (timeslot: Timeslot, event: Event) => {
                 />
             </div>
             <div class="w-full md:mb-0 md:w-1/4">
-                <InputLabel for="active_status" value="Status" />
+                <InputLabel for="status" value="Status" />
                 <SelectInput
-                    v-model="filter.active_status"
+                    v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Filter by Active Status"
                 />
@@ -147,7 +105,7 @@ const handleActiveStatusChange = (timeslot: Timeslot, event: Event) => {
                     <TableCell>{{ timeslot.capacity }}</TableCell>
                     <TableCell class="text-right">
                         <ToggleInput
-                            :modelValue="timeslot.active_status === 'active'"
+                            :modelValue="timeslot.status === 'active'"
                             @change="handleActiveStatusChange(timeslot, $event)"
                         />
                     </TableCell>

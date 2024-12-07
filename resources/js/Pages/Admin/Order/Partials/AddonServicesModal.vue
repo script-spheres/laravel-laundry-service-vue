@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DangerButton from '@/Components/Buttons/DangerButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
 import TableBody from '@/Components/DataTable/TableBody.vue';
@@ -64,11 +63,11 @@ const toggleCartItem = (item: AddonService) => {
                         <TableCell>{{ addonService.price }}</TableCell>
                         <TableCell class="flex justify-end gap-2">
                             <template v-if="isInCart(addonService.id)">
-                                <DangerButton
+                                <PrimaryButton
                                     @click="toggleCartItem(addonService)"
                                 >
                                     Del
-                                </DangerButton>
+                                </PrimaryButton>
                             </template>
                             <template v-else>
                                 <PrimaryButton

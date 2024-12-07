@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->uuid('order_uuid');
+            $table->string('order_display_id')->nullable();
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->foreignId('store_id')->constrained('stores')->cascadeOnDelete();
             $table->decimal('total_weight_kg', 5, 2)->default(0);
             $table->decimal('sub_total', 5, 2)->default(0);
-            $table->decimal('total_price', 5, 2)->default(0);
-            $table->decimal('tax', 5, 2)->default(0);
-            $table->decimal('discount', 5, 2)->default(0);
+            $table->decimal('total_amount', 5, 2)->default(0);
+            $table->decimal('tax_amount', 5, 2)->default(0);
+            $table->decimal('discount_amount', 5, 2)->default(0);
             $table->decimal('paid_amount', 5, 2)->default(0);
             $table->date('delivery_date');
             $table->text('quick_note')->nullable();

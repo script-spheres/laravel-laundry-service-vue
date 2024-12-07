@@ -14,7 +14,6 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
     }
 };
 console.log(toRaw(posStore.totalItems));
-
 </script>
 
 <template>

@@ -43,7 +43,7 @@ const form = useForm(method, url, {
     manager_phone_number: store?.manager_phone_number || '',
     additional_info: store?.additional_info || '',
     store_code: store?.store_code || '',
-    active_status: store?.active_status || 'active',
+    status: store?.status || 'active',
 });
 
 const submitForm = () => {
@@ -157,10 +157,10 @@ const submitForm = () => {
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <SelectInput
                             label="Status"
-                            v-model="form.active_status"
+                            v-model="form.status"
                             :options="statusOptions"
                         />
-                        <InputError :message="form.errors.active_status" />
+                        <InputError :message="form.errors.status" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">

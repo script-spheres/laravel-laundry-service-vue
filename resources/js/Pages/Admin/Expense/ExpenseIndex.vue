@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
@@ -7,19 +8,20 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import InputLabel from '@/Components/Form/InputLabel.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import { useFilters } from '@/Composables/useFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Expense, PaginatedData } from '@/types';
-import { router } from '@inertiajs/vue3';
-import { PropType, reactive, watch } from 'vue';
-import { toast } from 'vue3-toastify';
+import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
 
-const props = defineProps({
+const { filters } = defineProps({
     expenses: {
         type: Object as PropType<PaginatedData<Expense>>,
         required: true,
@@ -31,125 +33,89 @@ const props = defineProps({
     },
 });
 
-// Initialize reactive filters with default values or passed props
-const filter = reactive<Filters>({
-    category: props.filters?.category ?? '',
-    store_id: props.filters?.store_id ?? '',
-    amount: props.filters?.amount ?? '',
+const { filter, handleClearFilter } = useFilters('admin.expenses.index', {
+    category: filters?.category ?? '',
+    store_id: filters?.store_id ?? '',
+    amount: filters?.amount ?? '',
 });
-
-// Watch for filter changes and trigger data refresh
-watch(filter, (newFilters) => {
-    const { category, store_id, amount } = newFilters;
-
-    const filterParams: Record<string, string> = {
-        ...(category && { 'filter[category]': category }),
-        ...(store_id && { 'filter[store_id]': store_id }),
-        ...(amount && { 'filter[amount]': amount }),
-    };
-
-    router.get(route('admin.expenses.index'), filterParams, {
-        preserveScroll: true,
-    });
-});
-
-// Delete an expense
-const deleteData = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this expense?'))
-        return;
-
-    router.delete(route('admin.expenses.destroy', id), {
-        preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props.flash?.message),
-    });
-};
-
-// Clear all filters
-const handleClearFilter = () => {
-    Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
-};
 </script>
 
 <template>
-    <div class="mb-4 flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-x-3">
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    Expense Management
-                </h2>
-            </div>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Manage your expenses with filters and actions.
-            </p>
-        </div>
-        <div class="flex items-center gap-x-3">
+    <PageHeader>
+        <template #title> Expense Management </template>
+        <template #subtitle>
+            Manage your expenses with filters and actions.
+        </template>
+        <template #actions>
             <LinkButton :href="route('admin.expenses.create')">
                 Add Expense
             </LinkButton>
-        </div>
-    </div>
+        </template>
+    </PageHeader>
+
     <Card class="mb-6 p-6">
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
-            <div class="w-full md:mb-0 md:w-1/4">
-                <InputLabel for="category" value="Category" />
+        <FieldRow class="flex md:grid-cols-4">
+            <FieldCol>
                 <SelectInput
+                    label="Category"
                     v-model="filter.category"
                     :options="categoryOptions"
                     placeholder="Filter by Category"
                 />
-            </div>
-            <div class="w-full md:mb-0 md:w-1/4">
-                <InputLabel for="store_id" value="Store" />
+            </FieldCol>
+            <FieldCol>
                 <SelectInput
+                    label="Store"
                     v-model="filter.store_id"
                     :options="storeOptions"
                     placeholder="Filter by Store"
                 />
-            </div>
-            <div class="w-full md:mb-0 md:w-1/4">
-                <InputLabel for="amount" value="Amount" />
+            </FieldCol>
+            <FieldCol>
                 <SelectInput
+                    label="Amount"
                     v-model="filter.amount"
                     :options="amountOptions"
                     placeholder="Filter by Amount"
                 />
-            </div>
-            <div class="flex-none gap-2 self-end">
+            </FieldCol>
+            <FieldCol class="flex-none gap-2 self-end">
                 <PrimaryButton color="gray" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
-            </div>
-        </div>
+            </FieldCol>
+        </FieldRow>
     </Card>
 
-    <div class="mx-auto mt-6">
-        <DataTable>
-            <TableHead>
-                <TableHeadCell>Category</TableHeadCell>
-                <TableHeadCell>Amount</TableHeadCell>
-                <TableHeadCell>Store</TableHeadCell>
-                <TableHeadCell>Receipt</TableHeadCell>
-                <TableHeadCell class="text-right">Actions</TableHeadCell>
-            </TableHead>
-            <TableBody>
-                <TableRow v-for="expense in expenses.data" :key="expense.id">
-                    <TableCell>{{ expense.category }}</TableCell>
-                    <TableCell>{{ expense.amount }}</TableCell>
-                    <TableCell>{{ expense.store_name }}</TableCell>
-                    <TableCell>{{ expense.receipt || 'No Receipt' }}</TableCell>
-                    <TableCell class="flex justify-end gap-2">
-                        <LinkButton
-                            :href="route('admin.expenses.edit', expense.id)"
-                        >
-                            Edit
-                        </LinkButton>
-                        <PrimaryButton @click="deleteData(expense.id)">
-                            Delete
-                        </PrimaryButton>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </DataTable>
-        <Pagination :links="expenses.meta" />
-    </div>
+    <DataTable>
+        <TableHead>
+            <TableHeadCell>Date</TableHeadCell>
+            <TableHeadCell>Amount</TableHeadCell>
+            <TableHeadCell>Store</TableHeadCell>
+            <TableHeadCell>Expense Type</TableHeadCell>
+            <TableHeadCell class="text-right">Actions</TableHeadCell>
+        </TableHead>
+        <TableBody>
+            <TableRow v-for="expense in expenses.data" :key="expense.id">
+                <TableCell>{{ expense.date }}</TableCell>
+                <TableCell>{{ expense.amount }}</TableCell>
+                <TableCell>{{ expense.store?.name }}</TableCell>
+                <TableCell>{{ expense.expense_type?.name }}</TableCell>
+                <TableCell class="flex justify-end gap-2">
+                    <LinkButton
+                        :href="route('admin.expenses.edit', expense.id)"
+                    >
+                        Edit
+                    </LinkButton>
+                    <DeleteButton
+                        :action="route('admin.expenses.destroy', expense.id)"
+                    >
+                        Delete
+                    </DeleteButton>
+                </TableCell>
+            </TableRow>
+        </TableBody>
+    </DataTable>
+
+    <Pagination :links="expenses.meta" />
 </template>

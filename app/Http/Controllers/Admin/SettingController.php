@@ -9,6 +9,7 @@ use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
 use App\Models\Store;
 use App\Services\ExpenseService;
+use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,13 +18,10 @@ class SettingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, ExpenseService $expenseService)
+    public function index(GeneralSettings $settings)
     {
-        $expenses = $expenseService->getExpenses();
-
-        return Inertia::render('Admin/Expense/ExpenseIndex', [
-            'expenses' => ExpenseResource::collection($expenses),
-            'filters' => $request->get('filter'),
+        return Inertia::render('Admin/Settings/GeneralSetting', [
+            'settings' => $settings,
         ]);
     }
 

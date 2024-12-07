@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+import EmailInput from '@/Components/Form/EmailInput.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import EmailInput from '@/Components/Form/EmailInput.vue';
 import PhoneInput from '@/Components/Form/PhoneInput.vue';
 import TextareaInput from '@/Components/Form/TextareaInput.vue';
 import TextInput from '@/Components/Form/TextInput.vue';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DangerButton from '@/Components/Buttons/DangerButton.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import NumberInput from '@/Components/Form/NumberInput.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
@@ -47,13 +47,13 @@ const removeNutritionalInfo = (index: number) => {
                     type="text"
                     :placeholder="'Enter price ' + (index + 1)"
                 />
-                <DangerButton
+                <PrimaryButton
                     v-if="model.length > 1"
                     @click.prevent="removeNutritionalInfo(index)"
                     type="button"
                 >
                     Remove
-                </DangerButton>
+                </PrimaryButton>
             </div>
             <PrimaryButton @click.prevent="addNutritionalInfo" type="button">
                 Add Nutrient

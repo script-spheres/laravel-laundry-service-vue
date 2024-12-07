@@ -27,7 +27,7 @@ class UpdateServiceItemRequest extends FormRequest
             'description' => ['nullable'],
             'image' => ['nullable'],
             'service_prices' => ['nullable'],
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

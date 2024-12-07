@@ -12,11 +12,10 @@ import TextInput from '@/Components/Form/TextInput.vue';
 import ToggleInput from '@/Components/Form/ToggleInput.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import { useFilters } from '@/Composables/useFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { DeliveryScale, FlashMessage, PaginatedData } from '@/types';
-import { router } from '@inertiajs/vue3';
-import { PropType, reactive, watch } from 'vue';
-import { toast } from 'vue3-toastify';
+import { DeliveryScale, PaginatedData } from '@/types';
+import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -30,72 +29,20 @@ const props = defineProps({
         required: false,
         default: () => ({}),
     },
-    flash: {
-        type: Object as PropType<FlashMessage>,
-        required: false,
-    },
 });
 
 // Initialize reactive filters with default values or passed props
-const filter = reactive<Filters>({
-    radius: filters?.radius ?? '',
-    end_date: filters?.end_date ?? '',
-    min_amount: filters?.min_amount ?? '',
-    max_amount: filters?.max_amount ?? '',
-    type: filters?.type ?? '',
-    title: filters?.title ?? '',
-});
-
-// Watch for filter changes and trigger data refresh
-watch(filter, (newFilters) => {
-    const { radius, end_date, min_amount, max_amount, type, title } =
-        newFilters;
-
-    const filterParams: Record<string, string> = {
-        ...(radius && { 'filter[radius]': radius }),
-        ...(end_date && { 'filter[end_date]': end_date }),
-        ...(min_amount && { 'filter[min_amount]': min_amount }),
-        ...(max_amount && { 'filter[max_amount]': max_amount }),
-        ...(type && { 'filter[discount_type]': type }),
-        ...(title && { 'filter[title]': title }),
-    };
-
-    router.get(route('admin.deliveryScales.index'), filterParams, {
-        preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props.flash?.message),
-    });
-});
-
-// Delete a delivery scale
-const deleteData = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this delivery scale?'))
-        return;
-
-    router.delete(route('admin.deliveryScales.destroy', id), {
-        preserveScroll: true,
-        onSuccess: () => toast.success(props?.flash?.message),
-    });
-};
-
-// Clear all filters
-const handleClearFilter = () => {
-    Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
-};
-
-// Toggle delivery scale active status
-const handleActiveStatusChange = (
-    deliveryScale: DeliveryScale,
-    event: Event,
-) => {
-    const newStatus = (event.target as HTMLInputElement).checked
-        ? 'active'
-        : 'inactive';
-    const data = { ...deliveryScale, active_status: newStatus };
-    router.put(route('admin.deliveryScales.update', deliveryScale.id), data, {
-        preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props.flash?.message),
-    });
-};
+const { filter, handleClearFilter } = useFilters(
+    'admin.delivery-scales.index',
+    {
+        radius: props.filters?.radius ?? '',
+        end_date: props.filters?.end_date ?? '',
+        min_amount: props.filters?.min_amount ?? '',
+        max_amount: props.filters?.max_amount ?? '',
+        type: props.filters?.type ?? '',
+        title: props.filters?.title ?? '',
+    },
+);
 </script>
 
 <template>
@@ -178,9 +125,7 @@ const handleActiveStatusChange = (
                     <TableCell>{{ deliveryScale.discount_type }}</TableCell>
                     <TableCell class="text-right">
                         <ToggleInput
-                            :modelValue="
-                                deliveryScale.active_status === 'active'
-                            "
+                            :modelValue="deliveryScale.status === 'active'"
                             @change="
                                 handleActiveStatusChange(deliveryScale, $event)
                             "

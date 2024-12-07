@@ -18,7 +18,7 @@ class ServiceTypeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'active_status' => $this->active_status,
+            'status' => $this->status,
         ];
     }
 }

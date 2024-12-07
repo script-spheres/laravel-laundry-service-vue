@@ -19,7 +19,7 @@ class PaymentResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'image' => $this->image,
-            'active_status' => $this->active_status,
+            'status' => $this->status,
         ];
     }
 }

@@ -16,7 +16,7 @@ const form = useForm('post', route('admin.service-items.store'), {
     name: '',
     mobile: '',
     email: '',
-    active_status: '',
+    status: '',
 });
 
 const submitForm = () => {

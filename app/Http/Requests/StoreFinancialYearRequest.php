@@ -27,7 +27,7 @@ class StoreFinancialYearRequest extends FormRequest
             'description' => 'nullable',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

@@ -27,7 +27,7 @@ class StoreResource extends JsonResource
             'manager_phone_number' => $this->manager_phone_number,
             'additional_info' => $this->additional_info,
             'store_code' => $this->store_code,
-            'active_status' => $this->active_status,
+            'status' => $this->status,
         ];
     }
 }

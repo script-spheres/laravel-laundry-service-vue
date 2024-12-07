@@ -25,7 +25,7 @@ class StoreServiceTypeRequest extends FormRequest
         return [
             'name' => ['required'],
             'description' => ['nullable'],
-            'active_status' => ['required'],
+            'status' => ['required'],
         ];
     }
 }

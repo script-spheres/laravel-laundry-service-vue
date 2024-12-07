@@ -35,7 +35,7 @@ class UpdateCouponRequest extends FormRequest
             'valid_to' => ['required', 'date'],
             'usage_limit' => ['nullable', 'integer'],
             'used_count' => ['required', 'integer'],
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

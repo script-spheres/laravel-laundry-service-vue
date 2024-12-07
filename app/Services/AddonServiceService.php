@@ -21,7 +21,7 @@ class AddonServiceService
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('name'),
-                AllowedFilter::exact('active_status'),
+                AllowedFilter::exact('status'),
             ])
             ->allowedSorts(['name', 'created_at'])
             ->paginate()

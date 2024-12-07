@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\ServiceType;
+use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,13 +18,35 @@ class OrderStatusController extends Controller
      */
     public function index(Request $request)
     {
+        // Fetch all orders
+        $orders = Order::query()->get();
+
+        // Filter orders based on order status
+        $pendingOrders = $orders->where('order_status', 'pending');
+        $inProgressOrders = $orders->where('order_status', 'in-progress');
+        $readyToDeliverOrders = $orders->where('order_status', 'ready-to-deliver');
+        $deliveredOrders = $orders->where('order_status', 'delivered');
+
+        // Return the data to the Inertia view
         return Inertia::render('Admin/Order/OrderStatus', [
-            'pendingOrders' => Order::where('order_status', 'pending')->get(),
-            'inProgressOrders' => Order::where('order_status', 'in-progress')->get(),
-            'readyToDeliverOrders' => Order::where('order_status', 'ready-to-deliver')->get(),
-            'deliveredOrders' => Order::where('order_status', 'delivered')->get(),
+            // Resolve collections and pass to Inertia as arrays
+            'pendingOrders' => OrderResource::collection($pendingOrders)->resolve(),
+            'inProgressOrders' => OrderResource::collection($inProgressOrders)->resolve(),
+            'readyToDeliverOrders' => OrderResource::collection($readyToDeliverOrders)->resolve(),
+            'deliveredOrders' => OrderResource::collection($deliveredOrders)->resolve(),
             'serviceTypes' => ServiceType::pluck('name', 'id'),
             'filters' => $request->get('filter'),
         ]);
     }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateOrderRequest $request, Order $order, OrderService $orderService)
+    {
+        $orderService->update($order, $request);
+
+        return redirect()->route('admin.orders-status.index')->with(['message' => 'Updated successfully']);
+    }
 }
+

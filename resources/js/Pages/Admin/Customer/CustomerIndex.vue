@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
@@ -9,14 +10,13 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import { useFilters } from '@/Composables/useFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Customer, FlashMessage, PaginatedData } from '@/types';
-import { router } from '@inertiajs/vue3';
-import { PropType, reactive, watch } from 'vue';
-import { toast } from 'vue3-toastify';
-import PageHeader from '@/Components/PageHeader.vue';
+import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -38,47 +38,14 @@ const props = defineProps({
 const { customers, filters } = props;
 
 // Initialize filters with provided or default values
-const filter = reactive<Filters>({
+const { filter, handleClearFilter } = useFilters('admin.customers.index', {
     name: filters?.name ?? '',
     email: filters?.email ?? '',
     mobile: filters?.mobile ?? '',
 });
-
-// Watch for filter changes and refresh data
-watch(filter, (newFilters) => {
-    const { name, email, mobile } = newFilters;
-
-    const filterParams: Record<string, string> = {
-        ...(name && { 'filter[name]': name }),
-        ...(email && { 'filter[email]': email }),
-        ...(mobile && { 'filter[mobile]': mobile }),
-    };
-
-    router.get(route('admin.customers.index'), filterParams, {
-        preserveScroll: true,
-        only: ['customers'],
-    });
-});
-
-// Delete customer
-const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this customer?'))
-        return;
-
-    router.delete(route('admin.customers.destroy', id), {
-        preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props.flash?.message),
-    });
-};
-
-// Clear all filters
-const handleClearFilter = () => {
-    Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
-};
 </script>
 
 <template>
-
     <PageHeader>
         <template #title> Customer Management </template>
         <template #subtitle>
@@ -131,16 +98,20 @@ const handleClearFilter = () => {
                 <TableRow v-for="customer in customers.data" :key="customer.id">
                     <TableCell>{{ customer.name }}</TableCell>
                     <TableCell>{{ customer.email }}</TableCell>
-                    <TableCell>{{ customer.mobile }}</TableCell>
+                    <TableCell>{{ customer.phone_number }}</TableCell>
                     <TableCell class="space-x-2 text-right">
                         <LinkButton
                             :href="route('admin.customers.edit', customer.id)"
                         >
                             Edit
                         </LinkButton>
-                        <PrimaryButton @click="handleDelete(customer.id)">
+                        <DeleteButton
+                            :action="
+                                route('admin.customers.destroy', customer.id)
+                            "
+                        >
                             Delete
-                        </PrimaryButton>
+                        </DeleteButton>
                     </TableCell>
                 </TableRow>
             </TableBody>

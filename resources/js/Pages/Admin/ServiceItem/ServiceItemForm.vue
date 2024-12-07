@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import DangerButton from '@/Components/Buttons/DangerButton.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
@@ -44,7 +44,7 @@ const form = useForm(method, url, {
     service_prices: serviceItem?.service_prices || [
         { service_type_id: '', price: '' },
     ],
-    active_status: serviceItem?.active_status || '',
+    status: serviceItem?.status || '',
 });
 
 const handleFileProcess = (error: any, file: any) => {
@@ -108,9 +108,9 @@ const submitForm = () => {
                 <FieldCol>
                     <SelectInput
                         label="Active Status"
-                        v-model="form.active_status"
+                        v-model="form.status"
                         :options="statusOptions"
-                        :error="form.errors.active_status"
+                        :error="form.errors.status"
                     />
                 </FieldCol>
             </FieldRow>
@@ -155,13 +155,13 @@ const submitForm = () => {
                             v-model="info.price"
                             placeholder="Enter price"
                         />
-                        <DangerButton
+                        <PrimaryButton
                             v-if="form.service_prices.length > 1"
                             @click.prevent="removeRow(index)"
                             type="button"
                         >
                             Remove
-                        </DangerButton>
+                        </PrimaryButton>
                     </div>
                     <PrimaryButton @click.prevent="addRow" type="button">
                         Add Service Price

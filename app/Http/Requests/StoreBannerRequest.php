@@ -26,7 +26,7 @@ class StoreBannerRequest extends FormRequest
             'title' => 'required',
             'description' => 'required',
             'image' => 'required',
-            'active_status' => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

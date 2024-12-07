@@ -34,7 +34,7 @@ const form = useForm(method, url, {
     name: financialYear?.name || '',
     start_date: financialYear?.start_date || '',
     end_date: financialYear?.end_date || '',
-    active_status: financialYear?.active_status || 'active',
+    status: financialYear?.status || 'active',
     description: financialYear?.description || '',
 });
 
@@ -96,10 +96,10 @@ const submitForm = () => {
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                         <SelectInput
                             label="Status"
-                            v-model="form.active_status"
+                            v-model="form.status"
                             :options="statusOptions"
                         />
-                        <InputError :message="form.errors.active_status" />
+                        <InputError :message="form.errors.status" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">

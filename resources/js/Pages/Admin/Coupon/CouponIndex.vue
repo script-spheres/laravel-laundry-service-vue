@@ -19,6 +19,7 @@ import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Coupon, FlashMessage, PaginatedData } from '@/types';
 import { PropType } from 'vue';
+import PageHeader from '@/Components/PageHeader.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -42,30 +43,24 @@ const props = defineProps({
 const { filter, handleClearFilter } = useFilters('admin.coupons.index', {
     valid_form: props.filters?.valid_form ?? '',
     valid_to: props.filters?.valid_to ?? '',
-    active_status: props.filters?.active_status ?? '',
+    status: props.filters?.status ?? '',
     type: props.filters?.type ?? '',
     title: props.filters?.title ?? '',
 });
 </script>
 
 <template>
-    <div class="mb-4 flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-x-3">
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    Coupon Management
-                </h2>
-            </div>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Manage your coupons with filters and actions.
-            </p>
-        </div>
-        <div class="flex items-center gap-x-3">
+    <PageHeader>
+        <template #title> Coupon Management </template>
+        <template #subtitle>
+            Manage your coupons with filters and actions.
+        </template>
+        <template #actions>
             <LinkButton :href="route('admin.coupons.create')">
                 Add Coupon
             </LinkButton>
-        </div>
-    </div>
+        </template>
+    </PageHeader>
     <Card class="mb-6 p-6">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <div class="w-full md:mb-0 md:w-1/4">
@@ -77,9 +72,9 @@ const { filter, handleClearFilter } = useFilters('admin.coupons.index', {
                 <DateInput v-model="filter.valid_to" />
             </div>
             <div class="w-full md:mb-0 md:w-1/4">
-                <InputLabel for="active_status" value="Status" />
+                <InputLabel for="status" value="Status" />
                 <SelectInput
-                    v-model="filter.active_status"
+                    v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Filter by Active Status"
                 />

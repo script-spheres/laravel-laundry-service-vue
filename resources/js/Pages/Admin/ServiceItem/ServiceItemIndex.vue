@@ -37,7 +37,7 @@ const props = defineProps({
 });
 
 const { filter, handleClearFilter } = useFilters('admin.service-items.index', {
-    active_status: props.filters?.active_status ?? '',
+    status: props.filters?.status ?? '',
     type: props.filters?.type ?? '',
     title: props.filters?.title ?? '',
     store_id: props.filters?.store_id ?? '',
@@ -76,7 +76,7 @@ const { filter, handleClearFilter } = useFilters('admin.service-items.index', {
             <div class="w-full md:mb-0 md:w-1/4">
                 <SelectInput
                     label="Status"
-                    v-model="filter.active_status"
+                    v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Filter by Active Status"
                 />

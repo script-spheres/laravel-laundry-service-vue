@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DangerButton from '@/Components/Buttons/DangerButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
 import TableBody from '@/Components/DataTable/TableBody.vue';
@@ -84,11 +83,11 @@ const removeFromCart = (id: number) => {
                             <TableCell class="flex justify-end gap-2">
                                 <!-- Conditional Add/Remove Buttons -->
                                 <template v-if="isInCart(servicePrice.id)">
-                                    <DangerButton
+                                    <PrimaryButton
                                         @click="removeFromCart(servicePrice.id)"
                                     >
                                         Del
-                                    </DangerButton>
+                                    </PrimaryButton>
                                 </template>
                                 <template v-else>
                                     <PrimaryButton

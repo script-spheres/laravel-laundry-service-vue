@@ -26,7 +26,7 @@ class Store extends Model
         'manager_phone_number',
         'additional_info',
         'store_code',
-        'active_status',
+        'status',
     ];
 
     protected $casts = [

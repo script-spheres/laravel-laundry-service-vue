@@ -8,6 +8,7 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
+import NumberInput from '@/Components/Form/NumberInput.vue';
 import SelectInput from '@/Components/Form/SelectInput.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import { statusOptions } from '@/Constants/options';
@@ -15,7 +16,6 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { AddonService } from '@/types';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
-import NumberInput from '@/Components/Form/NumberInput.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -35,7 +35,7 @@ const form = useForm(method, url, {
     name: addonService?.name || '',
     price: addonService?.price || '',
     description: addonService?.description || '',
-    active_status: addonService?.active_status || '',
+    status: addonService?.status || '',
 });
 
 const submitForm = () => {
@@ -82,9 +82,9 @@ const submitForm = () => {
                 <FieldCol>
                     <SelectInput
                         label="Active Status"
-                        v-model="form.active_status"
+                        v-model="form.status"
                         :options="statusOptions"
-                        :error="form.errors.active_status"
+                        :error="form.errors.status"
                     />
                 </FieldCol>
             </FieldRow>

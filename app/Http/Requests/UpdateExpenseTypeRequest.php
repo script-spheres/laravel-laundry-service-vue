@@ -23,10 +23,9 @@ class UpdateExpenseTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category' => ['required'],
-            'amount' => ['required', 'numeric'],
-            'store_id' => ['required', 'exists:stores'],
-            'receipt' => ['nullable'],
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

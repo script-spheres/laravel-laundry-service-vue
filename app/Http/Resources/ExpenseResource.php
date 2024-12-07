@@ -16,14 +16,13 @@ class ExpenseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'outlet_id' => $this->outlet_id,
-            'outlet' => OutletResource::make($this->whenLoaded('outlet')),
-            'table_no' => $this->table_no,
-            'capacity' => $this->capacity,
-            'booking_status' => $this->booking_status,
-            'qr_image' => $this->qr_image,
-            'scan_table_url' => url('scan-Table-qr', $this->table_uuid),
-            'active_status' => $this->active_status,
+            'expense_type' => ExpenseTypeResource::make($this->whenLoaded('expenseType')),
+            'store' => StoreResource::make($this->whenLoaded('store')),
+            'expense_type_id' => $this->expense_type_id,
+            'store_id' => $this->store_id,
+            'date' => $this->date->format('Y-m-d'),
+            'amount' => $this->amount,
+            'note' => $this->note,
         ];
     }
 }

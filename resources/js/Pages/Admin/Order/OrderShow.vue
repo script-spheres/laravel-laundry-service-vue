@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
+import TableBody from '@/Components/DataTable/TableBody.vue';
+import TableCell from '@/Components/DataTable/TableCell.vue';
+import TableHead from '@/Components/DataTable/TableHead.vue';
+import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
+import TableRow from '@/Components/DataTable/TableRow.vue';
+import SelectInput from '@/Components/Form/SelectInput.vue';
 import Card from '@/Components/Panel/Card.vue';
+import { orderStatusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Order } from '@/types';
 import { PropType } from 'vue';
@@ -10,219 +18,263 @@ defineOptions({ layout: AdminLayout });
 
 defineProps({
     order: {
-        type: Object as PropType<Order[]>,
+        type: Object as PropType<Order>,
         required: true,
     },
 });
+
+// Payment logic placeholders
+const addPayment = () => {
+    console.log('Add Payment clicked');
+    // Logic to handle adding a payment goes here
+};
+
+const printInvoice = () => {};
 </script>
 
 <template>
-    <div class="flex items-center justify-between py-4">
-        <div>
-            <div class="flex items-center gap-x-3">
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+    <div class="space-y-6 py-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+            <div>
+                <h2
+                    class="text-2xl font-semibold text-gray-800 dark:text-white"
+                >
                     Orders Management
                 </h2>
+                <p class="text-sm text-gray-500 dark:text-gray-300">
+                    Manage and track orders placed in the last 12 months.
+                </p>
             </div>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                These companies have purchased in the last 12 months.
-            </p>
-        </div>
-
-        <div class="flex items-center gap-x-3">
             <LinkButton :href="route('admin.orders.index')">Back</LinkButton>
         </div>
-    </div>
-    <Card class="mx-auto mt-6">
-        <div class="mx-auto max-w-2xl py-0 md:py-16">
-            <article
-                class="overflow-hidden shadow-none md:rounded-md md:shadow-md"
-            >
-                <div class="bg-white md:rounded-b-md">
-                    <div class="border-b border-gray-200 p-9">
-                        <div class="space-y-6">
-                            <div class="items-top flex justify-between">
-                                <div class="space-y-4">
-                                    <div>
-                                        <img
-                                            class="mb-4 h-6 object-cover"
-                                            src="https://cdn.mjwebs.com/sites/mjwebs/mjwebs-logo.png"
-                                        />
-                                        <p class="text-lg font-bold">Invoice</p>
-                                        <p>MJWebs</p>
-                                    </div>
-                                    <div>
-                                        <p
-                                            class="text-sm font-medium text-gray-400"
-                                        >
-                                            Billed To
-                                        </p>
-                                        <p>Tony Stark</p>
-                                        <p>tony@starkindustriesxyz.com</p>
-                                        <p>(02) 1234 1234</p>
-                                    </div>
-                                </div>
-                                <div class="space-y-2">
-                                    <div>
-                                        <p
-                                            class="text-sm font-medium text-gray-400"
-                                        >
-                                            Invoice Number
-                                        </p>
-                                        <p>INV-MJ0001</p>
-                                    </div>
-                                    <div>
-                                        <p
-                                            class="text-sm font-medium text-gray-400"
-                                        >
-                                            Invoice Date
-                                        </p>
-                                        <p>31 December 2021</p>
-                                    </div>
-                                    <div>
-                                        <p
-                                            class="text-sm font-medium text-gray-400"
-                                        >
-                                            ABN
-                                        </p>
-                                        <p>57 630 182 446</p>
-                                    </div>
-                                </div>
+
+        <div class="grid gap-6 lg:grid-cols-3">
+            <!-- Order Details -->
+            <Card class="lg:col-span-2">
+                <div class="p-6">
+                    <div class="flex items-start justify-between">
+                        <!-- Company Info -->
+                        <div>
+                            <h3 class="text-primary text-lg font-medium">
+                                Invoice To
+                            </h3>
+                            <div class="mt-2 space-y-1 text-sm">
+                                <p>+{{ order.customer?.phone_number }}</p>
+                                <p>{{ order.customer?.email }}</p>
+                                <p>{{ order.customer?.address }}</p>
+                                <p>Tax: {{ order.tax_number }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Order Info -->
+                        <div class="text-right">
+                            <p class="text-sm">
+                                <span class="font-medium text-gray-700"
+                                    >Order ID:</span
+                                >
+                                <span class="text-primary"
+                                    >#{{ order.order_id }}</span
+                                >
+                            </p>
+                            <p class="text-sm">
+                                <span class="font-medium text-gray-700"
+                                    >Order Date:</span
+                                >
+                                {{ order.created_at }}
+                            </p>
+                            <p class="text-sm">
+                                <span class="font-medium text-gray-700"
+                                    >Delivery Date:</span
+                                >
+                                {{ order.delivery_date }}
+                            </p>
+                            <div class="mt-2">
+                                <span class="font-medium text-gray-700"
+                                    >Order Status:</span
+                                >
+                                <SelectInput
+                                    v-model="order.order_status"
+                                    :options="orderStatusOptions"
+                                    @change="
+                                        handleOrderStatusChange(order, $event)
+                                    "
+                                />
                             </div>
                         </div>
                     </div>
-                    <div class="border-b border-gray-200 p-9">
-                        <p class="text-sm font-medium text-gray-400">Note</p>
-                        <p class="text-sm">Thank you for your order.</p>
+
+                    <!-- Order Items Table -->
+                    <div class="mt-6">
+                        <DataTable>
+                            <TableHead>
+                                <TableHeadCell>#</TableHeadCell>
+                                <TableHeadCell>Service Name</TableHeadCell>
+                                <TableHeadCell>Color</TableHeadCell>
+                                <TableHeadCell>Rate</TableHeadCell>
+                                <TableHeadCell>QTY</TableHeadCell>
+                                <TableHeadCell>Total</TableHeadCell>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow
+                                    v-for="(
+                                        orderDetail, index
+                                    ) in order.order_details"
+                                    :key="orderDetail.id"
+                                >
+                                    <TableCell>{{ index + 1 }}</TableCell>
+                                    <TableCell>
+                                        <div class="flex items-center gap-4">
+                                            <img
+                                                :src="orderDetail.icon_url"
+                                                alt="Service Icon"
+                                                class="h-10 w-10 object-contain"
+                                            />
+                                            <div>
+                                                <p
+                                                    class="font-medium text-gray-800"
+                                                >
+                                                    {{
+                                                        orderDetail.service_name
+                                                    }}
+                                                </p>
+                                                <p
+                                                    class="text-sm text-gray-500"
+                                                >
+                                                    {{
+                                                        orderDetail.description
+                                                    }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>{{
+                                        orderDetail.color
+                                    }}</TableCell>
+                                    <TableCell>
+                                        RP {{ orderDetail.rate }}
+                                    </TableCell>
+                                    <TableCell>{{ orderDetail.qty }}</TableCell>
+                                    <TableCell>
+                                        RP
+                                        {{ orderDetail.rate * orderDetail.qty }}
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </DataTable>
                     </div>
-                    <DataTable class="w-full divide-y divide-gray-200 text-sm">
-                        <thead>
-                            <tr>
-                                <th
-                                    class="px-9 py-4 text-left font-semibold text-gray-400"
-                                    scope="col"
-                                >
-                                    Item
-                                </th>
-                                <th
-                                    class="py-3 text-left font-semibold text-gray-400"
-                                    scope="col"
-                                ></th>
-                                <th
-                                    class="py-3 text-left font-semibold text-gray-400"
-                                    scope="col"
-                                >
-                                    Amount
-                                </th>
-                                <th
-                                    class="py-3 text-left font-semibold text-gray-400"
-                                    scope="col"
-                                >
-                                    Discount
-                                </th>
-                                <th
-                                    class="py-3 text-left font-semibold text-gray-400"
-                                    scope="col"
-                                ></th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <tr>
-                                <td
-                                    class="flex items-center space-x-1 whitespace-nowrap px-9 py-5"
-                                >
-                                    <div>
-                                        <p>Jericho III (YA-4)</p>
-                                        <p class="text-sm text-gray-400">
-                                            Nuclear-armed ICBM
-                                        </p>
-                                    </div>
-                                </td>
-                                <td
-                                    class="truncate whitespace-nowrap text-gray-600"
-                                ></td>
-                                <td
-                                    class="truncate whitespace-nowrap text-gray-600"
-                                >
-                                    $380,000.00
-                                </td>
-                                <td
-                                    class="truncate whitespace-nowrap text-gray-600"
-                                >
-                                    0%
-                                </td>
-                            </tr>
-                            <tr>
-                                <td
-                                    class="flex items-center space-x-1 whitespace-nowrap px-9 py-5"
-                                >
-                                    <div>
-                                        <p>Pym Particles (Pack of 10,000)</p>
-                                        <p class="text-sm text-gray-400">
-                                            Redacted Description
-                                        </p>
-                                    </div>
-                                </td>
-                                <td
-                                    class="truncate whitespace-nowrap text-gray-600"
-                                ></td>
-                                <td
-                                    class="truncate whitespace-nowrap text-gray-600"
-                                >
-                                    $280,000.00
-                                </td>
-                                <td
-                                    class="truncate whitespace-nowrap text-gray-600"
-                                >
-                                    0%
-                                </td>
-                            </tr>
-                        </tbody>
-                    </DataTable>
-                    <div class="border-b border-gray-200 p-9">
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-500">
-                                        Subtotal
-                                    </p>
-                                </div>
-                                <p class="text-sm text-gray-500">$660,000.00</p>
-                            </div>
-                            <div class="flex justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-500">Tax</p>
-                                </div>
-                                <p class="text-sm text-gray-500">$0.00</p>
-                            </div>
-                            <div class="flex justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-500">Total</p>
-                                </div>
-                                <p class="text-sm text-gray-500">$660,000.00</p>
-                            </div>
+
+                    <!-- Summary -->
+                    <div
+                        class="mt-6 space-y-2 rounded-lg bg-gray-50 p-6 shadow-md dark:bg-gray-800"
+                    >
+                        <div
+                            class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300"
+                        >
+                            <p class="font-medium">Sub Total</p>
+                            <p
+                                class="font-semibold text-gray-700 dark:text-gray-200"
+                            >
+                                RP {{ order.sub_total }}
+                            </p>
                         </div>
-                    </div>
-                    <div class="border-b border-gray-200 p-9">
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
-                                <div>
-                                    <p class="text-lg font-bold text-black">
-                                        Amount Due
-                                    </p>
-                                </div>
-                                <p class="text-lg font-bold text-black">
-                                    $360.00
+                        <div
+                            class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300"
+                        >
+                            <p class="font-medium">Discount</p>
+                            <p
+                                class="font-semibold text-gray-700 dark:text-gray-200"
+                            >
+                                RP {{ order.discount_amount }}
+                            </p>
+                        </div>
+                        <div
+                            class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300"
+                        >
+                            <p class="font-medium">Tax (11%)</p>
+                            <p
+                                class="font-semibold text-gray-700 dark:text-gray-200"
+                            >
+                                RP {{ order.tax_amount }}
+                            </p>
+                        </div>
+                        <div
+                            class="border-t border-gray-300 pt-4 dark:border-gray-700"
+                        >
+                            <div
+                                class="flex items-center justify-between text-lg font-semibold"
+                            >
+                                <p class="text-gray-800 dark:text-white">
+                                    Gross Total
+                                </p>
+                                <p class="text-primary">
+                                    RP {{ order.total_amount }}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </article>
-            <div class="mt-4 flex gap-4">
-                <LinkButton href="#" target="_blank"> Download PDF</LinkButton>
-                <LinkButton href="#" target="_blank"> Pay Balance</LinkButton>
-            </div>
+            </Card>
+
+            <!-- Payments and Actions -->
+            <Card class="rounded-lg bg-white shadow-md dark:bg-gray-800">
+                <div class="space-y-6 p-6">
+                    <h3
+                        class="text-2xl font-semibold text-gray-800 dark:text-white"
+                    >
+                        Payments
+                    </h3>
+                    <div class="space-y-4">
+                        <div
+                            class="flex items-center justify-between border-b pb-2"
+                        >
+                            <span
+                                class="text-base font-medium text-gray-600 dark:text-gray-300"
+                            >
+                                Order Amount:
+                            </span>
+                            <span class="text-primary text-lg font-semibold">
+                                RP {{ order.total_amount }}
+                            </span>
+                        </div>
+                        <div
+                            class="flex items-center justify-between border-b pb-2"
+                        >
+                            <span
+                                class="text-base font-medium text-gray-600 dark:text-gray-300"
+                            >
+                                Paid Amount:
+                            </span>
+                            <span class="text-lg font-semibold text-green-500">
+                                RP {{ order.paid_amount }}
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span
+                                class="text-base font-medium text-gray-600 dark:text-gray-300"
+                            >
+                                Due Balance:
+                            </span>
+                            <span class="text-lg font-semibold text-red-500">
+                                RP
+                                {{ order.total_amount - order.paid_amount }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-4">
+                        <PrimaryButton class="w-full" @click="addPayment">
+                            Add Payment
+                        </PrimaryButton>
+                        <PrimaryButton
+                            theme="warning"
+                            class="w-full"
+                            @click="printInvoice"
+                        >
+                            Print Invoice
+                        </PrimaryButton>
+                    </div>
+                </div>
+            </Card>
         </div>
-    </Card>
+    </div>
 </template>

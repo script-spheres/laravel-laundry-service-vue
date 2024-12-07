@@ -22,7 +22,7 @@ class TimeslotFactory extends Factory
             'end_time' => $this->faker->time('H:i'),
             'day' => $this->faker->dayOfWeek,
             'capacity' => $this->faker->numberBetween(1, 10),
-            'active_status' => $this->faker->randomElement(['active', 'inactive']),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

@@ -38,7 +38,7 @@ const props = defineProps({
 
 const { filter, handleClearFilter } = useFilters('admin.service-types.index', {
     name: props.filters?.name ?? '',
-    active_status: props.filters?.active_status ?? '',
+    status: props.filters?.status ?? '',
     type: props.filters?.type ?? '',
     title: props.filters?.title ?? '',
 });
@@ -68,7 +68,7 @@ const { filter, handleClearFilter } = useFilters('admin.service-types.index', {
             <FieldCol>
                 <SelectInput
                     label="Status"
-                    v-model="filter.active_status"
+                    v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Filter by Active Status"
                 />

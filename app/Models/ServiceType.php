@@ -16,6 +16,6 @@ class ServiceType extends Model
     protected $fillable = [
         'name',
         'description',
-        'active_status',
+        'status',
     ];
 }

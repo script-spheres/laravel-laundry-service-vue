@@ -20,7 +20,7 @@ const handleStatusChange = (event: Event) => {
         : 'inactive';
     router.put(
         props.action,
-        { ...props.data, active_status: newStatus },
+        { ...props.data, status: newStatus },
         {
             onSuccess: (page) => toast.success(page.props?.flash?.message),
         },
@@ -30,7 +30,7 @@ const handleStatusChange = (event: Event) => {
 
 <template>
     <ToggleInput
-        :modelValue="props.data.active_status === 'active'"
+        :modelValue="props.data.status === 'active'"
         @change="handleStatusChange"
     />
 </template>

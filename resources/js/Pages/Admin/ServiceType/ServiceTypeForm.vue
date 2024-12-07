@@ -33,7 +33,7 @@ const url = serviceType
 const form = useForm(method, url, {
     name: serviceType?.name || '',
     description: serviceType?.description || '',
-    active_status: serviceType?.active_status || '',
+    status: serviceType?.status || '',
 });
 
 const submitForm = () => {
@@ -73,9 +73,9 @@ const submitForm = () => {
                 <FieldCol>
                     <SelectInput
                         label="Active Status"
-                        v-model="form.active_status"
+                        v-model="form.status"
                         :options="statusOptions"
-                        :error="form.errors.active_status"
+                        :error="form.errors.status"
                     />
                 </FieldCol>
             </FieldRow>

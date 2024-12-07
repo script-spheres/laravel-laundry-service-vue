@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('end_time');
             $table->string('day')->nullable();
             $table->unsignedInteger('capacity')->default(0);
-            $table->enum('active_status', ['active', 'inactive']);
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();
         });
