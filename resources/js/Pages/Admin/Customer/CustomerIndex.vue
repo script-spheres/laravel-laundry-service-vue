@@ -9,13 +9,13 @@ import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Customer, FlashMessage, PaginatedData } from '@/types';
+import { Customer, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
@@ -28,10 +28,6 @@ const props = defineProps({
     filters: {
         type: Object as PropType<Filters>,
         default: () => ({}),
-    },
-    flash: {
-        type: Object as PropType<FlashMessage>,
-        required: false,
     },
 });
 
@@ -62,18 +58,18 @@ const { filter, handleClearFilter } = useFilters('admin.customers.index', {
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <div class="w-full md:mb-0 md:w-1/4">
                 <InputLabel for="name" value="Name" />
-                <TextInput v-model="filter.name" placeholder="Search by Name" />
+                <InputText v-model="filter.name" placeholder="Search by Name" />
             </div>
             <div class="w-full md:mb-0 md:w-1/4">
                 <InputLabel for="email" value="Email" />
-                <TextInput
+                <InputText
                     v-model="filter.email"
                     placeholder="Search by Email"
                 />
             </div>
             <div class="w-full md:mb-0 md:w-1/4">
                 <InputLabel for="mobile" value="Mobile" />
-                <TextInput
+                <InputText
                     v-model="filter.mobile"
                     placeholder="Search by Mobile"
                 />

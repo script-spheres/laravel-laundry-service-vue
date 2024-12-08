@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { orderStatusOptions } from '@/Constants/options';
@@ -117,11 +117,11 @@ onUnmounted(() => {
                 <div class="flex justify-between">
                     <h6 class="text-lg font-bold">Today's Delivery</h6>
                     <div class="flex gap-4">
-                        <TextInput
+                        <InputText
                             placeholder="Search Here"
                             v-model="filter.search_query"
                         />
-                        <SelectInput
+                        <InputSelect
                             v-model="filter.order_filter"
                             :options="orderStatusOptions"
                         />

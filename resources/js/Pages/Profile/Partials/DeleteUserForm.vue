@@ -3,7 +3,7 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Modal from '@/Components/Modal/Modal.vue';
 import { useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
@@ -54,7 +54,9 @@ const closeModal = () => {
             </p>
         </header>
 
-        <PrimaryButton @click="confirmUserDeletion">Delete Account</PrimaryButton>
+        <PrimaryButton @click="confirmUserDeletion"
+            >Delete Account</PrimaryButton
+        >
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">
@@ -77,7 +79,7 @@ const closeModal = () => {
                         class="sr-only"
                     />
 
-                    <TextInput
+                    <InputText
                         id="password"
                         ref="passwordInput"
                         v-model="form.password"

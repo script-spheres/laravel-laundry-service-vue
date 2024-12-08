@@ -7,7 +7,7 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { orderStatusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -93,7 +93,7 @@ const printInvoice = () => {};
                                 <span class="font-medium text-gray-700"
                                     >Order Status:</span
                                 >
-                                <SelectInput
+                                <InputSelect
                                     v-model="order.order_status"
                                     :options="orderStatusOptions"
                                     @change="

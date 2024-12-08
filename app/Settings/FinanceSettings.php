@@ -4,12 +4,15 @@ namespace App\Settings;
 
 use Spatie\LaravelSettings\Settings;
 
-class GeneralSettings extends Settings
+class FinanceSettings extends Settings
 {
-    public string $site_name;
+
+    public float $tax_rate;
+
+    public string $currency;
 
     public static function group(): string
     {
-        return 'default';
+        return 'finance';
     }
 }

@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings', [SettingController::class, 'index'])->name('settings.application');
     Route::get('settings-finance', [SettingController::class, 'finance'])->name('settings.finance');
-    Route::post('settings', [SettingController::class, 'store']);
+    Route::post('settings', [SettingController::class, 'store'])->name('settings.submit');
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('financial', [ReportController::class, 'financial'])->name('financial');

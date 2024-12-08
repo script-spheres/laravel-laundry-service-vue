@@ -44,7 +44,7 @@ if (!isMobileDevice.value) {
             <SidebarLogo @close-sidebar="toggleSidebar" />
         </div>
         <nav
-            class="scrollbar h-[calc(100vh-64px)] flex-auto overflow-y-auto p-4"
+            class="h-[calc(100vh-64px)] flex-auto overflow-y-auto p-4 scrollbar scrollbar-thin"
         >
             <ul class="space-y-1">
                 <SidebarItem

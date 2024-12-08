@@ -1,11 +1,9 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import EmailInput from '@/Components/Form/InputEmail.vue';
-import PhoneInput from '@/Components/Form/InputPhone.vue';
+import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -13,21 +11,27 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
+interface FinanceSettings {
+    tax_rate: number;
+    discount_rate: number;
+    currency: string;
+    invoice_prefix: string;
+}
+
 defineOptions({ layout: AdminLayout });
 
 const props = defineProps({
     settings: {
-        type: Object as PropType<GeneralSettings>,
+        type: Object as PropType<FinanceSettings>,
         required: false,
     },
 });
 
 const form = useForm('post', route('admin.settings.submit'), {
-    name: props.settings?.name || '',
-    address: props.settings?.address || '',
-    email: props.settings?.email || '',
-    phone_number: props.settings?.phone_number || '',
-    communication_pref: props.settings?.communication_pref || '',
+    tax_rate: props.settings?.tax_rate || 0,
+    discount_rate: props.settings?.discount_rate || 0,
+    currency: props.settings?.currency || '',
+    invoice_prefix: props.settings?.invoice_prefix || '',
 });
 
 const submitForm = () => {
@@ -37,15 +41,11 @@ const submitForm = () => {
     });
 };
 </script>
-
 <template>
     <PageHeader>
-        <template #title>
-            {{ settings ? 'Edit ' : 'Create New' }} settings
-        </template>
+        <template #title> Finance Settings </template>
         <template #subtitle>
-            Fill in the details for your
-            {{ settings ? 'existing' : 'new' }} settings.
+            Fill in the details for your finance-related settings.
         </template>
     </PageHeader>
 
@@ -53,44 +53,37 @@ const submitForm = () => {
         <form @submit.prevent="submitForm">
             <FieldRow class="grid-cols-2">
                 <FieldCol>
-                    <InputText
-                        label="settings Name"
-                        v-model="form.name"
-                        :error="form.errors.name"
+                    <InputNumber
+                        label="Tax Rate (%)"
+                        v-model="form.tax_rate"
+                        :error="form.errors.tax_rate"
+                        placeholder="Enter tax rate"
                     />
                 </FieldCol>
                 <FieldCol>
-                    <EmailInput
-                        label="Email"
-                        v-model="form.email"
-                        :error="form.errors.email"
+                    <InputNumber
+                        label="Discount Rate (%)"
+                        v-model="form.discount_rate"
+                        :error="form.errors.discount_rate"
+                        placeholder="Enter discount rate"
                     />
                 </FieldCol>
             </FieldRow>
             <FieldRow class="grid-cols-2">
                 <FieldCol>
-                    <PhoneInput
-                        label="Phone Number"
-                        v-model="form.phone_number"
-                        :error="form.errors.phone_number"
+                    <InputText
+                        label="Currency"
+                        v-model="form.currency"
+                        :error="form.errors.currency"
+                        placeholder="e.g., USD, EUR"
                     />
                 </FieldCol>
                 <FieldCol>
-                    <InputTextarea
-                        label="Communication Preferences"
-                        v-model="form.communication_pref"
-                        placeholder="Communication Preferences (optional)"
-                        :error="form.errors.communication_pref"
-                    />
-                </FieldCol>
-            </FieldRow>
-            <FieldRow>
-                <FieldCol>
-                    <InputTextarea
-                        label="Address"
-                        v-model="form.address"
-                        placeholder="settings Address (optional)"
-                        :error="form.errors.address"
+                    <InputText
+                        label="Invoice Prefix"
+                        v-model="form.invoice_prefix"
+                        :error="form.errors.invoice_prefix"
+                        placeholder="e.g., INV-"
                     />
                 </FieldCol>
             </FieldRow>

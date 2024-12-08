@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Modal from '@/Components/Modal/Modal.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { inject, Ref } from 'vue';
@@ -39,21 +39,21 @@ const submitForm = () => {
                     </h2>
                 </div>
                 <div class="mt-6">
-                    <TextInput
+                    <InputText
                         v-model="form.name"
                         placeholder="Customer name"
                         :error="form.errors.name"
                     />
                 </div>
                 <div class="mt-6">
-                    <TextInput
+                    <InputText
                         v-model="form.mobile"
                         placeholder="Mobile Number"
                         :error="form.errors.mobile"
                     />
                 </div>
                 <div class="mt-6">
-                    <TextInput
+                    <InputText
                         v-model="form.email"
                         placeholder="Email ID (Optional)"
                         :error="form.errors.email"

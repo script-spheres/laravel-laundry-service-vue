@@ -17,36 +17,29 @@ class TimeslotResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'outlet_id' => $this->outlet_id,
-            'table_id' => $this->table_id,
-            'booking_uuid' => $this->booking_uuid,
-            'customer_name' => $this->customer_name,
-            'customer_phone' => $this->customer_phone,
-            'booking_date' => $this->booking_date,
-            'no_of_people' => $this->no_of_people,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
-            'customer_notes' => $this->customer_notes,
-            'booking_status' => $this->booking_status,
-            'outlet' => OutletResource::make($this->whenLoaded('outlet')),
-            'table' => ExpenseResource::make($this->whenLoaded('table')),
-            'created_at' => $this->when($this->created_at, $this->created_at->format('Y-m-d H:i:s')),
-            'extra_info' => $this->when($this->shouldIncludeExtraInfo(), function () {
-                return [
-                    'additional_field' => 'value',
-                ];
-            }),
+            'day' => $this->day,
+            'timeslots' => $this->getFormattedTimeslots(),
+            'status' => $this->status,
         ];
     }
 
+
+
     /**
-     * Determine if extra info should be included.
+     * Format the timeslots to a specific structure.
      *
-     * @return bool
+     * @return array
      */
-    private function shouldIncludeExtraInfo(): bool
+    private function getFormattedTimeslots(): array
     {
-        // Example condition to include extra info, modify as needed
-        return $this->booking_status === 'confirmed';
+        $timeslots = json_decode($this->timeslots, true);
+
+        // Format timeslots as needed (e.g., converting them to a more readable format)
+        return array_map(function ($timeslot) {
+            return [
+                'start_time' => $timeslot['start_time'],
+                'end_time' => $timeslot['end_time'],
+            ];
+        }, $timeslots);
     }
 }

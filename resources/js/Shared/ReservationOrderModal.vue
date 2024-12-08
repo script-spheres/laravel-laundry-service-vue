@@ -3,9 +3,9 @@ import { PrimaryButton } from '@/Components/Buttons';
 import {
     InputError,
     InputLabel,
-    SelectInput,
-    TextareaInput,
-    TextInput,
+    InputSelect,
+    InputText,
+    InputTextarea,
 } from '@/Components/Form';
 import { Modal } from '@/Components/Modal';
 import { reactive, watch } from 'vue';
@@ -59,7 +59,7 @@ watch(showReservationOrderModal, (newVal) => {
             <p class="text-md mb-4">Set your pickup location to get started.</p>
             <div class="mb-6">
                 <InputLabel for="location" value="Outlet" />
-                <SelectInput
+                <InputSelect
                     id="pac-input"
                     v-model="form.outlet_id"
                     :options="outlets"
@@ -70,7 +70,7 @@ watch(showReservationOrderModal, (newVal) => {
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-1/2 px-3 md:mb-0">
                     <InputLabel for="customer_name" value="Name" />
-                    <TextInput
+                    <InputText
                         v-model="form.customer_name"
                         placeholder="Enter your name"
                     />
@@ -79,7 +79,7 @@ watch(showReservationOrderModal, (newVal) => {
 
                 <div class="w-1/2 px-3">
                     <InputLabel for="customer_phone" value="Phone" />
-                    <TextInput
+                    <InputText
                         v-model="form.customer_phone"
                         placeholder="Enter your phone"
                     />
@@ -90,7 +90,7 @@ watch(showReservationOrderModal, (newVal) => {
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-1/2 px-3 md:mb-0">
                     <InputLabel for="no_of_people" value="Total Person" />
-                    <TextInput
+                    <InputText
                         v-model="form.no_of_people"
                         placeholder="Enter total person"
                         type="number"
@@ -99,7 +99,7 @@ watch(showReservationOrderModal, (newVal) => {
                 </div>
                 <div class="mb-6 w-1/2 px-3 md:mb-0">
                     <InputLabel for="booking_date" value="Date" />
-                    <TextInput v-model="form.booking_date" type="date" />
+                    <InputText v-model="form.booking_date" type="date" />
                     <InputError :message="errors.booking_date" class="mt-2" />
                 </div>
             </div>
@@ -107,12 +107,12 @@ watch(showReservationOrderModal, (newVal) => {
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-1/2 px-3 md:mb-0">
                     <InputLabel for="start_time" value="Start Time" />
-                    <TextInput v-model="form.start_time" type="time" />
+                    <InputText v-model="form.start_time" type="time" />
                     <InputError :message="errors.start_time" class="mt-2" />
                 </div>
                 <div class="mb-6 w-1/2 px-3 md:mb-0">
                     <InputLabel for="end_time" value="End Time" />
-                    <TextInput v-model="form.end_time" type="time" />
+                    <InputText v-model="form.end_time" type="time" />
                     <InputError :message="errors.end_time" class="mt-2" />
                 </div>
             </div>
@@ -120,7 +120,7 @@ watch(showReservationOrderModal, (newVal) => {
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="w-full px-3">
                     <InputLabel for="customer_notes" value="Notes" />
-                    <TextareaInput
+                    <InputTextarea
                         v-model="form.customer_notes"
                         placeholder="Enter any notes"
                     />

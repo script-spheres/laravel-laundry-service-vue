@@ -18,10 +18,9 @@ export const dietaryOptions: Record<string, string> = {
     kosher: 'Kosher',
 };
 
-export const bookingStatusOptions: Record<string, string> = {
-    pending: 'Pending',
-    approve: 'Approve',
-    decline: 'Decline',
+export const radiusUnitOptions: Record<string, string> = {
+    km: 'Km',
+    miles: 'miles',
 };
 
 export const deliveryStatusOptions: Record<string, string> = {
@@ -44,12 +43,14 @@ export const discountTypeOptions: Record<string, string> = {
     flat: 'Fixed Amount',
 };
 
-export const foodTypeOptions: Record<string, string> = {
-    appetizer: 'Appetizer',
-    main_course: 'Main Course',
-    dessert: 'Dessert',
-    beverage: 'Beverage',
-    snack: 'Snack',
+export const daysOptions: Record<string, string> = {
+    sunday: 'Sunday',
+    monday: 'Monday',
+    tuesday: 'Tuesday',
+    wednesday: 'Wednesday',
+    thursday: 'Thursday',
+    friday: 'Friday',
+    saturday: 'Saturday',
 };
 
 export const kitchenStatusOptions: Record<string, string> = {

@@ -6,8 +6,8 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import Datalist from '@/Components/DataList/Datalist.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import ImagePreview from '@/Components/Image/ImagePreview.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
@@ -53,14 +53,14 @@ console.log(filter);
     <Card class="mb-6 p-6">
         <FieldRow class="flex md:grid-cols-4">
             <FieldCol>
-                <TextInput
+                <InputText
                     label="Banner Title"
                     v-model="filter.title"
                     placeholder="Filter by Title"
                 />
             </FieldCol>
             <FieldCol>
-                <SelectInput
+                <InputSelect
                     label="Status"
                     v-model="filter.status"
                     :options="{ active: 'Active', inactive: 'Inactive' }"

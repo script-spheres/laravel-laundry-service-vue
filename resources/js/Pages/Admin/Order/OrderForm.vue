@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import DateInput from '@/Components/Form/DateInput.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import DateInput from '@/Components/Form/InputDate.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import { useFilters } from '@/Composables/useFilters';
 import AddonCartItems from '@/Pages/Admin/Order/Partials/AddonCartItems.vue';
 import AddonServicesModal from '@/Pages/Admin/Order/Partials/AddonServicesModal.vue';
@@ -120,7 +120,7 @@ provide('showServiceTypeModal', showServiceTypeModal);
                 <LinkButton :href="route('admin.orders.index')">
                     Back
                 </LinkButton>
-                <TextInput
+                <InputText
                     v-model="filter.name"
                     placeholder="Search items..."
                 />
@@ -208,7 +208,7 @@ provide('showServiceTypeModal', showServiceTypeModal);
                         </div>
                         <div class="mt-0 flex w-full justify-between gap-1">
                             <div class="flex-grow">
-                                <SelectInput
+                                <InputSelect
                                     v-model="form.customer_id"
                                     :options="customerOptions"
                                     label="Customer"

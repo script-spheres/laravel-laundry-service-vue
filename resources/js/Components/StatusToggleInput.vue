@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ToggleInput from '@/Components/Form/ToggleInput.vue';
+import ToggleInput from '@/Components/Form/InputToggle.vue';
 import { router } from '@inertiajs/vue3';
 import { toast } from 'vue3-toastify';
 
@@ -22,6 +22,8 @@ const handleStatusChange = (event: Event) => {
         props.action,
         { ...props.data, status: newStatus },
         {
+            preserveState: true,
+            preserveScroll: true,
             onSuccess: (page) => toast.success(page.props?.flash?.message),
         },
     );

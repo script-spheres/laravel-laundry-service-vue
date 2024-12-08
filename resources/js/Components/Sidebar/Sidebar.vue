@@ -20,7 +20,7 @@ if (!isMobileDevice.value) {
     />
     <!-- Sidebar -->
     <aside
-        class="scrollbar-none fixed top-0 z-[99999] h-screen overflow-y-auto bg-white duration-300 dark:bg-gray-900 lg:border-r lg:border-gray-700"
+        class="fixed top-0 z-[99999] h-screen overflow-y-auto bg-white duration-300 scrollbar-none dark:bg-gray-900 lg:border-r lg:border-gray-700"
         :class="{
             'left-0': sidebarVisible || !isMobileDevice,
             '-left-full': !sidebarVisible && isMobileDevice,

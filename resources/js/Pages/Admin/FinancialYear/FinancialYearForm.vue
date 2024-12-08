@@ -1,16 +1,17 @@
 <script lang="ts" setup>
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import InputError from '@/Components/Form/InputError.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextareaInput from '@/Components/Form/TextareaInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import InputTextarea from '@/Components/Form/InputTextarea.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
-import { useForm } from 'laravel-precognition-vue-inertia';
-
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { FinancialYear } from '@/types';
+import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
@@ -45,85 +46,83 @@ const submitForm = () => {
     });
 };
 </script>
-
 <template>
-    <div>
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    {{ financialYear ? 'Edit' : 'Create New' }} Financial Year
-                </h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                    Fill in the details for your
-                    {{ financialYear ? 'existing' : 'new' }} financial year.
-                </p>
-            </div>
+    <PageHeader>
+        <template #title>
+            {{ financialYear ? 'Edit ' : 'Create New' }} Financial Year
+        </template>
+        <template #subtitle>
+            Fill in the details for your
+            {{ financialYear ? 'existing' : 'new' }} financial year.
+        </template>
+        <template #actions>
             <LinkButton :href="route('admin.financial-years.index')"
                 >Back</LinkButton
             >
-        </div>
+        </template>
+    </PageHeader>
 
-        <Card class="mx-auto mt-6 p-4">
-            <form @submit.prevent="submitForm">
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            label="Financial Year Name"
-                            v-model="form.name"
-                        />
-                        <InputError :message="form.errors.name" />
-                    </div>
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            label="Start Date"
-                            v-model="form.start_date"
-                            type="date"
-                        />
-                        <InputError :message="form.errors.start_date" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
-                            label="End Date"
-                            v-model="form.end_date"
-                            type="date"
-                        />
-                        <InputError :message="form.errors.end_date" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <SelectInput
-                            label="Status"
-                            v-model="form.status"
-                            :options="statusOptions"
-                        />
-                        <InputError :message="form.errors.status" />
-                    </div>
-                </div>
-                <div class="-mx-3 mb-6 flex flex-wrap">
-                    <div class="md:w-1/1 mb-6 w-full px-3 md:mb-0">
-                        <TextareaInput
-                            label="Description"
-                            v-model="form.description"
-                        />
-                        <InputError :message="form.errors.description" />
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <PrimaryButton
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                        type="submit"
-                    >
-                        {{ financialYear ? 'Update' : 'Submit' }}
-                    </PrimaryButton>
-                    <LinkButton :href="route('admin.financial-years.index')">
-                        Cancel
-                    </LinkButton>
-                </div>
-            </form>
-        </Card>
-    </div>
+    <Card class="mx-auto mt-6 p-4">
+        <form @submit.prevent="submitForm">
+            <FieldRow class="grid-cols-2">
+                <FieldCol>
+                    <InputText
+                        label="Financial Year Name"
+                        v-model="form.name"
+                        :error="form.errors.name"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <InputText
+                        label="Start Date"
+                        v-model="form.start_date"
+                        type="date"
+                        :error="form.errors.start_date"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow class="grid-cols-2">
+                <FieldCol>
+                    <InputText
+                        label="End Date"
+                        v-model="form.end_date"
+                        type="date"
+                        :error="form.errors.end_date"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <InputSelect
+                        label="Status"
+                        v-model="form.status"
+                        :options="statusOptions"
+                        :error="form.errors.status"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
+                    <InputTextarea
+                        label="Description"
+                        v-model="form.description"
+                        :error="form.errors.description"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <div class="flex gap-2">
+                <PrimaryButton
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                    type="submit"
+                >
+                    {{ financialYear ? 'Update' : 'Submit' }}
+                </PrimaryButton>
+                <LinkButton
+                    :href="route('admin.financial-years.index')"
+                    color="danger"
+                >
+                    Cancel
+                </LinkButton>
+            </div>
+        </form>
+    </Card>
 </template>

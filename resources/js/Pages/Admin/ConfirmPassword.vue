@@ -2,7 +2,7 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
@@ -31,7 +31,7 @@ const submit = () => {
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="password" value="Password" />
-                <TextInput
+                <InputText
                     id="password"
                     type="password"
                     class="mt-1 block w-full"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PrimaryButton } from '@/Components/Buttons';
-import { InputError, InputLabel, SelectInput } from '@/Components/Form';
+import { InputError, InputLabel, InputSelect } from '@/Components/Form';
 import { Modal } from '@/Components/Modal';
 import { useLocationStore } from '@/Stores/LocationStore';
 import { reactive, ref } from 'vue';
@@ -54,7 +54,7 @@ const submitOrder = async () => {
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-full px-3 md:mb-0">
                     <InputLabel for="outlet" value="Select Outlet" />
-                    <SelectInput
+                    <InputSelect
                         v-model="form.outlet"
                         :options="props.outlets"
                         placeholder="Select an outlet"

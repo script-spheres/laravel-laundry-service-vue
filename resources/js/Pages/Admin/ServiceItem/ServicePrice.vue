@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import NumberInput from '@/Components/Form/NumberInput.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
+import InputNumber from '@/Components/Form/InputNumber.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
 import { defineModel, PropType } from 'vue';
 
 defineProps({
@@ -37,12 +36,12 @@ const removeNutritionalInfo = (index: number) => {
                 :key="index"
                 class="flex items-center space-x-2"
             >
-                <SelectInput
+                <InputSelect
                     v-model="info.service_type_id"
                     type="text"
                     :options="serviceTypeOptions"
                 />
-                <NumberInput
+                <InputNumber
                     v-model="info.price"
                     type="text"
                     :placeholder="'Enter price ' + (index + 1)"

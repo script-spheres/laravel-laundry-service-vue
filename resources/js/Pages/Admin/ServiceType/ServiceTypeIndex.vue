@@ -10,12 +10,12 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import StatusToggleInput from '@/Components/Form/StatusToggleInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import StatusToggleInput from '@/Components/StatusToggleInput.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -59,14 +59,14 @@ const { filter, handleClearFilter } = useFilters('admin.service-types.index', {
     <Card class="mb-6 p-6">
         <FieldRow class="flex grid-cols-4">
             <FieldCol>
-                <TextInput
+                <InputText
                     label="Type Name"
                     v-model="filter.name"
                     placeholder="Filter by Type Name"
                 />
             </FieldCol>
             <FieldCol>
-                <SelectInput
+                <InputSelect
                     label="Status"
                     v-model="filter.status"
                     :options="statusOptions"

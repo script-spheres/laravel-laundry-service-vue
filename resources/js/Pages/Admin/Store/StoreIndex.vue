@@ -8,8 +8,8 @@ import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
-import ToggleInput from '@/Components/Form/ToggleInput.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import ToggleInput from '@/Components/Form/InputToggle.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -105,25 +105,25 @@ const handleActiveStatusChange = (store: Store, event: Event) => {
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <div class="w-full md:mb-0 md:w-1/6">
                 <InputLabel for="name" value="Name" />
-                <TextInput v-model="filter.name" placeholder="Filter by Name" />
+                <InputText v-model="filter.name" placeholder="Filter by Name" />
             </div>
             <div class="w-full md:mb-0 md:w-1/6">
                 <InputLabel for="address" value="Address" />
-                <TextInput
+                <InputText
                     v-model="filter.address"
                     placeholder="Filter by Address"
                 />
             </div>
             <div class="w-full md:mb-0 md:w-1/6">
                 <InputLabel for="email" value="Email" />
-                <TextInput
+                <InputText
                     v-model="filter.email"
                     placeholder="Filter by Email"
                 />
             </div>
             <div class="w-full md:mb-0 md:w-1/6">
                 <InputLabel for="phone_number" value="Phone Number" />
-                <TextInput
+                <InputText
                     v-model="filter.phone_number"
                     placeholder="Filter by Phone Number"
                 />

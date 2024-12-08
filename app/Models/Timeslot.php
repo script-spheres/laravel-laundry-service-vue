@@ -13,9 +13,12 @@ class Timeslot extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'start_time',
-        'end_time',
         'day',
-        'capacity',
+        'timeslots',
+        'status',
+    ];
+
+    protected $casts = [
+        'timeslots' => 'array',
     ];
 }

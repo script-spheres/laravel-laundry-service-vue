@@ -4,21 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExpenseRequest;
-use App\Http\Requests\UpdateExpenseRequest;
-use App\Http\Resources\ExpenseResource;
-use App\Models\Expense;
-use App\Models\Store;
 use App\Services\ExpenseService;
+use App\Settings\FinanceSettings;
 use App\Settings\GeneralSettings;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class SettingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(GeneralSettings $settings)
+    public function index(GeneralSettings $settings): Response
     {
         return Inertia::render('Admin/Settings/GeneralSetting', [
             'settings' => $settings,
@@ -28,7 +26,7 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreExpenseRequest $request, ExpenseService $expenseService)
+    public function store(StoreExpenseRequest $request, ExpenseService $expenseService): RedirectResponse
     {
         $expenseService->create($request);
 
@@ -38,51 +36,10 @@ class SettingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function finance(FinanceSettings $settings): Response
     {
-        return Inertia::render('Admin/Expense/ExpenseForm', [
-            'storesOptions' => Store::pluck('name', 'id'),
+        return Inertia::render('Admin/Settings/FinanceSetting', [
+            'settings' => $settings,
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Expense $expense)
-    {
-        return Inertia::render('Admin/Expense/ExpenseForm', [
-            'expense' => ExpenseResource::make($expense)->resolve()
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Expense $expense)
-    {
-        return Inertia::render('Admin/Expense/ExpenseForm', [
-            'storesOptions' => Store::pluck('name', 'id'),
-            'expense' => ExpenseResource::make($expense)->resolve()
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateExpenseRequest $request, Expense $expense, ExpenseService $expenseService)
-    {
-        $expenseService->update($expense, $request);
-
-        return redirect()->route('admin.expenses.index')->with(['message' => 'Updated successfully']);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Expense $expense, ExpenseService $expenseService)
-    {
-        $expenseService->delete($expense);
-
-        return redirect()->route('admin.expenses.index')->with(['message' => 'Deleted successfully']);
     }
 }

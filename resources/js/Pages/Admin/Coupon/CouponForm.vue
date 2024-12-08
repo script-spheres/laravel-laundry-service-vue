@@ -3,10 +3,10 @@ import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import NumberInput from '@/Components/Form/NumberInput.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextareaInput from '@/Components/Form/TextareaInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputNumber from '@/Components/Form/InputNumber.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { discountTypeOptions, statusOptions } from '@/Constants/options';
@@ -76,14 +76,14 @@ const submitForm = () => {
         <form @submit.prevent="submitForm">
             <FieldRow class="grid-cols-2">
                 <FieldCol>
-                    <TextInput
+                    <InputText
                         label="Title"
                         v-model="form.title"
                         :error="form.errors.title"
                     />
                 </FieldCol>
                 <FieldCol>
-                    <TextInput
+                    <InputText
                         label="Coupon Code"
                         v-model="form.code"
                         :error="form.errors.code"
@@ -92,7 +92,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow>
                 <FieldCol>
-                    <TextareaInput
+                    <InputTextarea
                         label="Description"
                         v-model="form.description"
                         :error="form.errors.description"
@@ -101,7 +101,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow class="grid-cols-2">
                 <FieldCol>
-                    <SelectInput
+                    <InputSelect
                         label="Discount Type"
                         v-model="form.discount_type"
                         :options="discountTypeOptions"
@@ -109,7 +109,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol v-if="isDiscountAmountVisible">
-                    <NumberInput
+                    <InputNumber
                         label="Discount Amount"
                         v-model="form.discount_amount"
                         type="number"
@@ -118,7 +118,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol v-if="isDiscountPercentageVisible">
-                    <NumberInput
+                    <InputNumber
                         label="Discount Percentage"
                         v-model="form.discount_percentage"
                         type="number"
@@ -129,7 +129,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow class="grid-cols-3">
                 <FieldCol>
-                    <NumberInput
+                    <InputNumber
                         label="Minimum Amount"
                         v-model="form.min_amount"
                         type="number"
@@ -138,7 +138,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol>
-                    <NumberInput
+                    <InputNumber
                         label="Maximum Amount"
                         v-model="form.max_amount"
                         type="number"
@@ -147,7 +147,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol>
-                    <SelectInput
+                    <InputSelect
                         label="Active Status"
                         v-model="form.status"
                         :options="statusOptions"

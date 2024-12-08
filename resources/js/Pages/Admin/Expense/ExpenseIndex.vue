@@ -10,7 +10,7 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
@@ -56,7 +56,7 @@ const { filter, handleClearFilter } = useFilters('admin.expenses.index', {
     <Card class="mb-6 p-6">
         <FieldRow class="flex md:grid-cols-4">
             <FieldCol>
-                <SelectInput
+                <InputSelect
                     label="Category"
                     v-model="filter.category"
                     :options="categoryOptions"
@@ -64,7 +64,7 @@ const { filter, handleClearFilter } = useFilters('admin.expenses.index', {
                 />
             </FieldCol>
             <FieldCol>
-                <SelectInput
+                <InputSelect
                     label="Store"
                     v-model="filter.store_id"
                     :options="storeOptions"
@@ -72,7 +72,7 @@ const { filter, handleClearFilter } = useFilters('admin.expenses.index', {
                 />
             </FieldCol>
             <FieldCol>
-                <SelectInput
+                <InputSelect
                     label="Amount"
                     v-model="filter.amount"
                     :options="amountOptions"

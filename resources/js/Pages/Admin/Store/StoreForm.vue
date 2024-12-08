@@ -2,13 +2,13 @@
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import InputError from '@/Components/Form/InputError.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextareaInput from '@/Components/Form/TextareaInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 
-import NumberInput from '@/Components/Form/NumberInput.vue';
+import InputNumber from '@/Components/Form/InputNumber.vue';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Store } from '@/types';
@@ -73,11 +73,11 @@ const submitForm = () => {
             <form @submit.prevent="submitForm">
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput label="Store Name" v-model="form.name" />
+                        <InputText label="Store Name" v-model="form.name" />
                         <InputError :message="form.errors.name" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
+                        <InputText
                             label="Store Code"
                             v-model="form.store_code"
                         />
@@ -86,13 +86,13 @@ const submitForm = () => {
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0">
-                        <TextareaInput label="Address" v-model="form.address" />
+                        <InputTextarea label="Address" v-model="form.address" />
                         <InputError :message="form.errors.address" />
                     </div>
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <NumberInput
+                        <InputNumber
                             label="Address Latitude"
                             v-model="form.address_lat"
                             type="number"
@@ -101,7 +101,7 @@ const submitForm = () => {
                         <InputError :message="form.errors.address_lat" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <NumberInput
+                        <InputNumber
                             label="Address Longitude"
                             v-model="form.address_long"
                             type="number"
@@ -112,7 +112,7 @@ const submitForm = () => {
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
+                        <InputText
                             label="Email"
                             v-model="form.email"
                             type="email"
@@ -120,7 +120,7 @@ const submitForm = () => {
                         <InputError :message="form.errors.email" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
+                        <InputText
                             label="Phone Number"
                             v-model="form.phone_number"
                         />
@@ -129,14 +129,14 @@ const submitForm = () => {
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
+                        <InputText
                             label="Manager Name"
                             v-model="form.manager_name"
                         />
                         <InputError :message="form.errors.manager_name" />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
+                        <InputText
                             label="Manager Email"
                             v-model="form.manager_email"
                             type="email"
@@ -146,7 +146,7 @@ const submitForm = () => {
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <TextInput
+                        <InputText
                             label="Manager Phone Number"
                             v-model="form.manager_phone_number"
                         />
@@ -155,7 +155,7 @@ const submitForm = () => {
                         />
                     </div>
                     <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                        <SelectInput
+                        <InputSelect
                             label="Status"
                             v-model="form.status"
                             :options="statusOptions"
@@ -165,7 +165,7 @@ const submitForm = () => {
                 </div>
                 <div class="-mx-3 mb-6 flex flex-wrap">
                     <div class="md:w-1/1 mb-6 w-full px-3 md:mb-0">
-                        <TextareaInput
+                        <InputTextarea
                             label="Additional Info"
                             v-model="form.additional_info"
                         />

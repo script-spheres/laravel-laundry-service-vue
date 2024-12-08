@@ -8,16 +8,15 @@ import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import ToggleInput from '@/Components/Form/ToggleInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
-import { statusOptions } from '@/Constants/options';
+import { useFilters } from '@/Composables/useFilters';
+import { daysOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { PaginatedData, Timeslot } from '@/types';
-import { router } from '@inertiajs/vue3';
-import { PropType, reactive, watch } from 'vue';
-import { toast } from 'vue3-toastify';
+import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -34,49 +33,28 @@ const props = defineProps({
 });
 
 // Initialize reactive filters with default values or passed props
-const filter = reactive<Filters>({
-    status: props.filters?.status ?? '',
+const { filter, handleClearFilter } = useFilters('admin.timeslots.index', {
     day: props.filters?.day ?? '',
-    start_time: props.filters?.start_time ?? '',
-    end_time: props.filters?.end_time ?? '',
 });
-
 </script>
 
 <template>
-    <div class="mb-4 flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-x-3">
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    Timeslot Management
-                </h2>
-            </div>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Manage your timeslots with filters and actions.
-            </p>
-        </div>
-        <div class="flex items-center gap-x-3">
-            <LinkButton :href="route('admin.timeslots.create')">
-                Add Timeslot
-            </LinkButton>
-        </div>
-    </div>
+    <PageHeader>
+        <template #title> Timeslot Management </template>
+        <template #subtitle>
+            Manage your timeslots with filters and actions.
+        </template>
+        <template #actions> </template>
+    </PageHeader>
+
     <Card class="mb-6 p-6">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <div class="w-full md:mb-0 md:w-1/4">
                 <InputLabel for="day" value="Day" />
-                <SelectInput
+                <InputSelect
                     v-model="filter.day"
-                    :options="dayOptions"
+                    :options="daysOptions"
                     placeholder="Filter by Day"
-                />
-            </div>
-            <div class="w-full md:mb-0 md:w-1/4">
-                <InputLabel for="status" value="Status" />
-                <SelectInput
-                    v-model="filter.status"
-                    :options="statusOptions"
-                    placeholder="Filter by Active Status"
                 />
             </div>
             <div class="flex-none gap-2 self-end">
@@ -90,34 +68,20 @@ const filter = reactive<Filters>({
     <div class="mx-auto mt-6">
         <DataTable>
             <TableHead>
-                <TableHeadCell>Start Time</TableHeadCell>
-                <TableHeadCell>End Time</TableHeadCell>
                 <TableHeadCell>Day</TableHeadCell>
-                <TableHeadCell>Capacity</TableHeadCell>
-                <TableHeadCell class="text-right">Status</TableHeadCell>
+                <TableHeadCell>Timeslots</TableHeadCell>
                 <TableHeadCell class="text-right">Actions</TableHeadCell>
             </TableHead>
             <TableBody>
                 <TableRow v-for="timeslot in timeslots.data" :key="timeslot.id">
-                    <TableCell>{{ timeslot.start_time }}</TableCell>
-                    <TableCell>{{ timeslot.end_time }}</TableCell>
                     <TableCell>{{ timeslot.day }}</TableCell>
-                    <TableCell>{{ timeslot.capacity }}</TableCell>
-                    <TableCell class="text-right">
-                        <ToggleInput
-                            :modelValue="timeslot.status === 'active'"
-                            @change="handleActiveStatusChange(timeslot, $event)"
-                        />
-                    </TableCell>
+                    <TableCell>{{ timeslot.timeslots }}</TableCell>
                     <TableCell class="flex justify-end gap-2">
                         <LinkButton
                             :href="route('admin.timeslots.edit', timeslot.id)"
                         >
                             Edit
                         </LinkButton>
-                        <PrimaryButton @click="deleteData(timeslot.id)">
-                            Delete
-                        </PrimaryButton>
                     </TableCell>
                 </TableRow>
             </TableBody>

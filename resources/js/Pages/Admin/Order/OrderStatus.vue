@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import DateInput from '@/Components/Form/DateInput.vue';
+import DateInput from '@/Components/Form/InputDate.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { paymentStatusOptions } from '@/Constants/options';
@@ -107,7 +107,7 @@ const cloneDog = (order: Order) => {
         <div class="flex flex-wrap items-center gap-4">
             <div class="w-full md:w-1/4">
                 <InputLabel for="order_uuid" value="Order No." />
-                <TextInput
+                <InputText
                     v-model="filter.order_uuid"
                     placeholder="Search by Order No."
                 />
@@ -123,7 +123,7 @@ const cloneDog = (order: Order) => {
 
             <div class="w-full md:w-1/4">
                 <InputLabel for="payment_status" value="Payment Status" />
-                <SelectInput
+                <InputSelect
                     v-model="filter.payment_status"
                     :options="paymentStatusOptions"
                     placeholder="Payment Status"

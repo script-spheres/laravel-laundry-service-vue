@@ -76,14 +76,14 @@ export type Coupon = {
     status: Status;
 };
 
-export interface FinancialYear {
+export type FinancialYear = {
     id: number;
     name: string;
     start_date: string;
     end_date: string;
     description?: string;
     status: Status;
-}
+};
 
 export type Banner = {
     id: number;
@@ -93,7 +93,7 @@ export type Banner = {
     status: Status;
 };
 
-export interface Store {
+export type Store = {
     id: number;
     financial_year_id: number;
     name: string;
@@ -110,59 +110,62 @@ export interface Store {
     status: Status;
     created_at?: string;
     updated_at?: string;
-}
+};
 
-export interface Customer {
+export type Customer = {
     id: number;
     name: string;
     email: string;
     phone_number: string;
     address: string | null;
     communication_pref: string | null;
-}
+};
 
-export interface ServiceType {
+export type ServiceType = {
     id: number;
     name: string;
     description: string;
     status: Status;
-}
+};
 
-export interface ServiceItem {
+export type ServiceItem = {
     id: number;
     name: string;
     description: string | null;
     image: Image;
     service_prices: ServicePrice[];
     status: Status;
-}
+};
 
-export interface ServicePrice {
+export type ServicePrice = {
     id: number;
     service_type_id: number;
     service_type?: ServiceType;
     service_item?: ServiceItem;
     price: number;
-}
+};
 
-export interface AddonService {
+export type AddonService = {
     id: number;
     name: string;
     description: string | null;
     price: number;
     status: Status;
-}
+};
 
-export interface Timeslot {
+export type Timeslot = {
     id: number;
+    day: string | null;
+    timeslots: Times;
+    status: Status;
+};
+
+export type Times = {
     start_time: string;
     end_time: string;
-    day: string | null;
-    capacity: number;
-    status: Status;
-}
+};
 
-export interface Order {
+export type Order = {
     id: number;
     order_uuid: string;
     sub_total: number;
@@ -178,22 +181,34 @@ export interface Order {
     store: Store;
     customer: Customer;
     order_details: OrderDetail[];
-}
+};
 
-export interface OrderDetail {
+export type OrderDetail = {
     id: number;
     product_id: number;
     quantity: number;
     price: number;
-}
+};
 
-export interface Payment {
+export type DeliveryScale = {
+    id: number;
+    radius: string;
+    radius_unit: string;
+    min_order_amount: string;
+    delivery_charges: string;
+    status: 'active' | 'inactive';
+    created_at: string | null;
+    updated_at: string | null;
+    deleted_at: string | null;
+};
+
+export type Payment = {
     id: number;
     amount: number;
     status: string;
-}
+};
 
-export interface Expense {
+export type Expense = {
     id: number;
     expense_type: ExpenseType;
     amount: number;
@@ -201,24 +216,24 @@ export interface Expense {
     store_name: string;
     date: string;
     note: string;
-}
+};
 
-export interface CartItem {
+export type CartItem = {
     id: number;
     name: string;
     image: Image;
     price: number;
     quantity: number;
     total: number;
-}
+};
 
-export interface CartAddonItem {
+export type CartAddonItem = {
     id: number;
     name: string;
     price: number;
     quantity: number;
     total: number;
-}
+};
 
 export type Status = 'active' | 'inactive';
 

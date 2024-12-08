@@ -3,16 +3,16 @@ import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
-import TextareaInput from '@/Components/Form/TextareaInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
+import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
-import { statusOptions } from '@/Constants/options';
 
 defineOptions({ layout: AdminLayout });
 
@@ -69,7 +69,7 @@ const submitForm = () => {
         <form @submit.prevent="submitForm">
             <FieldRow>
                 <FieldCol>
-                    <TextInput
+                    <InputText
                         label="Name"
                         v-model="form.name"
                         :error="form.errors.name"
@@ -78,7 +78,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow>
                 <FieldCol>
-                    <TextareaInput
+                    <InputTextarea
                         label="Description"
                         v-model="form.description"
                         :error="form.errors.description"
@@ -87,7 +87,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow>
                 <FieldCol>
-                    <SelectInput
+                    <InputSelect
                         label="Status"
                         v-model="form.status"
                         :options="statusOptions"

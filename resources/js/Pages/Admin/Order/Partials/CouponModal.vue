@@ -5,7 +5,7 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import RadioInput from '@/Components/Form/RadioInput.vue';
+import RadioInput from '@/Components/Form/InputRadio.vue';
 import Modal from '@/Components/Modal/Modal.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { Coupon } from '@/types';

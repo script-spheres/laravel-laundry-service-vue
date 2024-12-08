@@ -8,18 +8,18 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import DateInput from '@/Components/Form/DateInput.vue';
+import DateInput from '@/Components/Form/InputDate.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import StatusToggleInput from '@/Components/Form/StatusToggleInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import StatusToggleInput from '@/Components/StatusToggleInput.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Coupon, FlashMessage, PaginatedData } from '@/types';
+import { Coupon, PaginatedData } from '@/types';
 import { PropType } from 'vue';
-import PageHeader from '@/Components/PageHeader.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -32,10 +32,6 @@ const props = defineProps({
         type: Object as PropType<Filters>,
         required: false,
         default: () => ({}),
-    },
-    flash: {
-        type: Object as PropType<FlashMessage>,
-        required: false,
     },
 });
 
@@ -73,7 +69,7 @@ const { filter, handleClearFilter } = useFilters('admin.coupons.index', {
             </div>
             <div class="w-full md:mb-0 md:w-1/4">
                 <InputLabel for="status" value="Status" />
-                <SelectInput
+                <InputSelect
                     v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Filter by Active Status"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import Checkbox from '@/Components/Form/Checkbox.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import Checkbox from '@/Components/Form/InputCheckbox.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
@@ -35,7 +35,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <TextInput
+                <InputText
                     label="Email"
                     type="email"
                     class="mt-1 block w-full"
@@ -48,7 +48,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <TextInput
+                <InputText
                     value="Password"
                     type="password"
                     class="mt-1 block w-full"

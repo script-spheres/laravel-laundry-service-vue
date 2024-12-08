@@ -9,8 +9,8 @@ import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
@@ -73,7 +73,7 @@ const handleOrderStatusChange = (order: Order, event: Event) => {
             <!-- Order Number Input -->
             <div class="w-full md:w-1/6">
                 <InputLabel for="order_uuid" value="Order No." />
-                <TextInput
+                <InputText
                     v-model="filter.order_uuid"
                     placeholder="Search by Order No."
                 />
@@ -82,7 +82,7 @@ const handleOrderStatusChange = (order: Order, event: Event) => {
             <!-- Customer Name Filter -->
             <div class="w-full md:w-1/6">
                 <InputLabel for="customer_name" value="Customer" />
-                <TextInput
+                <InputText
                     v-model="filter.customer_name"
                     placeholder="Filter by Customer"
                 />
@@ -91,7 +91,7 @@ const handleOrderStatusChange = (order: Order, event: Event) => {
             <!-- Order Status Filter -->
             <div class="w-full md:w-1/6">
                 <InputLabel for="order_status" value="Order Status" />
-                <SelectInput
+                <InputSelect
                     v-model="filter.order_status"
                     :options="orderStatusOptions"
                     placeholder="Order Status"
@@ -101,7 +101,7 @@ const handleOrderStatusChange = (order: Order, event: Event) => {
             <!-- Payment Status Filter -->
             <div class="w-full md:w-1/6">
                 <InputLabel for="payment_status" value="Payment Status" />
-                <SelectInput
+                <InputSelect
                     v-model="filter.payment_status"
                     :options="paymentStatusOptions"
                     placeholder="Payment Status"

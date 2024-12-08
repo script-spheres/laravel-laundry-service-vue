@@ -8,9 +8,9 @@ import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
-import ToggleInput from '@/Components/Form/ToggleInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import ToggleInput from '@/Components/Form/InputToggle.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
@@ -97,18 +97,18 @@ watch(filter, (newFilters) => {
         <div class="flex items-center gap-x-3">
             <div class="mb-6 w-full md:w-1/3">
                 <InputLabel for="name" value="Name" />
-                <TextInput v-model="filter.name" placeholder="Search by name" />
+                <InputText v-model="filter.name" placeholder="Search by name" />
             </div>
             <div class="mb-6 w-full md:w-1/3">
                 <InputLabel for="email" value="Email" />
-                <TextInput
+                <InputText
                     v-model="filter.email"
                     placeholder="Search by email"
                 />
             </div>
             <div class="mb-6 w-full md:w-1/3">
                 <InputLabel for="role" value="Role" />
-                <SelectInput
+                <InputSelect
                     v-model="filter.role"
                     :options="['Admin', 'User']"
                     placeholder="Select role"
@@ -116,7 +116,7 @@ watch(filter, (newFilters) => {
             </div>
             <div class="mb-6 w-full md:w-1/2">
                 <InputLabel for="status" value="Status" />
-                <SelectInput
+                <InputSelect
                     v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Select status"

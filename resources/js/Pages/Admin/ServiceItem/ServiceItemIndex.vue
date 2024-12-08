@@ -8,10 +8,10 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import StatusToggleInput from '@/Components/Form/StatusToggleInput.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import StatusToggleInput from '@/Components/StatusToggleInput.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -66,7 +66,7 @@ const { filter, handleClearFilter } = useFilters('admin.service-items.index', {
     <Card class="mb-6 p-6">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <div class="w-full md:mb-0 md:w-1/4">
-                <SelectInput
+                <InputSelect
                     label="Store"
                     v-model="filter.store_id"
                     :options="storesOptions"
@@ -74,7 +74,7 @@ const { filter, handleClearFilter } = useFilters('admin.service-items.index', {
                 />
             </div>
             <div class="w-full md:mb-0 md:w-1/4">
-                <SelectInput
+                <InputSelect
                     label="Status"
                     v-model="filter.status"
                     :options="statusOptions"

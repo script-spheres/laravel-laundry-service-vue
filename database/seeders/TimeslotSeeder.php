@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\DeliveryScale;
+use App\Models\Timeslot;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DeliveryScaleSeeder extends Seeder
+class TimeslotSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DeliveryScale::factory()->count(10)->create();
+        Timeslot::factory(10)->create();
     }
 }

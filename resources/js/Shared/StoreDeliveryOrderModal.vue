@@ -59,7 +59,7 @@ const submitOrder = async () => {
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-full px-3 md:mb-0">
                     <InputLabel for="outlet" value="Select Outlet" />
-                    <SelectInput
+                    <InputSelect
                         v-model="form.outlet"
                         :options="outlets"
                         placeholder="Select an outlet"

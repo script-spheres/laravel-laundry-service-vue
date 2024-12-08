@@ -87,9 +87,7 @@ const update = () => form.post(route('admin.Banner.update', banner.id));
                                     v-model="form.status"
                                     :label="'Status'"
                                 />
-                                <InputError
-                                    :message="form.errors.status"
-                                />
+                                <InputError :message="form.errors.status" />
                             </div>
                         </div>
                         <div

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import DateInput from '@/Components/Form/DateInput.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import SelectInput from '@/Components/Form/SelectInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
-import TextareaInput from '@/Components/Form/TextareaInput.vue';
+import DateInput from '@/Components/Form/InputDate.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -73,7 +73,7 @@ const submitForm = () => {
         <form @submit.prevent="submitForm">
             <FieldRow>
                 <FieldCol>
-                    <SelectInput
+                    <InputSelect
                         label="Expense Type"
                         v-model="form.expense_type_id"
                         :options="expenseTypeOptions"
@@ -83,7 +83,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow>
                 <FieldCol>
-                    <SelectInput
+                    <InputSelect
                         label="Store (Optional)"
                         v-model="form.store_id"
                         :options="storeOptions"
@@ -100,7 +100,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol>
-                    <TextInput
+                    <InputText
                         label="Amount"
                         v-model="form.amount"
                         type="number"
@@ -111,7 +111,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow>
                 <FieldCol>
-                    <TextareaInput
+                    <InputTextarea
                         label="Note (Optional)"
                         v-model="form.note"
                         :error="form.errors.note"

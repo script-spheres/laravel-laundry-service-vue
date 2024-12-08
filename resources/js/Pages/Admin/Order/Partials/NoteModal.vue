@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
 import TableBody from '@/Components/DataTable/TableBody.vue';
 import TableCell from '@/Components/DataTable/TableCell.vue';

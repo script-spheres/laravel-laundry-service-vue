@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import EmailInput from '@/Components/Form/EmailInput.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import PhoneInput from '@/Components/Form/PhoneInput.vue';
-import TextareaInput from '@/Components/Form/TextareaInput.vue';
-import TextInput from '@/Components/Form/TextInput.vue';
+import EmailInput from '@/Components/Form/InputEmail.vue';
+import PhoneInput from '@/Components/Form/InputPhone.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import PageHeader from '@/Components/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
@@ -65,7 +65,7 @@ const submitForm = () => {
         <form @submit.prevent="submitForm">
             <FieldRow class="grid-cols-2">
                 <FieldCol>
-                    <TextInput
+                    <InputText
                         label="Customer Name"
                         v-model="form.name"
                         :error="form.errors.name"
@@ -88,7 +88,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol>
-                    <TextareaInput
+                    <InputTextarea
                         label="Communication Preferences"
                         v-model="form.communication_pref"
                         placeholder="Communication Preferences (optional)"
@@ -98,7 +98,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow>
                 <FieldCol>
-                    <TextareaInput
+                    <InputTextarea
                         label="Address"
                         v-model="form.address"
                         placeholder="Customer Address (optional)"
