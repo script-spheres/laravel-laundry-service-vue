@@ -3,8 +3,8 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Modal } from '@inertiaui/modal-vue';
 
 const form = useForm({
     name: '',
@@ -23,7 +23,7 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <Modal>
         <Head title="Register" />
 
         <form @submit.prevent="submit">
@@ -111,5 +111,5 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-    </GuestLayout>
+    </Modal>
 </template>

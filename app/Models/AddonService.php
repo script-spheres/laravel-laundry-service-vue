@@ -11,5 +11,12 @@ class AddonService extends Model
     /** @use HasFactory<AddonServiceFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price','status'];
+    protected $fillable = ['name', 'description', 'image', 'price', 'status'];
+
+    protected function casts(): array
+    {
+        return [
+            'image' => 'json',
+        ];
+    }
 }

@@ -71,8 +71,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('expense-types', ExpenseTypeController::class);
     Route::resource('financial-years', FinancialYearController::class);
     Route::resource('users', UserController::class);
+    Route::resource('points', UserController::class);
+    Route::resource('rewards', UserController::class);
+    Route::resource('redemptions', UserController::class);
 
-    Route::get('settings', [SettingController::class, 'index'])->name('settings.application');
+    Route::get('settings-general', [SettingController::class, 'index'])->name('settings.general');
     Route::get('settings-finance', [SettingController::class, 'finance'])->name('settings.finance');
     Route::post('settings', [SettingController::class, 'store'])->name('settings.submit');
 

@@ -4,8 +4,8 @@ import Checkbox from '@/Components/Form/InputCheckbox.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Modal } from '@inertiaui/modal-vue';
 
 defineProps<{
     canResetPassword?: boolean;
@@ -28,7 +28,7 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <Modal>
         <Head title="Log in" />
 
         <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
@@ -94,5 +94,5 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-    </GuestLayout>
+    </Modal>
 </template>

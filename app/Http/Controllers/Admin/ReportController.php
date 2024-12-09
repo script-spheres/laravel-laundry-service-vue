@@ -3,24 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePurchaseRequest;
-use App\Http\Requests\UpdatePurchaseRequest;
-use App\Http\Resources\PurchaseResource;
-use App\Models\Purchase;
-use App\Services\PurchaseService;
+use App\Http\Requests\StoreServiceTypeRequest;
+use App\Http\Requests\UpdateServiceTypeRequest;
+use App\Http\Resources\ServiceTypeResource;
+use App\Models\ServiceType;
+use App\Services\ServiceTypeService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, PurchaseService $purchaseService)
+    public function index(Request $request, ServiceTypeService $serviceTypeService)
     {
-        $purchases = $purchaseService->getPurchases();
+        $serviceTypes = $serviceTypeService->getServiceTypes();
 
-        return Inertia::render('Admin/Purchase/PurchaseIndex', [
-            'purchases' => PurchaseResource::collection($purchases),
+        return Inertia::render('Admin/ServiceType/ServiceTypeIndex', [
+            'serviceTypes' => ServiceTypeResource::collection($serviceTypes),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -30,56 +31,56 @@ class ReportController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Purchase/PurchaseForm');
+        return Inertia::render('Admin/ServiceType/ServiceTypeForm');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePurchaseRequest $request, PurchaseService $purchaseService)
+    public function store(StoreServiceTypeRequest $request, ServiceTypeService $serviceTypeService)
     {
-        $purchaseService->create($request);
+        $serviceTypeService->create($request);
 
-        return redirect()->route('admin.purchases.index')->with(['message' => 'Created successfully']);
+        return redirect()->route('admin.service-types.index')->with(['message' => 'Created successfully']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Purchase $purchase)
+    public function show(ServiceType $serviceType)
     {
-        return Inertia::render('Admin/Purchase/PurchaseForm', [
-            'purchase' => PurchaseResource::make($purchase)->resolve()
+        return Inertia::render('Admin/ServiceType/ServiceTypeForm', [
+            'serviceType' => ServiceTypeResource::make($serviceType)->resolve()
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Purchase $purchase)
+    public function edit(ServiceType $serviceType)
     {
-        return Inertia::render('Admin/Purchase/PurchaseForm', [
-            'purchase' => PurchaseResource::make($purchase)->resolve()
+        return Inertia::render('Admin/ServiceType/ServiceTypeForm', [
+            'serviceType' => ServiceTypeResource::make($serviceType)->resolve()
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePurchaseRequest $request, Purchase $purchase, PurchaseService $purchaseService)
+    public function update(UpdateServiceTypeRequest $request, ServiceType $serviceType, ServiceTypeService $serviceTypeService)
     {
-        $purchaseService->update($purchase, $request);
+        $serviceTypeService->update($serviceType, $request);
 
-        return redirect()->route('admin.purchases.index')->with(['message' => 'Updated successfully']);
+        return redirect()->route('admin.service-types.index')->with(['message' => 'Updated successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Purchase $purchase, PurchaseService $purchaseService)
+    public function destroy(ServiceType $serviceType, ServiceTypeService $serviceTypeService)
     {
-        $purchaseService->delete($purchase);
+        $serviceTypeService->delete($serviceType);
 
-        return redirect()->route('admin.purchases.index')->with(['message' => 'Deleted successfully']);
+        return redirect()->route('admin.service-types.index')->with(['message' => 'Deleted successfully']);
     }
 }

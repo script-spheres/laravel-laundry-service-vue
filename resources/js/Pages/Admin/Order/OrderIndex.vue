@@ -18,7 +18,6 @@ import { useFilters } from '@/Composables/useFilters';
 import { orderStatusOptions, paymentStatusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Order, PaginatedData } from '@/types';
-import { router } from '@inertiajs/vue3';
 import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
@@ -37,24 +36,6 @@ const { filter, handleClearFilter } = useFilters('admin.orders.index', {
     order_status: props.filters?.order_status || '',
     payment_status: props.filters?.payment_status || '',
 });
-
-const handlePaymentStatusChange = (order: Order, event: Event) => {
-    const target = event.target as HTMLSelectElement;
-    const newPaymentStatus = target.value;
-
-    router.put(route('admin.orders.update', { id: order.id }), {
-        payment_status: newPaymentStatus,
-    });
-};
-
-const handleOrderStatusChange = (order: Order, event: Event) => {
-    const target = event.target as HTMLSelectElement;
-    const newOrderStatus = target.value;
-
-    router.put(route('admin.orders.update', { id: order.id }), {
-        order_status: newOrderStatus,
-    });
-};
 </script>
 
 <template>
@@ -117,64 +98,74 @@ const handleOrderStatusChange = (order: Order, event: Event) => {
         </div>
     </Card>
 
-    <div class="mx-auto mt-6">
-        <DataTable>
-            <TableHead>
-                <TableHeadCell>Order Info</TableHeadCell>
-                <TableHeadCell>Customer</TableHeadCell>
-                <TableHeadCell>Order Status</TableHeadCell>
-                <TableHeadCell>Payment Status</TableHeadCell>
-                <TableHeadCell class="text-right">Actions</TableHeadCell>
-            </TableHead>
-            <TableBody>
-                <TableRow v-for="order in orders.data" :key="order.id">
-                    <TableCell>
-                        <p><strong>Order ID:</strong> {{ order.order_uuid }}</p>
-                        <p>
-                            <strong>Order Date:</strong> {{ order.created_at }}
-                        </p>
-                        <p>
-                            <strong>Delivery Date:</strong>
-                            {{ order.delivery_date }}
-                        </p>
-                    </TableCell>
-                    <TableCell>
-                        <p><strong>Name:</strong> {{ order.customer?.name }}</p>
-                        <p>
-                            <strong>Email:</strong> {{ order.customer?.email }}
-                        </p>
-                        <p>
-                            <strong>Mobile:</strong>
-                            {{ order.customer?.phone_number }}
-                        </p>
-                    </TableCell>
-                    <TableCell class="text-right">
-                        <Badge>{{ order.order_status }}</Badge>
-                    </TableCell>
-                    <TableCell>
-                        <p>
-                            <strong>Total Amount:</strong
-                            >{{ order.total_amount }}
-                        </p>
-                        <p>
-                            <strong>Paid Amount:</strong>{{ order.paid_amount }}
-                        </p>
-                    </TableCell>
-                    <TableCell class="flex justify-end gap-2">
-                        <LinkButton
-                            :href="route('admin.orders.show', order.id)"
-                        >
-                            View
-                        </LinkButton>
-                        <LinkButton
-                            :href="route('admin.orders.edit', order.id)"
-                        >
-                            Edit
-                        </LinkButton>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </DataTable>
-        <Pagination :links="orders.meta" />
-    </div>
+    <DataTable>
+        <TableHead>
+            <TableHeadCell>Order Info</TableHeadCell>
+            <TableHeadCell>Customer</TableHeadCell>
+            <TableHeadCell>Order Status</TableHeadCell>
+            <TableHeadCell>Payment Status</TableHeadCell>
+            <TableHeadCell class="text-right">Actions</TableHeadCell>
+        </TableHead>
+        <TableBody>
+            <TableRow v-for="order in orders.data" :key="order.id">
+                <TableCell class="p-2">
+                    <p>
+                        <strong>Order ID:</strong>
+                        {{ order.order_uuid }}
+                    </p>
+                    <p>
+                        <strong>Order Date:</strong>
+                        {{ order.created_at }}
+                    </p>
+                    <p>
+                        <strong>Delivery Date:</strong>
+                        {{ order.delivery_date }}
+                    </p>
+                </TableCell>
+                <TableCell class="p-2">
+                    <p>
+                        <strong>Name:</strong>
+                        {{ order.customer?.name }}
+                    </p>
+                    <p>
+                        <strong>Email:</strong>
+                        {{ order.customer?.email }}
+                    </p>
+                    <p>
+                        <strong>Mobile:</strong>
+                        {{ order.customer?.phone_number }}
+                    </p>
+                </TableCell>
+                <TableCell class="text-right">
+                    <Badge>{{ order.order_status }}</Badge>
+                </TableCell>
+                <TableCell class="p-2">
+                    <p>
+                        <strong>Total Amount:</strong>
+                        {{ order.total_amount }}
+                    </p>
+                    <p>
+                        <strong>Paid Amount:</strong>
+                        {{ order.paid_amount }}
+                    </p>
+                </TableCell>
+                <TableCell class="flex gap-2">
+                    <LinkButton
+                        :href="route('admin.orders.show', order.id)"
+                        color="secondary"
+                        class="flex-none self-end"
+                    >
+                        View
+                    </LinkButton>
+                    <LinkButton
+                        :href="route('admin.orders.edit', order.id)"
+                        color="primary"
+                    >
+                        Edit
+                    </LinkButton>
+                </TableCell>
+            </TableRow>
+        </TableBody>
+    </DataTable>
+    <Pagination :links="orders.meta" />
 </template>

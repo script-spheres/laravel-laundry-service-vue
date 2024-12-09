@@ -166,7 +166,7 @@ const printInvoice = () => {};
 
                     <!-- Summary -->
                     <div
-                        class="mt-6 space-y-2 rounded-lg bg-gray-50 p-6 shadow-md dark:bg-gray-800"
+                        class="mt-6 space-y-2 rounded-lg bg-gray-50 p-6 dark:bg-gray-800"
                     >
                         <div
                             class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300"

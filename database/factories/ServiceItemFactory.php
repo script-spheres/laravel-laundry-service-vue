@@ -29,7 +29,6 @@ class ServiceItemFactory extends Factory
         }
 
         // Generate image in the correct directory
-//        $filename = $this->faker->image($storagePath, 800, 600, 'business', false);
         $filename = $imageFaker->image( $storagePath, 800, 600, false);
 
         return [

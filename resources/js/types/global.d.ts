@@ -34,6 +34,7 @@ declare module '@vueuse/core';
 declare module 'pinia';
 declare module 'pinia-plugin-persistedstate';
 declare module 'v-lazy-image';
+declare module '@inertiaui/modal-vue';
 
 declare module '@inertiajs/core' {
     interface PageProps extends InertiaPageProps, AppPageProps {}

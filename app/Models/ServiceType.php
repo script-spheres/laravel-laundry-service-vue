@@ -16,6 +16,14 @@ class ServiceType extends Model
     protected $fillable = [
         'name',
         'description',
+        'image',
         'status',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'image' => 'json',
+        ];
+    }
 }

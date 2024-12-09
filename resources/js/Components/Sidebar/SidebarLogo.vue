@@ -8,7 +8,7 @@ const buttonClasses = computed(() => (isDark.value ? 'bg-white' : 'bg-black'));
 </script>
 <template>
     <div
-        class="flex h-[64px] items-center justify-between border border-gray-200 px-4"
+        class="flex h-[65px] items-center justify-between border-b border-b-gray-200 px-4"
     >
         <h2 class="text-3xl font-bold">Admin Portal</h2>
         <button

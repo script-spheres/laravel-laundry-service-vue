@@ -2,18 +2,31 @@
 import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import { NavigationItem } from '@/types';
 import getIcon from '@/Utility/icons';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
-defineProps<{ item: NavigationItem }>();
+const props = defineProps<{ item: NavigationItem }>();
 
-const isCollapsed = ref(false);
+// Check if any child is active
+const hasActiveChild = computed(() =>
+    props.item.children?.some((child) => child.active)
+);
+
+// Initialize isCollapsed with the value of hasActiveChild
+const isCollapsed = ref(hasActiveChild.value);
+
+// Watch for changes in hasActiveChild and update isCollapsed accordingly
+watch(hasActiveChild, (newValue) => {
+    if (newValue) {
+        isCollapsed.value = true;
+    }
+});
 
 const toggleCollapse = () => {
     isCollapsed.value = !isCollapsed.value;
 };
 
 const svgClasses = computed(() => [
-    'w-4 h-4 ml-auto transition-transform',
+    'w-4 h-4 ml-auto transition-transform duration-300',
     isCollapsed.value ? 'rotate-0' : '-rotate-90',
 ]);
 </script>
@@ -47,12 +60,21 @@ const svgClasses = computed(() => [
                 ></path>
             </svg>
         </button>
-        <ul v-if="isCollapsed" class="space-y-1">
-            <SidebarItem
-                v-for="(childItem, index) in item.children"
-                :key="index"
-                :item="childItem"
-            />
-        </ul>
+        <Transition
+            enter-active-class="transition-max-height ease-in-out duration-300"
+            enter-from-class="max-h-0 opacity-0"
+            enter-to-class="max-h-96 opacity-100"
+            leave-active-class="transition-max-height ease-in-out duration-300"
+            leave-from-class="max-h-96 opacity-100"
+            leave-to-class="max-h-0 opacity-0"
+        >
+            <ul v-if="isCollapsed" class="space-y-1 overflow-hidden">
+                <SidebarItem
+                    v-for="(childItem, index) in item.children"
+                    :key="index"
+                    :item="childItem"
+                />
+            </ul>
+        </Transition>
     </div>
 </template>

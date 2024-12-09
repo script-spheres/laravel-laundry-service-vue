@@ -124,6 +124,7 @@ export type Customer = {
 export type ServiceType = {
     id: number;
     name: string;
+    image: Image;
     description: string;
     status: Status;
 };
@@ -148,7 +149,8 @@ export type ServicePrice = {
 export type AddonService = {
     id: number;
     name: string;
-    description: string | null;
+    image: Image;
+    description: string;
     price: number;
     status: Status;
 };

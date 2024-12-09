@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
@@ -9,14 +10,14 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import ToggleInput from '@/Components/Form/InputToggle.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import StatusToggleInput from '@/Components/StatusToggleInput.vue';
+import { useFilters } from '@/Composables/useFilters';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { PaginatedData, Store } from '@/types';
-import { router } from '@inertiajs/vue3';
-import { PropType, reactive, watch } from 'vue';
-import { toast } from 'vue3-toastify';
+import { PropType } from 'vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -33,74 +34,27 @@ const props = defineProps({
 });
 
 // Initialize reactive filters with default values or passed props
-const filter = reactive<Filters>({
+const { filter, handleClearFilter } = useFilters('admin.stores.index', {
     name: props.filters?.name ?? '',
     address: props.filters?.address ?? '',
     email: props.filters?.email ?? '',
     phone_number: props.filters?.phone_number ?? '',
     status: props.filters?.status ?? '',
 });
-
-// Watch for filter changes and trigger data refresh
-watch(filter, (newFilters) => {
-    const { name, address, email, phone_number, status } = newFilters;
-
-    const filterParams: Record<string, string> = {
-        ...(name && { 'filter[name]': name }),
-        ...(address && { 'filter[address]': address }),
-        ...(email && { 'filter[email]': email }),
-        ...(phone_number && { 'filter[phone_number]': phone_number }),
-        ...(status && { 'filter[status]': status }),
-    };
-
-    router.get(route('admin.stores.index'), filterParams, {
-        preserveScroll: true,
-    });
-});
-
-const deleteData = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this store?')) return;
-
-    router.delete(route('admin.stores.destroy', id), {
-        preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props.flash?.message),
-    });
-};
-
-const handleClearFilter = () => {
-    Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
-};
-
-const handleActiveStatusChange = (store: Store, event: Event) => {
-    const newStatus = (event.target as HTMLInputElement).checked
-        ? 'active'
-        : 'inactive';
-    const data = { ...store, status: newStatus };
-    router.put(route('admin.stores.update', store.id), data, {
-        preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props.flash?.message),
-    });
-};
 </script>
 
 <template>
-    <div class="mb-4 flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-x-3">
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    Store Management
-                </h2>
-            </div>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Manage your stores with filters and actions.
-            </p>
-        </div>
-        <div class="flex items-center gap-x-3">
+    <PageHeader>
+        <template #title> Store Management </template>
+        <template #subtitle>
+            Manage your stores with filters and actions.
+        </template>
+        <template #actions>
             <LinkButton :href="route('admin.stores.create')">
                 Add Store
             </LinkButton>
-        </div>
-    </div>
+        </template>
+    </PageHeader>
     <Card class="mb-6 p-6">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <div class="w-full md:mb-0 md:w-1/6">
@@ -153,9 +107,9 @@ const handleActiveStatusChange = (store: Store, event: Event) => {
                     <TableCell>{{ store.email }}</TableCell>
                     <TableCell>{{ store.phone_number }}</TableCell>
                     <TableCell class="text-right">
-                        <ToggleInput
-                            :modelValue="store.status === 'active'"
-                            @change="handleActiveStatusChange(store, $event)"
+                        <StatusToggleInput
+                            :data="store"
+                            :action="route('admin.stores.update', store.id)"
                         />
                     </TableCell>
                     <TableCell class="flex justify-end gap-2">
@@ -164,9 +118,11 @@ const handleActiveStatusChange = (store: Store, event: Event) => {
                         >
                             Edit
                         </LinkButton>
-                        <PrimaryButton @click="deleteData(store.id)">
+                        <DeleteButton
+                            :action="route('admin.stores.destroy', store.id)"
+                        >
                             Delete
-                        </PrimaryButton>
+                        </DeleteButton>
                     </TableCell>
                 </TableRow>
             </TableBody>
