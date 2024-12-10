@@ -4,7 +4,7 @@ import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import PageHeader from '@/Components/PageHeader.vue';
+import PageHeader from '@/Shared/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';

@@ -10,7 +10,7 @@ import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
-import PageHeader from '@/Components/PageHeader.vue';
+import PageHeader from '@/Shared/PageHeader.vue';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { AddonService } from '@/types';

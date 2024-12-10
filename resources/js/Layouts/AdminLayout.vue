@@ -1,47 +1,37 @@
 <script setup lang="ts">
+import DarkModeButton from '@/Components/Buttons/DarkModeButton.vue';
 import Dropdown from '@/Components/Dropdown/Dropdown.vue';
 import DropdownLink from '@/Components/Dropdown/DropdownLink.vue';
 import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import SidebarLogo from '@/Components/Sidebar/SidebarLogo.vue';
-import { useDarkMode } from '@/Composables/useDarkMode';
-import { useSidebar } from '@/Composables/useSidebar';
-
+import { useMenu } from '@/Composables/useMenu';
 import {
-    AkMoonFill,
-    AkSunFill,
     FaAngleDown,
     FaBarsStaggered,
-    FeMail,
     MdNotificationsNone,
 } from '@kalimahapps/vue-icons';
 
-const { isDark, toggleDark } = useDarkMode();
-const { sidebarVisible, toggleSidebar, isMobileDevice } = useSidebar();
-
-// Ensure the sidebar starts open on desktop
-if (!isMobileDevice.value) {
-    sidebarVisible.value = true;
-}
+const { isMenuOpen, toggleMenu } = useMenu();
 </script>
 
 <template>
     <!-- Sidebar Overlay for Mobile -->
     <div
         class="fixed left-0 top-0 z-40 h-full w-full bg-teal-950 bg-opacity-60 transition-opacity duration-300 lg:hidden"
-        v-show="sidebarVisible"
-        @click="toggleSidebar"
+        v-show="isMenuOpen"
+        @click="toggleMenu()"
     ></div>
 
     <!-- Sidebar -->
     <aside
         ref="sidebarRef"
-        class="fixed z-50 h-screen w-72 flex-none border-r bg-white transition-transform duration-300"
+        class="fixed z-50 h-screen w-72 flex-none border-r bg-white transition-transform duration-300 dark:border-r-gray-700 dark:bg-gray-900"
         :class="{
-            '-translate-x-full': !sidebarVisible,
+            '-translate-x-full': !isMenuOpen,
         }"
     >
         <div class="flex flex-col">
-            <SidebarLogo @close-sidebar="toggleSidebar" />
+            <SidebarLogo @close-sidebar="toggleMenu()" />
         </div>
         <nav
             class="h-[calc(100vh-65px)] flex-auto overflow-y-auto p-4 scrollbar-thin"
@@ -60,40 +50,25 @@ if (!isMobileDevice.value) {
     <main
         class="flex min-h-screen grow flex-col transition-[margin-left] duration-300"
         :class="{
-            'lg:ml-72': sidebarVisible,
-            'lg:ml-0': !sidebarVisible,
+            'lg:ml-72': isMenuOpen,
+            'lg:ml-0': !isMenuOpen,
         }"
     >
         <!-- Header -->
         <header
-            class="sticky top-0 z-30 h-[65px] flex-none border-b border-gray-200 bg-white px-4 xl:px-6"
+            class="sticky top-0 z-30 h-[65px] flex-none border-b border-gray-200 bg-white px-4 dark:border-gray-700 dark:bg-gray-900 dark:text-white xl:px-6"
         >
             <div class="flex h-16 items-center justify-between">
                 <button
                     class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700"
-                    @click="toggleSidebar"
+                    @click="toggleMenu()"
                 >
                     <FaBarsStaggered />
                 </button>
                 <ul class="flex items-center gap-4 lg:gap-6">
                     <!-- Dark Mode Toggle -->
                     <li>
-                        <button
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700"
-                            @click="toggleDark()"
-                        >
-                            <AkSunFill v-if="isDark" />
-                            <AkMoonFill v-else />
-                        </button>
-                    </li>
-
-                    <!-- Mail Button -->
-                    <li>
-                        <button
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700"
-                        >
-                            <FeMail class="text-lg text-[#0f172a]" />
-                        </button>
+                        <DarkModeButton class="h-8 w-8" />
                     </li>
 
                     <!-- Notifications Button -->

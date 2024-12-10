@@ -11,7 +11,7 @@ import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
-import StatusToggleInput from '@/Components/StatusToggleInput.vue';
+import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';

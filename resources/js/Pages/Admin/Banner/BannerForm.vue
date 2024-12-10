@@ -7,7 +7,7 @@ import FilepondInput from '@/Components/Form/InputFilepond.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
-import PageHeader from '@/Components/PageHeader.vue';
+import PageHeader from '@/Shared/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';

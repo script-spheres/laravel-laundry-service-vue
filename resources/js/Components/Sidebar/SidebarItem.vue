@@ -21,7 +21,7 @@ defineProps<{ item: NavigationItem }>();
             :class="[
                 'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium',
                 {
-                    'bg-gray-900 text-white': item.active,
+                    'bg-gray-900 text-white dark:bg-gray-600': item.active,
                     'text-gray-900 hover:bg-gray-300 dark:text-gray-200 dark:hover:bg-gray-600':
                         !item.active,
                 },

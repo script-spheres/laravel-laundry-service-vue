@@ -35,6 +35,7 @@ class PageController extends Controller
     {
         return Inertia::render('Services', [
             'banners' => Banner::all(),
+            'serviceItems' => ServiceItem::all(),
             'serviceTypes' => ServiceItem::all(),
         ]);
     }
@@ -69,5 +70,10 @@ class PageController extends Controller
     public function termsAndConditions()
     {
         return Inertia::render('TermsAndConditions');
+    }
+
+    public function cart()
+    {
+        return Inertia::render('Cart');
     }
 }

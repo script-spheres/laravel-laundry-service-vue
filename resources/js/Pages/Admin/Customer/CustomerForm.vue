@@ -7,7 +7,7 @@ import EmailInput from '@/Components/Form/InputEmail.vue';
 import PhoneInput from '@/Components/Form/InputPhone.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
-import PageHeader from '@/Components/PageHeader.vue';
+import PageHeader from '@/Shared/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Customer } from '@/types';

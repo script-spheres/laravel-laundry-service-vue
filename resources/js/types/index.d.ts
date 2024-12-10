@@ -240,10 +240,18 @@ export type CartAddonItem = {
 export type Status = 'active' | 'inactive';
 
 export type PageProps<
-    T extends Record<string, unknown> = Record<string, unknown>,
+    T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
-    auth: {
-        user: User;
+    auth?: {
+        user?: User;
+        permissions: string[];
+    };
+    app: {
+        name: string;
+        image: string;
+        url: string;
+        version: string;
+        environment: string;
     };
     ziggy: Config & { location: string };
     flash?: {

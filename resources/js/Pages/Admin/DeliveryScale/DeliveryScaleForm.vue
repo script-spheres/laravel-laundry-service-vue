@@ -6,7 +6,7 @@ import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputGroup from '@/Components/Form/InputGroup.vue';
 import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
-import PageHeader from '@/Components/PageHeader.vue';
+import PageHeader from '@/Shared/PageHeader.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { radiusUnitOptions, statusOptions } from '@/Constants/options';
 import AdminLayout from '@/Layouts/AdminLayout.vue';

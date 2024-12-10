@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AdminForgotPasswordController;
 use App\Http\Controllers\Admin\AdminNewPasswordController;
 use App\Http\Controllers\Admin\AdminPasswordController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -19,7 +21,7 @@ use App\Http\Controllers\Admin\OrderInvoiceController;
 use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ServiceItemController;
-use App\Http\Controllers\Admin\ServiceTypeController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\TimeslotController;
@@ -52,19 +54,22 @@ Route::middleware('auth')->group(function () {
 //    Route::resource('redemptions', PackageController::class);
 //    Route::resource('rewards', PackageController::class);
 //    Route::resource('points', PackageController::class);
-//    Route::resource('audits', PackageController::class);
+
+    Route::resource('cities', CityController::class);
+    Route::resource('categories', CategoryController::class);
     Route::resource('stores', StoreController::class);
 
     Route::resource('customers', CustomerController::class);
-    Route::resource('service-types', ServiceTypeController::class);
+    Route::resource('services', ServiceController::class);
     Route::resource('service-items', ServiceItemController::class);
     Route::resource('addon-services', AddonServiceController::class);
-
     Route::resource('coupons', CouponController::class);
     Route::resource('timeslots', TimeslotController::class);
+
     Route::resource('orders', OrderController::class);
-    Route::get('orders-status', [OrderStatusController::class, 'index'])->name('orders-status.index');
     Route::get('orders/{order}/invoice', [OrderInvoiceController::class, 'index'])->name('orders.invoice');
+
+    Route::get('orders-status', [OrderStatusController::class, 'index'])->name('orders-status.index');
     Route::put('orders-status/{order}', [OrderStatusController::class, 'update'])->name('orders-status.update');
 
     Route::resource('expenses', ExpenseController::class);
@@ -75,8 +80,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('rewards', UserController::class);
     Route::resource('redemptions', UserController::class);
 
-    Route::get('settings-general', [SettingController::class, 'index'])->name('settings.general');
-    Route::get('settings-finance', [SettingController::class, 'finance'])->name('settings.finance');
+    Route::get('settings/general', [SettingController::class, 'index'])->name('settings.general');
+    Route::get('settings/finance', [SettingController::class, 'finance'])->name('settings.finance');
     Route::post('settings', [SettingController::class, 'store'])->name('settings.submit');
 
     Route::prefix('reports')->name('reports.')->group(function () {
@@ -87,7 +92,6 @@ Route::middleware('auth')->group(function () {
         Route::get('expenses', [ReportController::class, 'expenses'])->name('expenses');
         Route::get('sales', [ReportController::class, 'sales'])->name('sales');
         Route::get('profits', [ReportController::class, 'profits'])->name('profits');
-        Route::get('audit-logs', [ReportController::class, 'auditLogs'])->name('audit-logs');
     });
 
 });

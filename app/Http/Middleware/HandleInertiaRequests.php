@@ -36,9 +36,16 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'permissions' => $request->user() ? $request->user()->getAllPermissions()->pluck('name') : [],
             ],
             'flash' => [
                 'message' => fn () => $request->session()->get('message')
+            ],
+            'app' => [
+                'name' => config('app.name'),
+                'url' => config('app.url'),
+                'version' => config('app.version', '1.0.0'),
+                'environment' => app()->environment(),
             ],
             'csrf_token' => csrf_token(),
             'navigations' => $this->adminNavigation(),
@@ -59,7 +66,8 @@ class HandleInertiaRequests extends Middleware
             ->add('Services Management', '', function (Section $section) {
                 $section
                     ->attributes(['icon' => 'MdLoyalty'])
-                    ->add('Service Types', route('admin.service-types.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+                    ->add('Categories', route('admin.categories.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+                    ->add('Services', route('admin.services.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Service Items', route('admin.service-items.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Addon Services', route('admin.addon-services.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
@@ -90,6 +98,7 @@ class HandleInertiaRequests extends Middleware
                 $section
                     ->attributes(['icon' => 'BySettings'])
                     ->add('Timeslots', route('admin.timeslots.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+                    ->add('Cities', route('admin.cities.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Delivery Scales', route('admin.delivery-scales.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Financial Year', route('admin.financial-years.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Application Settings', route('admin.settings.general'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))

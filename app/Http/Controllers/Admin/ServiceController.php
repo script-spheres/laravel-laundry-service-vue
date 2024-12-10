@@ -11,7 +11,7 @@ use App\Services\ServiceTypeService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ServiceTypeController extends Controller
+class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
