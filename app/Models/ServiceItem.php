@@ -36,6 +36,6 @@ class ServiceItem extends Model
      */
     public function servicePrices(): HasMany
     {
-        return $this->hasMany(ServicePrice::class, 'service_type_id');
+        return $this->hasMany(ServiceDetail::class, 'service_type_id');
     }
 }

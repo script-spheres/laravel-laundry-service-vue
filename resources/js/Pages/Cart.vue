@@ -21,7 +21,5 @@ defineProps({
 
 <template>
     <Head title="Welcome to SparkleClean Laundry" />
-    <div class="container mx-auto">
-        kk
-    </div>
+    <div class="container mx-auto">kk</div>
 </template>

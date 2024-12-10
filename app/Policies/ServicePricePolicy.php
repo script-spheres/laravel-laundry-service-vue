@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\ServicePrice;
+use App\Models\ServiceDetail;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -19,7 +19,7 @@ class ServicePricePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ServicePrice $servicePrice): bool
+    public function view(User $user, ServiceDetail $servicePrice): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class ServicePricePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, ServicePrice $servicePrice): bool
+    public function update(User $user, ServiceDetail $servicePrice): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class ServicePricePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ServicePrice $servicePrice): bool
+    public function delete(User $user, ServiceDetail $servicePrice): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class ServicePricePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, ServicePrice $servicePrice): bool
+    public function restore(User $user, ServiceDetail $servicePrice): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class ServicePricePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, ServicePrice $servicePrice): bool
+    public function forceDelete(User $user, ServiceDetail $servicePrice): bool
     {
         //
     }

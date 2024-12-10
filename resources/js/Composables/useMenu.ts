@@ -1,4 +1,3 @@
-import { onClickOutside } from '@vueuse/core';
 import { readonly, ref, watch } from 'vue';
 
 const isMenuOpen = ref(false);
@@ -8,7 +7,6 @@ const toggleMenu = () => {
 };
 
 export function useMenu() {
-
     const isMobileDevice = ref(window.innerWidth < 1024);
 
     // Watch for window resize events to update the mobile state dynamically

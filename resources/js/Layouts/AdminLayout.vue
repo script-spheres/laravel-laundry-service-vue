@@ -111,7 +111,7 @@ const { isMenuOpen, toggleMenu } = useMenu();
                                     Profile
                                 </DropdownLink>
                                 <DropdownLink
-                                    :href="route('admin.logout')"
+                                    :href="route('logout')"
                                     method="post"
                                     as="button"
                                 >

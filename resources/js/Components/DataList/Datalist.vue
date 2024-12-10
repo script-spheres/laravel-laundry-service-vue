@@ -5,7 +5,7 @@ defineProps({});
 </script>
 
 <template>
-    <section class="mx-auto rounded border border-gray-200 bg-white p-6 shadow">
+    <div class="rounded border border-gray-200 bg-white shadow">
         <slot name="content" />
-    </section>
+    </div>
 </template>

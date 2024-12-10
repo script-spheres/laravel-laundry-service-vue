@@ -14,7 +14,7 @@ class Store extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'financial_year_id',
+        'city_id',
         'name',
         'address',
         'address_lat',
@@ -34,8 +34,8 @@ class Store extends Model
         'address_long' => 'decimal:7',
     ];
 
-    public function financialYear(): BelongsTo
+    public function city(): BelongsTo
     {
-        return $this->belongsTo(FinancialYear::class);
+        return $this->belongsTo(City::class);
     }
 }

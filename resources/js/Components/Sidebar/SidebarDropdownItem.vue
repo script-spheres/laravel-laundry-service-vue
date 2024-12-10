@@ -8,7 +8,7 @@ const props = defineProps<{ item: NavigationItem }>();
 
 // Check if any child is active
 const hasActiveChild = computed(() =>
-    props.item.children?.some((child) => child.active)
+    props.item.children?.some((child) => child.active),
 );
 
 // Initialize isCollapsed with the value of hasActiveChild

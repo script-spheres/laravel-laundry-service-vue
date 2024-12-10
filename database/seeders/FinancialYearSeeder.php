@@ -13,7 +13,7 @@ class FinancialYearSeeder extends Seeder
      */
     public function run(): void
     {
-        $financialYears = [
+        $financialYears = collect([
             [
                 'name' => '2023-2024 Financial Year',
                 'start_date' => '2023-04-01',
@@ -29,10 +29,8 @@ class FinancialYearSeeder extends Seeder
                 'start_date' => '2025-04-01',
                 'end_date' => '2026-03-31',
             ],
-        ];
+        ]);
 
-        foreach ($financialYears as $data) {
-            FinancialYear::factory()->create($data);
-        }
+        $financialYears->each(fn($data) => FinancialYear::factory()->create($data));
     }
 }

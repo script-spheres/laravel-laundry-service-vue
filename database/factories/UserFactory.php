@@ -30,9 +30,6 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'referral_code' => strtoupper(Str::random(10)),
-            'referral_count' => $this->faker->numberBetween(0, 10),
-            'referred_by' => null,
         ];
     }
 
@@ -43,18 +40,6 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
-        ]);
-    }
-
-    /**
-     * Indicate that the user has a referral.
-     *
-     * @return UserFactory
-     */
-    public function withReferral():static
-    {
-        return $this->state(fn (array $attributes) => [
-            'referred_by' => User::factory(),
         ]);
     }
 }

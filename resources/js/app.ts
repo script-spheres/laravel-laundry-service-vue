@@ -1,15 +1,14 @@
+import 'vue3-carousel/dist/carousel.css';
+import 'vue3-toastify/dist/index.css';
 import '../css/app.css';
 import './bootstrap';
 
 import { createInertiaApp } from '@inertiajs/vue3';
-import { Modal, ModalLink, renderApp } from '@inertiaui/modal-vue';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import { createApp, DefineComponent } from 'vue';
-import 'vue3-carousel/dist/carousel.css';
-import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { createApp, DefineComponent, h } from 'vue';
+import Vue3Toastify from 'vue3-toastify';
 import { ZiggyVue } from 'ziggy-js';
 
 const pinia = createPinia().use(piniaPluginPersistedstate);
@@ -31,16 +30,11 @@ createInertiaApp({
             import.meta.glob<DefineComponent>('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        createApp({ render: renderApp(App, props) })
+        createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(pinia)
             .use(ZiggyVue)
-            .use(Vue3Toastify, {
-                autoClose: 3000,
-            } as ToastContainerOptions)
-
-            .component('Modal', Modal)
-            .component('ModalLink', ModalLink)
+            .use(Vue3Toastify)
             .mount(el);
     },
     progress: {

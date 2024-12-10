@@ -12,7 +12,7 @@ import NavbarLink from '@/Components/Navigation/NavbarLink.vue';
 // Icons
 import DarkModeButton from '@/Components/Buttons/DarkModeButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
-import useMenu from '@/Composables/useMenu';
+import { useMenu } from '@/Composables/useMenu';
 import {
     AnOutlinedShoppingCart,
     BsChevronDown,
@@ -52,10 +52,19 @@ const { isMenuOpen, toggleMenu } = useMenu();
 
                 <!-- Desktop Menu -->
                 <ul class="hidden gap-4 md:flex">
-                    <li><NavbarLink :href="route('welcome')" label="Home" /></li>
+                    <li>
+                        <NavbarLink :href="route('welcome')" label="Home" />
+                    </li>
                     <li><NavbarLink :href="route('about')" label="About" /></li>
-                    <li><NavbarLink :href="route('services')" label="Services" /></li>
-                    <li><NavbarLink :href="route('contact')" label="Contact" /></li>
+                    <li>
+                        <NavbarLink
+                            :href="route('services')"
+                            label="Services"
+                        />
+                    </li>
+                    <li>
+                        <NavbarLink :href="route('contact')" label="Contact" />
+                    </li>
                 </ul>
             </div>
 
@@ -117,10 +126,19 @@ const { isMenuOpen, toggleMenu } = useMenu();
                 class="border-t p-4 dark:bg-gray-900 md:hidden"
             >
                 <ul class="space-y-4">
-                    <li><NavbarLink :href="route('welcome')" label="Home" /></li>
+                    <li>
+                        <NavbarLink :href="route('welcome')" label="Home" />
+                    </li>
                     <li><NavbarLink :href="route('about')" label="About" /></li>
-                    <li><NavbarLink :href="route('services')" label="Services" /></li>
-                    <li><NavbarLink :href="route('contact')" label="Contact" /></li>
+                    <li>
+                        <NavbarLink
+                            :href="route('services')"
+                            label="Services"
+                        />
+                    </li>
+                    <li>
+                        <NavbarLink :href="route('contact')" label="Contact" />
+                    </li>
                 </ul>
             </div>
         </Transition>

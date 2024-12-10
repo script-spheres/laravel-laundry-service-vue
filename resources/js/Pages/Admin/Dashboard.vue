@@ -20,7 +20,7 @@ const props = defineProps({
 });
 
 // Filters Reactive State
-const { filter } = useFilters('admin.orders.index', {
+const { filter } = useFilters('orders.index', {
     search_query: props.filters?.search_query || '',
     order_filter: props.filters?.order_filter || '',
 });

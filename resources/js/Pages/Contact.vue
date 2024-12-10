@@ -11,7 +11,7 @@ import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: PublicLayout });
 
-const form = useForm('post', route('admin.coupons.store'), {
+const form = useForm('post', route('coupons.store'), {
     name: '',
     email: '',
     message: '',

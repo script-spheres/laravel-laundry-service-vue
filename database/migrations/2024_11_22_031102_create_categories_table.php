@@ -12,11 +12,10 @@ return new class extends Migration {
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parent_id')->nullable()->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name');
             $table->longText('description')->nullable();
             $table->json('image')->nullable();
-            $table->enum('active_status', ['active', 'inactive']);
+            $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
             $table->softDeletes();
         });

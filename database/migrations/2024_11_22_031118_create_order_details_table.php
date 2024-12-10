@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->morphs('serviceable');
-            $table->integer('quantity');
-            $table->decimal('price', 5, 2)->default(0);
+            $table->decimal('price', 10, 2);
+            $table->decimal('quantity', 10, 2)->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Http\Requests\StoreServiceTypeRequest;
-use App\Http\Requests\UpdateServiceTypeRequest;
-use App\Models\ServiceType;
+use App\Http\Requests\StoreServiceRequest;
+use App\Http\Requests\UpdateServiceRequest;
+use App\Models\Service;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ServiceTypeService
@@ -14,7 +14,7 @@ class ServiceTypeService
      */
     public function getServiceTypes()
     {
-        return QueryBuilder::for(ServiceType::class)
+        return QueryBuilder::for(Service::class)
             ->allowedFilters(['id', 'name'])
             ->allowedSorts(['name', 'created_at'])
             ->paginate()
@@ -24,16 +24,16 @@ class ServiceTypeService
     /**
      * Store a new service type.
      */
-    public function create(StoreServiceTypeRequest $request): ServiceType
+    public function create(StoreServiceRequest $request): Service
     {
         $attributes = $request->validated();
-        return ServiceType::create($attributes);
+        return Service::create($attributes);
     }
 
     /**
      * Update an existing service type.
      */
-    public function update(ServiceType $serviceType, UpdateServiceTypeRequest $request): ServiceType
+    public function update(Service $serviceType, UpdateServiceRequest $request): Service
     {
         $attributes = $request->validated();
         $serviceType->update($attributes);
@@ -43,7 +43,7 @@ class ServiceTypeService
     /**
      * Delete a service type.
      */
-    public function delete(ServiceType $serviceType): void
+    public function delete(Service $serviceType): void
     {
         $serviceType->delete();
     }

@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Banner;
+use App\Models\Category;
+use App\Models\City;
+use App\Models\Service;
 use App\Models\ServiceItem;
+use App\Models\Store;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,7 +28,7 @@ class PageController extends Controller
     {
         return Inertia::render('Welcome', [
             'banners' => Banner::all(),
-            'serviceTypes' => ServiceItem::all(),
+            'services' => ServiceItem::all(),
         ]);
     }
 
@@ -36,7 +40,10 @@ class PageController extends Controller
         return Inertia::render('Services', [
             'banners' => Banner::all(),
             'serviceItems' => ServiceItem::all(),
-            'serviceTypes' => ServiceItem::all(),
+            'services' => Service::all(),
+            'citiesOptions' => City::pluck('name', 'id'),
+            'storesOptions' => Store::pluck('name', 'id'),
+            'categories' => Category::all(),
         ]);
     }
 
@@ -47,7 +54,7 @@ class PageController extends Controller
     {
         return Inertia::render('About', [
             'banners' => Banner::all(),
-            'serviceTypes' => ServiceItem::all(),
+            'services' => ServiceItem::all(),
         ]);
     }
 
@@ -58,7 +65,7 @@ class PageController extends Controller
     {
         return Inertia::render('Contact', [
             'banners' => Banner::all(),
-            'serviceTypes' => ServiceItem::all(),
+            'services' => ServiceItem::all(),
         ]);
     }
 

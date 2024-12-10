@@ -11,8 +11,6 @@ const toggleMenu = () => {
 </script>
 
 <template>
-
-
     <!-- Mobile Menu Toggle Button -->
     <button
         @click="toggleMenu"

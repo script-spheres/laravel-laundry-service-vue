@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Customer>
@@ -27,6 +28,22 @@ class CustomerFactory extends Factory
                 'sms' => $this->faker->boolean,
                 'push_notification' => $this->faker->boolean
             ]),
+            'referral_code' => strtoupper(Str::random(10)),
+            'referral_count' => $this->faker->numberBetween(0, 10),
+            'referred_by' => null,
         ];
+    }
+
+
+    /**
+     * Indicate that the user has a referral.
+     *
+     * @return CustomerFactory
+     */
+    public function withReferral():static
+    {
+        return $this->state(fn (array $attributes) => [
+            'referred_by' => Customer::factory(),
+        ]);
     }
 }

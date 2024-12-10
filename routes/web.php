@@ -1,10 +1,6 @@
 <?php
 
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-
+use App\Http\Controllers\AddonServiceController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -14,10 +10,33 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DeliveryScaleController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\FinancialYearController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderInvoiceController;
+use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceItemController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\TimeslotController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 
 Route::get('/', [PageController::class, 'index'])->name('welcome');
-Route::get('/services', [PageController::class, 'services'])->name('services');
+Route::get('/service', [PageController::class, 'services'])->name('services');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/cart', [PageController::class, 'cart'])->name('cart');
@@ -51,4 +70,51 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    Route::resource('banners', BannerController::class);
+    Route::resource('delivery-scales', DeliveryScaleController::class);
+
+//    Route::resource('redemptions', PackageController::class);
+//    Route::resource('rewards', PackageController::class);
+//    Route::resource('points', PackageController::class);
+
+    Route::resource('cities', CityController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('stores', StoreController::class);
+
+    Route::resource('customers', CustomerController::class);
+    Route::resource('services', ServiceController::class);
+    Route::resource('service-items', ServiceItemController::class);
+    Route::resource('addon-services', AddonServiceController::class);
+    Route::resource('coupons', CouponController::class);
+    Route::resource('timeslots', TimeslotController::class);
+
+    Route::resource('orders', OrderController::class);
+    Route::get('orders/{order}/invoice', [OrderInvoiceController::class, 'index'])->name('orders.invoice');
+
+    Route::get('orders-status', [OrderStatusController::class, 'index'])->name('orders-status.index');
+    Route::put('orders-status/{order}', [OrderStatusController::class, 'update'])->name('orders-status.update');
+
+    Route::resource('expenses', ExpenseController::class);
+    Route::resource('expense-types', ExpenseTypeController::class);
+    Route::resource('financial-years', FinancialYearController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('points', UserController::class);
+    Route::resource('rewards', UserController::class);
+    Route::resource('redemptions', UserController::class);
+
+    Route::get('settings/general', [SettingController::class, 'index'])->name('settings.general');
+    Route::get('settings/finance', [SettingController::class, 'finance'])->name('settings.finance');
+    Route::post('settings', [SettingController::class, 'store'])->name('settings.submit');
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('financial', [ReportController::class, 'financial'])->name('financial');
+        Route::get('orders', [ReportController::class, 'orders'])->name('orders');
+        Route::get('customers', [ReportController::class, 'customers'])->name('customers');
+        Route::get('inventory', [ReportController::class, 'inventory'])->name('inventory');
+        Route::get('expenses', [ReportController::class, 'expenses'])->name('expenses');
+        Route::get('sales', [ReportController::class, 'sales'])->name('sales');
+        Route::get('profits', [ReportController::class, 'profits'])->name('profits');
+    });
 });

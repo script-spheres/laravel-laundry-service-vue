@@ -13,6 +13,19 @@ class StoreSeeder extends Seeder
      */
     public function run(): void
     {
-        Store::factory()->count(10)->create();
+        $storeNames = collect([
+            'Clean Clothes Laundry',
+            'Fresh Fold Laundry',
+            'QuickWash Laundry',
+            'Speedy Laundry Service',
+            'Laundry Express',
+            'Deluxe Laundry Service',
+            'Eco Fresh Laundry',
+            'Perfect Press Laundry',
+            'The Laundry Spot',
+            'Green Wash Laundry',
+        ]);
+
+        $storeNames->each(fn($name) => Store::factory()->create(['name' => $name]));
     }
 }

@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\AddonService;
 use App\Models\Order;
-use App\Models\ServicePrice;
+use App\Models\ServiceDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,12 +21,12 @@ class OrderDetailsFactory extends Factory
     {
         return [
             'order_id' => Order::factory(),
-            'serviceable_type' => $this->faker->randomElement([AddonService::class, ServicePrice::class]),
+            'serviceable_type' => $this->faker->randomElement([AddonService::class, ServiceDetail::class]),
             'serviceable_id' => function (array $attributes) {
                 if ($attributes['serviceable_type'] === AddonService::class) {
                     return AddonService::factory()->create()->id;
                 } else {
-                    return ServicePrice::factory()->create()->id;
+                    return ServiceDetail::factory()->create()->id;
                 }
             },
             'quantity' => $this->faker->numberBetween(1, 10),

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
 use App\Models\FinancialYear;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,6 +20,7 @@ class StoreFactory extends Factory
     public function definition(): array
     {
         return [
+            'city_id' => City::factory(),
             'name' => $this->faker->company,
             'address' => $this->faker->address,
             'address_lat' => $this->faker->latitude,

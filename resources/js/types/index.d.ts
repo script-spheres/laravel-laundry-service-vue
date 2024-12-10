@@ -85,6 +85,14 @@ export type FinancialYear = {
     status: Status;
 };
 
+export type Category = {
+    id: number;
+    name: string;
+    description: string;
+    image: Image;
+    status: Status;
+};
+
 export type Banner = {
     id: number;
     title: string;
@@ -121,7 +129,7 @@ export type Customer = {
     communication_pref: string | null;
 };
 
-export type ServiceType = {
+export type Service = {
     id: number;
     name: string;
     image: Image;
@@ -141,7 +149,7 @@ export type ServiceItem = {
 export type ServicePrice = {
     id: number;
     service_type_id: number;
-    service_type?: ServiceType;
+    service_type?: Service;
     service_item?: ServiceItem;
     price: number;
 };
@@ -240,7 +248,7 @@ export type CartAddonItem = {
 export type Status = 'active' | 'inactive';
 
 export type PageProps<
-    T extends Record<string, unknown> = Record<string, unknown>
+    T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
     auth?: {
         user?: User;
