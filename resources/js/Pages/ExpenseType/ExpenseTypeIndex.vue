@@ -13,11 +13,11 @@ import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { ExpenseType, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     expenseTypes: {
@@ -93,21 +93,13 @@ const { filter, handleClearFilter } = useFilters('expense-types.index', {
                     <TableCell>{{ expenseType.description }}</TableCell>
                     <TableCell class="flex justify-end gap-2">
                         <LinkButton
-                            :href="
-                                route(
-                                    'expense-types.edit',
-                                    expenseType.id,
-                                )
-                            "
+                            :href="route('expense-types.edit', expenseType.id)"
                         >
                             Edit
                         </LinkButton>
                         <DeleteButton
                             :action="
-                                route(
-                                    'expense-types.destroy',
-                                    expenseType.id,
-                                )
+                                route('expense-types.destroy', expenseType.id)
                             "
                         >
                             Delete

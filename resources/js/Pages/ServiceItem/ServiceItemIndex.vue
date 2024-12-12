@@ -13,12 +13,12 @@ import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { PaginatedData, Service } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     serviceItems: {
@@ -109,31 +109,20 @@ const { filter, handleClearFilter } = useFilters('service-items.index', {
                     <TableCell class="text-right">
                         <StatusToggleInput
                             :action="
-                                route(
-                                    'service-items.update',
-                                    serviceItem.id,
-                                )
+                                route('service-items.update', serviceItem.id)
                             "
                             :data="serviceItem"
                         />
                     </TableCell>
                     <TableCell class="flex justify-end gap-2">
                         <LinkButton
-                            :href="
-                                route(
-                                    'service-items.edit',
-                                    serviceItem.id,
-                                )
-                            "
+                            :href="route('service-items.edit', serviceItem.id)"
                         >
                             Edit
                         </LinkButton>
                         <DeleteButton
                             :action="
-                                route(
-                                    'service-items.destroy',
-                                    serviceItem.id,
-                                )
+                                route('service-items.destroy', serviceItem.id)
                             "
                         >
                             Delete

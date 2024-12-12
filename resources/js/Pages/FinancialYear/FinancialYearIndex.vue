@@ -13,13 +13,13 @@ import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { FinancialYear, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     financialYears: {
@@ -34,15 +34,12 @@ const props = defineProps({
 });
 
 // Initialize reactive filters with default values or passed props
-const { filter, handleClearFilter } = useFilters(
-    'financial-years.index',
-    {
-        name: props.filters?.name ?? '',
-        start_date: props.filters?.start_date ?? '',
-        end_date: props.filters?.end_date ?? '',
-        status: props.filters?.status ?? '',
-    },
-);
+const { filter, handleClearFilter } = useFilters('financial-years.index', {
+    name: props.filters?.name ?? '',
+    start_date: props.filters?.start_date ?? '',
+    end_date: props.filters?.end_date ?? '',
+    status: props.filters?.status ?? '',
+});
 </script>
 
 <template>
@@ -64,22 +61,8 @@ const { filter, handleClearFilter } = useFilters(
                 <InputLabel for="name" value="Name" />
                 <InputText v-model="filter.name" placeholder="Search by Name" />
             </div>
-            <div class="w-full md:w-1/4">
-                <InputLabel for="start_date" value="Start Date" />
-                <InputText
-                    v-model="filter.start_date"
-                    placeholder="Search by Start Date"
-                />
-            </div>
-            <div class="w-full md:w-1/4">
-                <InputLabel for="end_date" value="End Date" />
-                <InputText
-                    v-model="filter.end_date"
-                    placeholder="Search by End Date"
-                />
-            </div>
             <div class="flex-none gap-2 self-end">
-                <PrimaryButton color="gray" @click="handleClearFilter">
+                <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </div>
@@ -117,10 +100,7 @@ const { filter, handleClearFilter } = useFilters(
                     <TableCell class="flex justify-end gap-2">
                         <LinkButton
                             :href="
-                                route(
-                                    'financial-years.edit',
-                                    financialYear.id,
-                                )
+                                route('financial-years.edit', financialYear.id)
                             "
                         >
                             Edit

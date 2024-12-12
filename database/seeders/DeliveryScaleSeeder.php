@@ -13,7 +13,7 @@ class DeliveryScaleSeeder extends Seeder
      */
     public function run(): void
     {
-// Define predefined delivery scale data without the 'name' field
+        // Define predefined delivery scale data without the 'name' field
         $deliveryScales = collect([
             [
                 'radius' => 5,

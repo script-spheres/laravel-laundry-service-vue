@@ -34,8 +34,8 @@ class ServiceItem extends Model
     /**
      * Get the related service prices for this service item.
      */
-    public function servicePrices(): HasMany
+    public function serviceDetails(): HasMany
     {
-        return $this->hasMany(ServiceDetail::class, 'service_type_id');
+        return $this->hasMany(ServiceDetail::class, 'service_id');
     }
 }

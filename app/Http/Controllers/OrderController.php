@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\AddonService;
+use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Order;
@@ -41,7 +42,8 @@ class OrderController extends Controller
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
-            'serviceItems' => ServiceItem::with(['servicePrices','servicePrices.serviceType'])->get(),
+            'categories' => Category::get(),
+            'serviceItems' => ServiceItem::with(['serviceDetails','serviceDetails.service'])->get(),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -67,7 +69,7 @@ class OrderController extends Controller
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
-            'serviceItems' => ServiceItem::with(['servicePrices','servicePrices.serviceType'])->get(),
+//            'serviceItems' => ServiceItem::with(['serviceDetails','serviceDetails.serviceType'])->get(),
         ]);
     }
 
@@ -82,7 +84,7 @@ class OrderController extends Controller
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
-            'serviceItems' => ServiceItem::with(['servicePrices','servicePrices.serviceType'])->get(),
+            'serviceItems' => ServiceItem::with(['serviceDetails','serviceDetails.serviceType'])->get(),
             'filters' => $request->get('filter'),
         ]);
     }

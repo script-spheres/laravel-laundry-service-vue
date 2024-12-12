@@ -10,30 +10,30 @@ import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
-import { ServiceType } from '@/types';
+import { Service } from '@/types';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
-const { serviceType } = defineProps({
-    serviceType: {
-        type: Object as PropType<ServiceType>,
+const { service } = defineProps({
+    service: {
+        type: Object as PropType<Service>,
         required: false,
     },
 });
 
-const method = serviceType ? 'put' : 'post';
-const url = serviceType
-    ? route('service-types.update', serviceType.id)
-    : route('service-types.store');
+const method = service ? 'put' : 'post';
+const url = service
+    ? route('services.update', service.id)
+    : route('services.store');
 
 const form = useForm(method, url, {
-    name: serviceType?.name || '',
-    description: serviceType?.description || '',
-    status: serviceType?.status || '',
+    name: service?.name || '',
+    description: service?.description || '',
+    status: service?.status || '',
 });
 
 const submitForm = () => {
@@ -47,25 +47,23 @@ const submitForm = () => {
 <template>
     <PageHeader>
         <template #title>
-            {{ serviceType ? 'Edit ' : 'Create New' }} Service Type
+            {{ service ? 'Edit ' : 'Create New' }} Service
         </template>
         <template #subtitle>
             Fill in the details for your
-            {{ serviceType ? 'existing' : 'new' }} service type.
+            {{ service ? 'existing' : 'new' }} service.
         </template>
         <template #actions>
-            <LinkButton :href="route('service-types.index')">
-                Back
-            </LinkButton>
+            <LinkButton :href="route('services.index')"> Back </LinkButton>
         </template>
     </PageHeader>
 
     <Card class="mx-auto mt-6 p-4">
         <form @submit.prevent="submitForm">
-            <FieldRow>
+            <FieldRow :cols="2">
                 <FieldCol>
                     <InputText
-                        label="Service Type Name"
+                        label="Service Name"
                         v-model="form.name"
                         :error="form.errors.name"
                     />
@@ -84,23 +82,23 @@ const submitForm = () => {
                     <InputTextarea
                         label="Description"
                         v-model="form.description"
-                        placeholder="Service Type Description (optional)"
+                        placeholder="Service Description (optional)"
                         :error="form.errors.description"
                     />
                 </FieldCol>
             </FieldRow>
-            <FieldRow class="gap-2">
+            <div class="flex gap-2">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                     type="submit"
                 >
-                    {{ serviceType ? 'Update' : 'Submit' }}
+                    {{ service ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('service-types.index')">
+                <LinkButton :href="route('services.index')" color="danger">
                     Cancel
                 </LinkButton>
-            </FieldRow>
+            </div>
         </form>
     </Card>
 </template>

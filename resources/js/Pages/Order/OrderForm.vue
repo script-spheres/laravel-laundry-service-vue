@@ -12,7 +12,14 @@ import CouponModal from '@/Pages/Order/Partials/CouponModal.vue';
 import CustomerModal from '@/Pages/Order/Partials/CustomerModal.vue';
 import ServiceTypeModal from '@/Pages/Order/Partials/ServiceTypeModal.vue';
 import { usePosStore } from '@/Stores/PosStore';
-import { AddonService, Coupon, Order, ServiceItem, ServiceType } from '@/types';
+import {
+    AddonService,
+    Category,
+    Coupon,
+    Order,
+    Service,
+    ServiceItem,
+} from '@/types';
 import { AkEdit, AkPlus, MdDiscount } from '@kalimahapps/vue-icons';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType, provide, ref } from 'vue';
@@ -21,8 +28,12 @@ import { toast } from 'vue3-toastify';
 const posStore = usePosStore();
 
 const props = defineProps({
-    serviceTypes: {
-        type: Object as PropType<ServiceType[]>,
+    services: {
+        type: Object as PropType<Service[]>,
+        required: true,
+    },
+    categories: {
+        type: Object as PropType<Category[]>,
         required: true,
     },
     serviceItems: {
@@ -77,9 +88,7 @@ const showNoteModal = ref(false);
 const showAddonServiceModal = ref(false);
 
 const method = order ? 'put' : 'post';
-const url = order
-    ? route('orders.update', order.id)
-    : route('orders.store');
+const url = order ? route('orders.update', order.id) : route('orders.store');
 
 const form = useForm(method, url, {
     customer_id: '',
@@ -117,9 +126,7 @@ provide('showServiceTypeModal', showServiceTypeModal);
         <div class="col-span-2 flex flex-col p-4">
             <!-- Search and Reset -->
             <div class="mb-4 flex items-center gap-2">
-                <LinkButton :href="route('orders.index')">
-                    Back
-                </LinkButton>
+                <LinkButton :href="route('orders.index')"> Back </LinkButton>
                 <InputText
                     v-model="filter.name"
                     placeholder="Search items..."
@@ -132,10 +139,10 @@ provide('showServiceTypeModal', showServiceTypeModal);
             <!-- Categories and Items -->
             <div class="flex">
                 <!-- Categories List -->
-                <div class="w-2/6 overflow-y-scroll border-r pr-2">
+                <div class="w-2/8 overflow-y-scroll border-r pr-2">
                     <ul class="space-y-1">
                         <li
-                            v-for="serviceType in serviceTypes"
+                            v-for="serviceType in services"
                             :key="serviceType.id"
                         >
                             <PrimaryButton

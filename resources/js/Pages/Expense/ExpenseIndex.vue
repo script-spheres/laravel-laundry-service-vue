@@ -14,12 +14,12 @@ import InputSelect from '@/Components/Form/InputSelect.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Expense, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const { filters } = defineProps({
     expenses: {
@@ -102,9 +102,7 @@ const { filter, handleClearFilter } = useFilters('expenses.index', {
                 <TableCell>{{ expense.store?.name }}</TableCell>
                 <TableCell>{{ expense.expense_type?.name }}</TableCell>
                 <TableCell class="flex justify-end gap-2">
-                    <LinkButton
-                        :href="route('expenses.edit', expense.id)"
-                    >
+                    <LinkButton :href="route('expenses.edit', expense.id)">
                         Edit
                     </LinkButton>
                     <DeleteButton

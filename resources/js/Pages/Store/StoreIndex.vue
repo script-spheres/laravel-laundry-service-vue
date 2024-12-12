@@ -13,13 +13,13 @@ import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { PaginatedData, Store } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     stores: {
@@ -50,9 +50,7 @@ const { filter, handleClearFilter } = useFilters('stores.index', {
             Manage your stores with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('stores.create')">
-                Add Store
-            </LinkButton>
+            <LinkButton :href="route('stores.create')"> Add Store </LinkButton>
         </template>
     </PageHeader>
     <Card class="mb-6 p-6">
@@ -113,9 +111,7 @@ const { filter, handleClearFilter } = useFilters('stores.index', {
                         />
                     </TableCell>
                     <TableCell class="flex justify-end gap-2">
-                        <LinkButton
-                            :href="route('stores.edit', store.id)"
-                        >
+                        <LinkButton :href="route('stores.edit', store.id)">
                             Edit
                         </LinkButton>
                         <DeleteButton

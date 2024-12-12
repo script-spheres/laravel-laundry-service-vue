@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Banner, ServiceType } from '@/types';
+import { Banner, Service } from '@/types';
 import 'swiper/swiper-bundle.css';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { PropType } from 'vue';
@@ -12,8 +12,8 @@ defineProps({
         type: Object as PropType<Banner[]>,
         required: true,
     },
-    serviceTypes: {
-        type: Object as PropType<ServiceType[]>,
+    services: {
+        type: Object as PropType<Service[]>,
         required: true,
     },
 });
@@ -109,15 +109,15 @@ const apiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
                         class="mt-8 w-full flex-none self-end"
                     >
                         <SwiperSlide
-                            v-for="serviceType in serviceTypes"
-                            :key="serviceType.id"
+                            v-for="service in services"
+                            :key="service.id"
                         >
                             <div
                                 class="group relative h-64 rounded-lg bg-white shadow-md transition-transform hover:scale-105 hover:shadow-2xl dark:bg-gray-700"
                             >
                                 <img
-                                    :alt="serviceType.image.basename"
-                                    :src="serviceType.image.url"
+                                    :alt="service.image.basename"
+                                    :src="service.image.url"
                                     class="h-full w-full object-cover"
                                 />
                                 <Link
@@ -128,7 +128,7 @@ const apiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
                                         class="absolute bottom-0 w-full bg-gradient-to-t from-black via-gray-800/70 to-transparent p-4"
                                     >
                                         <p class="text-xl font-bold text-white">
-                                            {{ serviceType.name }}
+                                            {{ service.name }}
                                         </p>
                                     </div>
                                 </Link>

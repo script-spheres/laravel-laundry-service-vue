@@ -11,13 +11,13 @@ import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { AddonService } from '@/types';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const { addonService } = defineProps({
     addonService: {

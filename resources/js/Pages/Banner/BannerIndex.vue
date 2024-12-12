@@ -1,23 +1,27 @@
 <script setup lang="ts">
-import Badge from '@/Components/Badges/Badge.vue';
 import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import Datalist from '@/Components/DataList/Datalist.vue';
+import DataTable from '@/Components/DataTable/DataTable.vue';
+import TableBody from '@/Components/DataTable/TableBody.vue';
+import TableCell from '@/Components/DataTable/TableCell.vue';
+import TableHead from '@/Components/DataTable/TableHead.vue';
+import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
+import TableRow from '@/Components/DataTable/TableRow.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import ImagePreview from '@/Components/Image/ImagePreview.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
+import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { Banner, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const { filters } = defineProps({
     banners: {
@@ -33,9 +37,7 @@ const { filters } = defineProps({
 
 const { filter, handleClearFilter } = useFilters('banners.index', {
     title: filters?.title ?? '',
-    status: filters?.status ?? '',
 });
-console.log(filter);
 </script>
 
 <template>
@@ -59,49 +61,42 @@ console.log(filter);
                     placeholder="Filter by Title"
                 />
             </FieldCol>
-            <FieldCol>
-                <InputSelect
-                    label="Status"
-                    v-model="filter.status"
-                    :options="{ active: 'Active', inactive: 'Inactive' }"
-                    placeholder="Filter by Active Status"
-                />
-            </FieldCol>
             <FieldCol class="flex-none gap-2 self-end">
-                <PrimaryButton color="gray" @click="handleClearFilter">
+                <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </FieldCol>
         </FieldRow>
     </Card>
-    <Datalist class="mb-2" v-for="banner in banners.data" :key="banner.id">
-        <template #content>
-            <div class="gap-2 md:flex">
-                <ImagePreview
-                    class="md:h-auto md:w-24"
-                    :src="banner.image?.url"
-                />
-                <div class="">
-                    <strong
-                        >{{ banner.title }}
-                        <Badge>{{ banner.status }}</Badge></strong
-                    >
-                    <p>{{ banner.description }}</p>
-                    <div class="flex gap-2">
-                        <LinkButton
-                            :href="route('banners.edit', banner.id)"
-                        >
-                            Edit
-                        </LinkButton>
-                        <DeleteButton
-                            :action="route('banners.destroy', banner.id)"
-                        >
-                            Delete
-                        </DeleteButton>
-                    </div>
-                </div>
-            </div>
-        </template>
-    </Datalist>
+    <DataTable class="mt-4">
+        <TableHead>
+            <TableHeadCell>Image</TableHeadCell>
+            <TableHeadCell>Title</TableHeadCell>
+            <TableHeadCell class="text-right">Status</TableHeadCell>
+            <TableHeadCell class="text-right">Actions</TableHeadCell>
+        </TableHead>
+        <TableBody>
+            <TableRow v-for="banner in banners.data" :key="banner.id">
+                <TableCell>
+                    <ImagePreview :src="banner.image.url" class="h-10 w-10" />
+                </TableCell>
+                <TableCell>{{ banner.title }}</TableCell>
+                <TableCell class="text-right">
+                    <StatusToggleInput
+                        :action="route('banners.update', banner.id)"
+                        :data="banner"
+                    />
+                </TableCell>
+                <TableCell class="flex justify-end gap-2">
+                    <LinkButton :href="route('banners.edit', banner.id)">
+                        Edit
+                    </LinkButton>
+                    <DeleteButton :action="route('banners.destroy', banner.id)">
+                        Delete
+                    </DeleteButton>
+                </TableCell>
+            </TableRow>
+        </TableBody>
+    </DataTable>
     <Pagination :links="banners.meta" />
 </template>

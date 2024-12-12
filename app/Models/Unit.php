@@ -13,9 +13,12 @@ class Unit extends Model
     use HasFactory, SoftDeletes;
 
 
-    protected $fillable = [
-        'name',
-        'description',
-        'status',
-    ];
+    protected $fillable = ['actual_name', 'short_name', 'allow_decimal', 'status'];
+
+    protected function casts(): array
+    {
+        return [
+            'allow_decimal' => 'boolean'
+        ];
+    }
 }

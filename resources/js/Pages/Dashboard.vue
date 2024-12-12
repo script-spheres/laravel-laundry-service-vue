@@ -4,7 +4,7 @@ import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { orderStatusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Order } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
@@ -82,7 +82,7 @@ const initChart = (canvas: HTMLCanvasElement) => {
 onUnmounted(() => {
     if (chartInstance) chartInstance.destroy();
 });
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 </script>
 
 <template>

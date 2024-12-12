@@ -13,12 +13,12 @@ import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Customer, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     customers: {
@@ -102,9 +102,7 @@ const { filter, handleClearFilter } = useFilters('customers.index', {
                             Edit
                         </LinkButton>
                         <DeleteButton
-                            :action="
-                                route('customers.destroy', customer.id)
-                            "
+                            :action="route('customers.destroy', customer.id)"
                         >
                             Delete
                         </DeleteButton>

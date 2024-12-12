@@ -9,13 +9,13 @@ import Card from '@/Components/Panel/Card.vue';
 
 import FilepondInput from '@/Components/Form/InputFilepond.vue';
 import { rolesOptions, statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { User } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     user: {
@@ -31,9 +31,7 @@ const props = defineProps({
 const { user } = props;
 
 const method = user ? 'put' : 'post';
-const url = user
-    ? route('users.update', user.id)
-    : route('users.store');
+const url = user ? route('users.update', user.id) : route('users.store');
 
 const form = useForm(method, url, {
     role_id: user.role_id ?? '',
@@ -122,9 +120,7 @@ const submitForm = () => {
                 >
                     Submit
                 </PrimaryButton>
-                <LinkButton :href="route('users.index')">
-                    Cancel
-                </LinkButton>
+                <LinkButton :href="route('users.index')"> Cancel </LinkButton>
             </div>
         </form>
     </Card>

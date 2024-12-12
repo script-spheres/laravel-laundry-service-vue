@@ -16,13 +16,13 @@ import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { AddonService, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     addonServices: {
@@ -98,27 +98,19 @@ const { filter, handleClearFilter } = useFilters('addon-services.index', {
                     <StatusToggleInput
                         :data="addonService"
                         :action="
-                            route(
-                                'addon-services.update',
-                                addonService.id,
-                            )
+                            route('addon-services.update', addonService.id)
                         "
                     />
                 </TableCell>
                 <TableCell class="flex justify-end gap-2">
                     <LinkButton
-                        :href="
-                            route('addon-services.edit', addonService.id)
-                        "
+                        :href="route('addon-services.edit', addonService.id)"
                     >
                         Edit
                     </LinkButton>
                     <DeleteButton
                         :action="
-                            route(
-                                'addon-services.destroy',
-                                addonService.id,
-                            )
+                            route('addon-services.destroy', addonService.id)
                         "
                     >
                         Delete

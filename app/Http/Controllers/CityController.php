@@ -2,84 +2,86 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAddonServiceRequest;
-use App\Http\Requests\UpdateAddonServiceRequest;
-use App\Http\Resources\AddonServiceResource;
-use App\Models\AddonService;
-use App\Services\AddonServiceService;
+use App\Http\Requests\StoreCityRequest;
+use App\Http\Requests\UpdateCityRequest;
+use App\Http\Resources\CityResource;
+use App\Models\City;
+use App\Services\CityService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CityController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, AddonServiceService $addonServiceService): \Inertia\Response
+    public function index(Request $request, CityService $cityService): Response
     {
-        $addonServices = $addonServiceService->getAddonServices();
+        $cities = $cityService->getCities();
 
-        return Inertia::render('AddonService/AddonServiceIndex', [
-            'addonServices' => AddonServiceResource::collection($addonServices),
+        return Inertia::render('City/CityIndex', [
+            'cities' => CityResource::collection($cities),
             'filters' => $request->get('filter'),
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Store a newly created resource in storage.
      */
-    public function create(): \Inertia\Response
+    public function store(StoreCityRequest $request, CityService $cityService): RedirectResponse
     {
-        return Inertia::render('AddonService/AddonServiceForm');
+        $cityService->create($request);
+
+        return redirect()->route('cities.index')->with(['message' => 'Created successfully']);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show the form for creating a new resource.
      */
-    public function store(StoreAddonServiceRequest $request, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
+    public function create(): Response
     {
-        $addonServiceService->create($request);
-
-        return redirect()->route('addon-services.index')->with(['message' => 'Created successfully']);
+        return Inertia::render('City/CityForm');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(AddonService $addonService): \Inertia\Response
+    public function show(City $city): Response
     {
-        return Inertia::render('AddonService/AddonServiceForm', [
-            'addonService' => AddonServiceResource::make($addonService)->resolve()
+        return Inertia::render('City/CityForm', [
+            'city' => CityResource::make($city)->resolve()
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AddonService $addonService): \Inertia\Response
+    public function edit(City $city): Response
     {
-        return Inertia::render('AddonService/AddonServiceForm', [
-            'addonService' => AddonServiceResource::make($addonService)->resolve()
+        return Inertia::render('City/CityForm', [
+            'city' => CityResource::make($city)->resolve()
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAddonServiceRequest $request, AddonService $addonService, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
+    public function update(UpdateCityRequest $request, City $city, CityService $cityService): RedirectResponse
     {
-        $addonServiceService->update($addonService, $request);
+        $cityService->update($city, $request);
 
-        return redirect()->route('addon-services.index')->with(['message' => 'Updated successfully']);
+        return redirect()->route('cities.index')->with(['message' => 'Updated successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AddonService $addonService, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
+    public function destroy(City $city, CityService $cityService): RedirectResponse
     {
-        $addonServiceService->delete($addonService);
+        $cityService->delete($city);
 
-        return redirect()->route('addon-services.index')->with(['message' => 'Deleted successfully']);
+        return redirect()->route('cities.index')->with(['message' => 'Deleted successfully']);
     }
 }

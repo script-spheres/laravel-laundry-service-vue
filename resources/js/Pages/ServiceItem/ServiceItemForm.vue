@@ -4,50 +4,64 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import FilepondInput from '@/Components/Form/InputFilepond.vue';
-import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import ServiceDetails from '@/Pages/ServiceItem/ServiceDetails.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { ServiceItem } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
-const { serviceItem, serviceTypeOptions } = defineProps({
+const props = defineProps({
     serviceItem: {
         type: Object as PropType<ServiceItem>,
         required: false,
     },
-    serviceTypeOptions: {
+    serviceOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
+    categoryOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
+    unitOptions: {
         type: Object as PropType<Options>,
         required: true,
     },
 });
 
-const method = serviceItem ? 'put' : 'post';
-const url = serviceItem
-    ? route('service-items.update', serviceItem.id)
+const method = props.serviceItem ? 'put' : 'post';
+const url = props.serviceItem
+    ? route('service-items.update', props.serviceItem.id)
     : route('service-items.store');
 
 const form = useForm(method, url, {
-    name: serviceItem?.name || '',
-    description: serviceItem?.description || '',
-    image: serviceItem?.image || {},
+    name: props.serviceItem?.name || '',
+    description: props.serviceItem?.description || '',
+    image: props.serviceItem?.image || {},
     new_image: null as string | null,
-    service_prices: serviceItem?.service_prices || [
-        { service_type_id: '', price: '' },
+    service_details: props.serviceItem?.service_details || [
+        {
+            service_id: '',
+            category_id: '',
+            unit_id: '',
+            price: '',
+            quantity: '',
+        },
     ],
-    status: serviceItem?.status || '',
+    status: props.serviceItem?.status || '',
 });
 
 const handleFileProcess = (error: any, file: any) => {
-    if (serviceItem) {
+    if (props.serviceItem) {
         form.new_image = file.serverId;
     } else {
         form.image = file.serverId;
@@ -55,19 +69,11 @@ const handleFileProcess = (error: any, file: any) => {
 };
 
 const handleFileRemoved = () => {
-    if (serviceItem) {
+    if (props.serviceItem) {
         form.new_image = null;
     } else {
         form.image = {};
     }
-};
-
-const addRow = () => {
-    form.service_prices.push({ service_type_id: '', price: '' });
-};
-
-const removeRow = (index: number) => {
-    form.service_prices.splice(index, 1);
 };
 
 const submitForm = () => {
@@ -81,16 +87,14 @@ const submitForm = () => {
 <template>
     <PageHeader>
         <template #title>
-            {{ serviceItem ? 'Edit ' : 'Create New' }} Service
+            {{ serviceItem ? 'Edit ' : 'Create New' }} Service Item
         </template>
         <template #subtitle>
             Fill in the details for your
-            {{ serviceItem ? 'existing' : 'new' }} service.
+            {{ serviceItem ? 'existing' : 'new' }} service item.
         </template>
         <template #actions>
-            <LinkButton :href="route('service-items.index')">
-                Back
-            </LinkButton>
+            <LinkButton :href="route('service-items.index')"> Back </LinkButton>
         </template>
     </PageHeader>
 
@@ -99,7 +103,7 @@ const submitForm = () => {
             <FieldRow class="grid-cols-2">
                 <FieldCol>
                     <InputText
-                        label="Service Name"
+                        label="Service Item Name"
                         v-model="form.name"
                         :error="form.errors.name"
                     />
@@ -134,41 +138,14 @@ const submitForm = () => {
                     />
                 </FieldCol>
             </FieldRow>
+            <ServiceDetails
+                :unitOptions="unitOptions"
+                :categoryOptions="categoryOptions"
+                :serviceOptions="serviceOptions"
+                v-model="form.service_details"
+            />
 
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700">
-                    Service Price
-                </label>
-                <div class="space-y-2">
-                    <div
-                        v-for="(info, index) in form.service_prices"
-                        :key="index"
-                        class="flex items-center space-x-2"
-                    >
-                        <InputSelect
-                            v-model="info.service_type_id"
-                            :options="serviceTypeOptions"
-                            placeholder="Select Service Type"
-                        />
-                        <InputNumber
-                            v-model="info.price"
-                            placeholder="Enter price"
-                        />
-                        <PrimaryButton
-                            v-if="form.service_prices.length > 1"
-                            @click.prevent="removeRow(index)"
-                            type="button"
-                        >
-                            Remove
-                        </PrimaryButton>
-                    </div>
-                    <PrimaryButton @click.prevent="addRow" type="button">
-                        Add Service Price
-                    </PrimaryButton>
-                </div>
-            </div>
-
-            <FieldRow class="gap-2">
+            <div class="flex gap-2">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
@@ -176,10 +153,10 @@ const submitForm = () => {
                 >
                     {{ serviceItem ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('service-items.index')">
+                <LinkButton :href="route('service-items.index')" color="danger">
                     Cancel
                 </LinkButton>
-            </FieldRow>
+            </div>
         </form>
     </Card>
 </template>

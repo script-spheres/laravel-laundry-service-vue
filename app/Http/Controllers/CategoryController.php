@@ -2,84 +2,86 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAddonServiceRequest;
-use App\Http\Requests\UpdateAddonServiceRequest;
-use App\Http\Resources\AddonServiceResource;
-use App\Models\AddonService;
-use App\Services\AddonServiceService;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
+use App\Services\CategoryService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, AddonServiceService $addonServiceService): \Inertia\Response
+    public function index(Request $request, CategoryService $categoryService): Response
     {
-        $addonServices = $addonServiceService->getAddonServices();
+        $categories = $categoryService->getCategories();
 
-        return Inertia::render('AddonService/AddonServiceIndex', [
-            'addonServices' => AddonServiceResource::collection($addonServices),
+        return Inertia::render('Category/CategoryIndex', [
+            'categories' => CategoryResource::collection($categories),
             'filters' => $request->get('filter'),
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Store a newly created resource in storage.
      */
-    public function create(): \Inertia\Response
+    public function store(StoreCategoryRequest $request, CategoryService $categoryService): RedirectResponse
     {
-        return Inertia::render('AddonService/AddonServiceForm');
+        $categoryService->create($request);
+
+        return redirect()->route('categories.index')->with(['message' => 'Created successfully']);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show the form for creating a new resource.
      */
-    public function store(StoreAddonServiceRequest $request, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
+    public function create(): Response
     {
-        $addonServiceService->create($request);
-
-        return redirect()->route('addon-services.index')->with(['message' => 'Created successfully']);
+        return Inertia::render('Category/CategoryForm');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(AddonService $addonService): \Inertia\Response
+    public function show(Category $category): Response
     {
-        return Inertia::render('AddonService/AddonServiceForm', [
-            'addonService' => AddonServiceResource::make($addonService)->resolve()
+        return Inertia::render('Category/CategoryForm', [
+            'category' => CategoryResource::make($category)->resolve()
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AddonService $addonService): \Inertia\Response
+    public function edit(Category $category): Response
     {
-        return Inertia::render('AddonService/AddonServiceForm', [
-            'addonService' => AddonServiceResource::make($addonService)->resolve()
+        return Inertia::render('Category/CategoryForm', [
+            'category' => CategoryResource::make($category)->resolve()
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAddonServiceRequest $request, AddonService $addonService, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
+    public function update(UpdateCategoryRequest $request, Category $category, CategoryService $categoryService): RedirectResponse
     {
-        $addonServiceService->update($addonService, $request);
+        $categoryService->update($category, $request);
 
-        return redirect()->route('addon-services.index')->with(['message' => 'Updated successfully']);
+        return redirect()->route('categories.index')->with(['message' => 'Updated successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AddonService $addonService, AddonServiceService $addonServiceService): \Illuminate\Http\RedirectResponse
+    public function destroy(Category $category, CategoryService $categoryService): RedirectResponse
     {
-        $addonServiceService->delete($addonService);
+        $categoryService->delete($category);
 
-        return redirect()->route('addon-services.index')->with(['message' => 'Deleted successfully']);
+        return redirect()->route('categories.index')->with(['message' => 'Deleted successfully']);
     }
 }

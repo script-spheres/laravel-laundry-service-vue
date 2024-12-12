@@ -7,12 +7,12 @@ use App\Http\Requests\UpdateServiceRequest;
 use App\Models\Service;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class ServiceTypeService
+class ServiceService
 {
     /**
-     * Get paginated service types with filters and sorting.
+     * Get paginated services with filters and sorting.
      */
-    public function getServiceTypes()
+    public function getServices()
     {
         return QueryBuilder::for(Service::class)
             ->allowedFilters(['id', 'name'])
@@ -22,7 +22,7 @@ class ServiceTypeService
     }
 
     /**
-     * Store a new service type.
+     * Store a new service.
      */
     public function create(StoreServiceRequest $request): Service
     {
@@ -31,20 +31,20 @@ class ServiceTypeService
     }
 
     /**
-     * Update an existing service type.
+     * Update an existing service.
      */
-    public function update(Service $serviceType, UpdateServiceRequest $request): Service
+    public function update(Service $service, UpdateServiceRequest $request): Service
     {
         $attributes = $request->validated();
-        $serviceType->update($attributes);
-        return $serviceType;
+        $service->update($attributes);
+        return $service;
     }
 
     /**
-     * Delete a service type.
+     * Delete a service.
      */
-    public function delete(Service $serviceType): void
+    public function delete(Service $service): void
     {
-        $serviceType->delete();
+        $service->delete();
     }
 }

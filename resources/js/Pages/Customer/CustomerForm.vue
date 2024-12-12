@@ -8,14 +8,14 @@ import PhoneInput from '@/Components/Form/InputPhone.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import Card from '@/Components/Panel/Card.vue';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Customer } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     customer: {
@@ -63,7 +63,7 @@ const submitForm = () => {
 
     <Card class="mx-auto mt-6 p-4">
         <form @submit.prevent="submitForm">
-            <FieldRow class="grid-cols-2">
+            <FieldRow :cols="3">
                 <FieldCol>
                     <InputText
                         label="Customer Name"
@@ -78,8 +78,6 @@ const submitForm = () => {
                         :error="form.errors.email"
                     />
                 </FieldCol>
-            </FieldRow>
-            <FieldRow class="grid-cols-2">
                 <FieldCol>
                     <PhoneInput
                         label="Phone Number"
@@ -87,6 +85,8 @@ const submitForm = () => {
                         :error="form.errors.phone_number"
                     />
                 </FieldCol>
+            </FieldRow>
+            <FieldRow>
                 <FieldCol>
                     <InputTextarea
                         label="Communication Preferences"
@@ -106,7 +106,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
             </FieldRow>
-            <FieldRow class="gap-2">
+            <div class="flex gap-2">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
@@ -114,10 +114,10 @@ const submitForm = () => {
                 >
                     {{ customer ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('customers.index')">
+                <LinkButton :href="route('customers.index')" color="danger">
                     Cancel
                 </LinkButton>
-            </FieldRow>
+            </div>
         </form>
     </Card>
 </template>

@@ -15,8 +15,8 @@ class CouponService
     public function getCoupons()
     {
         return QueryBuilder::for(Coupon::class)
-            ->allowedFilters(['id', 'code'])
-            ->allowedSorts(['code', 'created_at'])
+            ->allowedFilters(['title', 'discount_type'])
+            ->latest()
             ->paginate()
             ->appends(request()->query());
     }

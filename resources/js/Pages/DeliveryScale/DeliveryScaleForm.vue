@@ -8,14 +8,14 @@ import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { radiusUnitOptions, statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { DeliveryScale } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     deliveryScale: {
@@ -57,9 +57,7 @@ const submitForm = () => {
             {{ deliveryScale ? 'existing' : 'new' }} delivery scale.
         </template>
         <template #actions>
-            <LinkButton :href="route('delivery-scales.index')"
-                >Back</LinkButton
-            >
+            <LinkButton :href="route('delivery-scales.index')">Back</LinkButton>
         </template>
     </PageHeader>
 

@@ -4,11 +4,11 @@ import Checkbox from '@/Components/Form/InputCheckbox.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import InputText from '@/Components/Form/InputText.vue';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
-import PublicLayout from '@/Layouts/PublicLayout.vue';
+defineOptions({ layout: GuestLayout });
 
-defineOptions({ layout: PublicLayout });
 defineProps<{
     canResetPassword?: boolean;
     status?: string;

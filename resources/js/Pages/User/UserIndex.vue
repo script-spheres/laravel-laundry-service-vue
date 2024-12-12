@@ -14,13 +14,13 @@ import ToggleInput from '@/Components/Form/InputToggle.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { PaginatedData, User } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { PropType, reactive, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     users: {
@@ -87,9 +87,7 @@ watch(filter, (newFilters) => {
             </p>
         </div>
         <div>
-            <LinkButton :href="route('users.create')">
-                Add User
-            </LinkButton>
+            <LinkButton :href="route('users.create')"> Add User </LinkButton>
         </div>
     </div>
 

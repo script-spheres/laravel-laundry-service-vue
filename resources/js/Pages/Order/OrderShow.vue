@@ -10,11 +10,11 @@ import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { orderStatusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Order } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 defineProps({
     order: {

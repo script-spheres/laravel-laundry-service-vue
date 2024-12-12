@@ -30,6 +30,7 @@ use App\Http\Controllers\ServiceItemController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TimeslotController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -81,6 +82,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('cities', CityController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('units', UnitController::class);
     Route::resource('stores', StoreController::class);
 
     Route::resource('customers', CustomerController::class);
@@ -104,9 +106,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('rewards', UserController::class);
     Route::resource('redemptions', UserController::class);
 
-    Route::get('settings/general', [SettingController::class, 'index'])->name('settings.general');
-    Route::get('settings/finance', [SettingController::class, 'finance'])->name('settings.finance');
+
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('settings', [SettingController::class, 'store'])->name('settings.submit');
+
+    Route::get('settings/finance', [SettingController::class, 'finance'])->name('settings.finance');
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('financial', [ReportController::class, 'financial'])->name('financial');

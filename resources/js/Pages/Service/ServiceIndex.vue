@@ -16,17 +16,17 @@ import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
-import { PaginatedData, ServiceType } from '@/types';
+import { PaginatedData, Service } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
-    serviceTypes: {
-        type: Object as PropType<PaginatedData<ServiceType>>,
+    services: {
+        type: Object as PropType<PaginatedData<Service>>,
         required: true,
     },
     filters: {
@@ -36,7 +36,7 @@ const props = defineProps({
     },
 });
 
-const { filter, handleClearFilter } = useFilters('service-types.index', {
+const { filter, handleClearFilter } = useFilters('services.index', {
     name: props.filters?.name ?? '',
     status: props.filters?.status ?? '',
     type: props.filters?.type ?? '',
@@ -46,13 +46,13 @@ const { filter, handleClearFilter } = useFilters('service-types.index', {
 
 <template>
     <PageHeader>
-        <template #title> Service Type Management </template>
+        <template #title> Service Management </template>
         <template #subtitle>
-            Manage your service types with filters and actions.
+            Manage your services with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('service-types.create')">
-                Add Service Type
+            <LinkButton :href="route('services.create')">
+                Add Service
             </LinkButton>
         </template>
     </PageHeader>
@@ -60,9 +60,9 @@ const { filter, handleClearFilter } = useFilters('service-types.index', {
         <FieldRow class="flex grid-cols-4">
             <FieldCol>
                 <InputText
-                    label="Type Name"
+                    label="Service Name"
                     v-model="filter.name"
-                    placeholder="Filter by Type Name"
+                    placeholder="Filter by Service Name"
                 />
             </FieldCol>
             <FieldCol>
@@ -82,38 +82,27 @@ const { filter, handleClearFilter } = useFilters('service-types.index', {
     </Card>
     <DataTable>
         <TableHead>
-            <TableHeadCell>Type Name</TableHeadCell>
+            <TableHeadCell>Service Name</TableHeadCell>
             <TableHeadCell>Description</TableHeadCell>
             <TableHeadCell class="text-right">Status</TableHeadCell>
             <TableHeadCell class="text-right">Actions</TableHeadCell>
         </TableHead>
         <TableBody>
-            <TableRow
-                v-for="serviceType in serviceTypes.data"
-                :key="serviceType.id"
-            >
-                <TableCell>{{ serviceType.name }}</TableCell>
-                <TableCell>{{ serviceType.description }}</TableCell>
+            <TableRow v-for="service in services.data" :key="service.id">
+                <TableCell>{{ service.name }}</TableCell>
+                <TableCell>{{ service.description }}</TableCell>
                 <TableCell class="text-right">
                     <StatusToggleInput
-                        :data="serviceType"
-                        :action="
-                            route('service-types.update', serviceType.id)
-                        "
+                        :data="service"
+                        :action="route('services.update', service.id)"
                     />
                 </TableCell>
                 <TableCell class="flex justify-end gap-2">
-                    <LinkButton
-                        :href="
-                            route('service-types.edit', serviceType.id)
-                        "
-                    >
+                    <LinkButton :href="route('services.edit', service.id)">
                         Edit
                     </LinkButton>
                     <DeleteButton
-                        :action="
-                            route('service-types.destroy', serviceType.id)
-                        "
+                        :action="route('services.destroy', service.id)"
                     >
                         Delete
                     </DeleteButton>
@@ -121,5 +110,5 @@ const { filter, handleClearFilter } = useFilters('service-types.index', {
             </TableRow>
         </TableBody>
     </DataTable>
-    <Pagination :links="serviceTypes.meta" />
+    <Pagination :links="services.meta" />
 </template>

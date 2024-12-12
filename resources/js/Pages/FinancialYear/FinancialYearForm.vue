@@ -8,14 +8,14 @@ import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { FinancialYear } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     financialYear: {
@@ -24,19 +24,17 @@ const props = defineProps({
     },
 });
 
-const { financialYear } = props;
-
-const method = financialYear ? 'put' : 'post';
-const url = financialYear
-    ? route('financial-years.update', financialYear.id)
+const method = props.financialYear ? 'put' : 'post';
+const url = props.financialYear
+    ? route('financial-years.update', props.financialYear?.id)
     : route('financial-years.store');
 
 const form = useForm(method, url, {
-    name: financialYear?.name || '',
-    start_date: financialYear?.start_date || '',
-    end_date: financialYear?.end_date || '',
-    status: financialYear?.status || 'active',
-    description: financialYear?.description || '',
+    name: props.financialYear?.name || '',
+    start_date: props.financialYear?.start_date || '',
+    end_date: props.financialYear?.end_date || '',
+    status: props.financialYear?.status || '',
+    description: props.financialYear?.description || '',
 });
 
 const submitForm = () => {
@@ -56,9 +54,7 @@ const submitForm = () => {
             {{ financialYear ? 'existing' : 'new' }} financial year.
         </template>
         <template #actions>
-            <LinkButton :href="route('financial-years.index')"
-                >Back</LinkButton
-            >
+            <LinkButton :href="route('financial-years.index')">Back</LinkButton>
         </template>
     </PageHeader>
 

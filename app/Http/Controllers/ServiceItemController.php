@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreServiceItemRequest;
 use App\Http\Requests\UpdateServiceItemRequest;
 use App\Http\Resources\ServiceItemResource;
+use App\Models\Category;
 use App\Models\Service;
 use App\Models\ServiceItem;
+use App\Models\Unit;
 use App\Services\ServiceItemService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,7 +46,9 @@ class ServiceItemController extends Controller
     public function create(): Response
     {
         return Inertia::render('ServiceItem/ServiceItemForm', [
-            'serviceTypeOptions' => Service::pluck('name', 'id'),
+            'serviceOptions' => Service::pluck('name', 'id'),
+            'categoryOptions' => Category::pluck('name', 'id'),
+            'unitOptions' => Unit::pluck('short_name', 'id'),
         ]);
     }
 
@@ -55,7 +59,6 @@ class ServiceItemController extends Controller
     {
         return Inertia::render('ServiceItem/ServiceItemForm', [
             'serviceItem' => ServiceItemResource::make($serviceItem)->resolve(),
-            'serviceTypeOptions' => Service::pluck('name', 'id'),
         ]);
     }
 
@@ -65,8 +68,10 @@ class ServiceItemController extends Controller
     public function edit(ServiceItem $serviceItem): Response
     {
         return Inertia::render('ServiceItem/ServiceItemForm', [
-            'serviceItem' => ServiceItemResource::make($serviceItem->load('servicePrices'))->resolve(),
-            'serviceTypeOptions' => Service::pluck('name', 'id'),
+            'serviceItem' => ServiceItemResource::make($serviceItem->load('serviceDetails'))->resolve(),
+            'serviceOptions' => Service::pluck('name', 'id'),
+            'categoryOptions' => Category::pluck('name', 'id'),
+            'unitOptions' => Unit::pluck('short_name', 'id'),
         ]);
     }
 

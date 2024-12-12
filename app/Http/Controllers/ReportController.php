@@ -6,7 +6,7 @@ use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
-use App\Services\ServiceTypeService;
+use App\Services\ServiceService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,7 +15,7 @@ class ReportController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, ServiceTypeService $serviceTypeService)
+    public function index(Request $request, ServiceService $serviceTypeService)
     {
         $serviceTypes = $serviceTypeService->getServiceTypes();
 
@@ -36,7 +36,7 @@ class ReportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreServiceRequest $request, ServiceTypeService $serviceTypeService)
+    public function store(StoreServiceRequest $request, ServiceService $serviceTypeService)
     {
         $serviceTypeService->create($request);
 
@@ -66,7 +66,7 @@ class ReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateServiceRequest $request, Service $serviceType, ServiceTypeService $serviceTypeService)
+    public function update(UpdateServiceRequest $request, Service $serviceType, ServiceService $serviceTypeService)
     {
         $serviceTypeService->update($serviceType, $request);
 
@@ -76,7 +76,7 @@ class ReportController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Service $serviceType, ServiceTypeService $serviceTypeService)
+    public function destroy(Service $serviceType, ServiceService $serviceTypeService)
     {
         $serviceTypeService->delete($serviceType);
 

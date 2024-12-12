@@ -6,7 +6,7 @@ import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { daysOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Times from '@/Pages/Timeslot/Times.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Timeslot } from '@/types';
@@ -14,7 +14,7 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     timeslot: {
@@ -80,10 +80,7 @@ const submitForm = () => {
                 >
                     {{ timeslot ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton
-                    :href="route('timeslots.index')"
-                    color="danger"
-                >
+                <LinkButton :href="route('timeslots.index')" color="danger">
                     Cancel
                 </LinkButton>
             </div>

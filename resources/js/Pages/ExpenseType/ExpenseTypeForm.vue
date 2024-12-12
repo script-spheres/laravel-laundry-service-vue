@@ -8,13 +8,13 @@ import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     expenseType: {
@@ -59,9 +59,7 @@ const submitForm = () => {
             {{ expenseType ? 'existing' : 'new' }} expense type.
         </template>
         <template #actions>
-            <LinkButton :href="route('expense-types.index')"
-                >Back</LinkButton
-            >
+            <LinkButton :href="route('expense-types.index')">Back</LinkButton>
         </template>
     </PageHeader>
 
@@ -103,10 +101,7 @@ const submitForm = () => {
                 >
                     {{ expenseType ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton
-                    :href="route('expense-types.index')"
-                    color="danger"
-                >
+                <LinkButton :href="route('expense-types.index')" color="danger">
                     Cancel
                 </LinkButton>
             </div>

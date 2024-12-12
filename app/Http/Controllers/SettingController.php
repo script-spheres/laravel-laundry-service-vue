@@ -21,6 +21,15 @@ class SettingController extends Controller
             'settings' => $settings,
         ]);
     }
+    /**
+     * Display a listing of the resource.
+     */
+    public function general(GeneralSettings $settings): Response
+    {
+        return Inertia::render('Settings/GeneralSetting', [
+            'settings' => $settings,
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.

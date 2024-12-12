@@ -3,10 +3,11 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import PublicLayout from '@/Layouts/PublicLayout.vue';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
-defineOptions({ layout: PublicLayout });
+defineOptions({ layout: GuestLayout });
+
 const form = useForm({
     name: '',
     email: '',

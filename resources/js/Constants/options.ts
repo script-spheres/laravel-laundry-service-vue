@@ -8,6 +8,11 @@ export const yesNoOptions: Record<string, string> = {
     no: 'No',
 };
 
+export const trueFalseOptions: Record<string, string> = {
+    true: 'Yes',
+    false: 'No',
+};
+
 export const dietaryOptions: Record<string, string> = {
     vegetarian: 'Vegetarian',
     vegan: 'Vegan',

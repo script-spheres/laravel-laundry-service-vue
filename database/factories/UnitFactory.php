@@ -18,8 +18,9 @@ class UnitFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->city,
-            'description' => $this->faker->sentence,
+            'actual_name' => $this->faker->word,
+            'short_name' => $this->faker->lexify('??'),
+            'allow_decimal' => $this->faker->boolean,
             'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }

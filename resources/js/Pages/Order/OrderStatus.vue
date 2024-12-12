@@ -7,13 +7,13 @@ import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { paymentStatusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Order } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { PropType, reactive } from 'vue';
 import draggable from 'vuedraggable';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 // Props Definition
 const props = defineProps({
@@ -74,14 +74,10 @@ const end = (evt: any) => {
     console.log('selectedOrder', selectedOrder);
     if (selectedOrder) {
         const dataSet = { ...selectedOrder, order_status: targetColumn };
-        router.put(
-            route('orders-status.update', selectedOrder.id),
-            dataSet,
-            {
-                preserveScroll: true,
-                preserveState: true,
-            },
-        );
+        router.put(route('orders-status.update', selectedOrder.id), dataSet, {
+            preserveScroll: true,
+            preserveState: true,
+        });
     }
 };
 

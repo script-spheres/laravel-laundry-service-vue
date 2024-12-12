@@ -13,13 +13,13 @@ import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { DeliveryScale, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     deliveryScales: {
@@ -34,15 +34,12 @@ const props = defineProps({
 });
 
 // Initialize reactive filters with default values or passed props
-const { filter, handleClearFilter } = useFilters(
-    'delivery-scales.index',
-    {
-        radius: props.filters?.radius ?? '',
-        min_order_amount: props.filters?.min_order_amount ?? '',
-        delivery_charges: props.filters?.delivery_charges ?? '',
-        status: props.filters?.status ?? '',
-    },
-);
+const { filter, handleClearFilter } = useFilters('delivery-scales.index', {
+    radius: props.filters?.radius ?? '',
+    min_order_amount: props.filters?.min_order_amount ?? '',
+    delivery_charges: props.filters?.delivery_charges ?? '',
+    status: props.filters?.status ?? '',
+});
 </script>
 
 <template>
@@ -122,10 +119,7 @@ const { filter, handleClearFilter } = useFilters(
                     <TableCell class="flex justify-end gap-2">
                         <LinkButton
                             :href="
-                                route(
-                                    'delivery-scales.edit',
-                                    deliveryScale.id,
-                                )
+                                route('delivery-scales.edit', deliveryScale.id)
                             "
                         >
                             Edit

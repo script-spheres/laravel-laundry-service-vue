@@ -3,19 +3,19 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import Card from '@/Components/Panel/Card.vue';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
-import PageHeader from '@/Shared/PageHeader.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import SettingLayout from '@/Pages/Settings/SettingLayout.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
+
+defineOptions({ layout: AuthenticatedLayout });
 
 interface GeneralSettings {
     site_name: string;
 }
 
-defineOptions({ layout: AdminLayout });
-
+// Props for settings data
 const props = defineProps({
     settings: {
         type: Object as PropType<GeneralSettings>,
@@ -23,10 +23,12 @@ const props = defineProps({
     },
 });
 
+// Initialize the form
 const form = useForm('post', route('settings.submit'), {
     site_name: props.settings?.site_name || '',
 });
 
+// Submit handler
 const submitForm = () => {
     form.submit({
         preserveScroll: true,
@@ -36,14 +38,10 @@ const submitForm = () => {
 </script>
 
 <template>
-    <PageHeader>
-        <template #title> Finance Settings </template>
-        <template #subtitle>
-            Fill in the details for your finance-related settings.
-        </template>
-    </PageHeader>
-
-    <Card class="mx-auto mt-6 p-4">
+    <SettingLayout
+        title="General Settings"
+        subtitle="Fill in the details for your finance-related settings."
+    >
         <form @submit.prevent="submitForm">
             <FieldRow class="grid-cols-2">
                 <FieldCol>
@@ -60,9 +58,9 @@ const submitForm = () => {
                     :disabled="form.processing"
                     type="submit"
                 >
-                    {{ settings ? 'Update' : 'Submit' }}
+                    {{ props.settings ? 'Update' : 'Submit' }}
                 </PrimaryButton>
             </FieldRow>
         </form>
-    </Card>
+    </SettingLayout>
 </template>

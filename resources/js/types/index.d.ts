@@ -93,6 +93,21 @@ export type Category = {
     status: Status;
 };
 
+export type City = {
+    id: number;
+    name: string;
+    description: string;
+    status: Status;
+};
+
+export type Unit = {
+    id: number;
+    actual_name: string;
+    short_name: string;
+    allow_decimal: string;
+    status: Status;
+};
+
 export type Banner = {
     id: number;
     title: string;
@@ -142,16 +157,22 @@ export type ServiceItem = {
     name: string;
     description: string | null;
     image: Image;
-    service_prices: ServicePrice[];
+    service_details: ServiceDetail[];
     status: Status;
 };
 
-export type ServicePrice = {
+export type ServiceDetail = {
     id: number;
-    service_type_id: number;
-    service_type?: Service;
+    service_id: number;
+    category_id: number;
+    unit_id: number;
+    service_item_id: number;
+    service?: Service;
     service_item?: ServiceItem;
+    category?: Category;
+    unit?: Unit;
     price: number;
+    quantity: number;
 };
 
 export type AddonService = {

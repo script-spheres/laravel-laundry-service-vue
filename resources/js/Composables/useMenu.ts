@@ -1,21 +1,21 @@
 import { readonly, ref, watch } from 'vue';
 
-const isMenuOpen = ref(false);
-
-const toggleMenu = () => {
-    isMenuOpen.value = !isMenuOpen.value;
-};
-
-export function useMenu() {
+export function useMenu(initialMenuState: boolean = false) {
     const isMobileDevice = ref(window.innerWidth < 1024);
 
-    // Watch for window resize events to update the mobile state dynamically
+    // Renamed to avoid conflict with the parameter name
+    const menuState = ref(initialMenuState);
+
+    const toggleMenu = () => {
+        menuState.value = !menuState.value;
+    };
+
     watch(
         () => window.innerWidth,
         (newWidth) => {
             isMobileDevice.value = newWidth < 1024;
             if (newWidth < 1024) {
-                isMenuOpen.value = false;
+                menuState.value = false;
             }
         },
         { immediate: true },
@@ -23,9 +23,7 @@ export function useMenu() {
 
     return {
         isMobileDevice,
-
-        // Menu
-        isMenuOpen: readonly(isMenuOpen),
+        isMenuOpen: readonly(menuState),
         toggleMenu,
     };
 }

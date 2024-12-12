@@ -19,7 +19,7 @@ class ServiceItemService
     {
         return QueryBuilder::for(ServiceItem::class)
             ->allowedFilters(['id', 'name'])
-            ->with('servicePrices')
+            ->with('serviceDetails')
             ->allowedSorts(['name', 'created_at'])
             ->paginate()
             ->appends(request()->query());

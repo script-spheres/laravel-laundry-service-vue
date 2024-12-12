@@ -15,12 +15,12 @@ import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { orderStatusOptions, paymentStatusOptions } from '@/Constants/options';
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Order, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
-defineOptions({ layout: AdminLayout });
+defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     orders: {
@@ -32,10 +32,23 @@ const props = defineProps({
 
 const { filter, handleClearFilter } = useFilters('orders.index', {
     order_uuid: props.filters?.order_uuid || '',
-    customer_name: props.filters?.customer_name || '', // Fixed typo
+    customer_name: props.filters?.customer_name || '',
     order_status: props.filters?.order_status || '',
     payment_status: props.filters?.payment_status || '',
 });
+
+// Function to determine badge color based on order_status
+const getOrderStatusColor = (status: string) => {
+    const statusColors: Record<string, string> = {
+        pending: 'yellow',
+        'in-progress': 'blue',
+        'ready-to-deliver': 'purple',
+        delivered: 'green',
+    };
+
+    return statusColors[status.toLowerCase()] || 'gray';
+};
+
 </script>
 
 <template>
@@ -43,9 +56,7 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
         <template #title> Order Management </template>
         <template #subtitle> Manage and view details of all orders. </template>
         <template #actions>
-            <LinkButton :href="route('orders.create')">
-                Add Order
-            </LinkButton>
+            <LinkButton :href="route('orders.create')"> Add Order </LinkButton>
         </template>
     </PageHeader>
 
@@ -137,7 +148,9 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
                     </p>
                 </TableCell>
                 <TableCell class="text-right">
-                    <Badge>{{ order.order_status }}</Badge>
+                    <Badge :color="getOrderStatusColor(order.order_status)">
+                        {{ order.order_status }}
+                    </Badge>
                 </TableCell>
                 <TableCell class="p-2">
                     <p>
