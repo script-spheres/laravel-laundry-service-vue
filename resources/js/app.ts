@@ -8,6 +8,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createApp, DefineComponent, h } from 'vue';
+import VueApexCharts from 'vue3-apexcharts';
 import Vue3Toastify from 'vue3-toastify';
 import { ZiggyVue } from 'ziggy-js';
 
@@ -35,6 +36,7 @@ createInertiaApp({
             .use(pinia)
             .use(ZiggyVue)
             .use(Vue3Toastify)
+            .use(VueApexCharts)
             .mount(el);
     },
     progress: {

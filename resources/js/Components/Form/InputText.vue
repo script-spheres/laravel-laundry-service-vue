@@ -25,7 +25,7 @@ const id = useId();
         {{ $attrs.label }} :
     </label>
     <input
-        class="w-full appearance-none rounded border border-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:border-gray-600 dark:bg-gray-900 dark:text-white dark:focus:border-indigo-500 dark:focus:ring-indigo-500"
+        class="w-full appearance-none rounded border border-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-gray-300 focus:ring focus:ring-gray-200 focus:ring-opacity-50 dark:border-gray-600 dark:bg-gray-900 dark:text-white dark:focus:border-gray-500 dark:focus:ring-gray-500"
         v-model="model"
         ref="input"
         type="text"

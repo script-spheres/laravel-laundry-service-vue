@@ -12,6 +12,8 @@ import { Order } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { PropType, reactive } from 'vue';
 import draggable from 'vuedraggable';
+import FieldRow from '@/Components/Form/FieldRow.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
@@ -99,39 +101,39 @@ const cloneDog = (order: Order) => {
     </div>
 
     <!-- Filters Section -->
-    <Card class="mb-6 p-4">
-        <div class="flex flex-wrap items-center gap-4">
-            <div class="w-full md:w-1/4">
-                <InputLabel for="order_uuid" value="Order No." />
+    <Card class="mb-6 p-6">
+        <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
+            <FieldCol>
                 <InputText
+                    label="Order No."
                     v-model="filter.order_uuid"
                     placeholder="Search by Order No."
                 />
-            </div>
+            </FieldCol>
 
-            <div class="w-full md:w-1/4">
-                <InputLabel for="order_date" value="Order Date" />
+            <FieldCol>
                 <DateInput
+                    label="Order Date"
                     v-model="filter.order_date"
                     placeholder="Select Order Date"
                 />
-            </div>
+            </FieldCol>
 
-            <div class="w-full md:w-1/4">
-                <InputLabel for="payment_status" value="Payment Status" />
+            <FieldCol>
                 <InputSelect
+                    label="Payment Status"
                     v-model="filter.payment_status"
                     :options="paymentStatusOptions"
                     placeholder="Payment Status"
                 />
-            </div>
+            </FieldCol>
 
-            <div class="flex-none">
-                <PrimaryButton @click="handleClearFilter">
+            <FieldCol class="flex-none gap-2 self-end">
+                <PrimaryButton @click="handleClearFilter" color="danger">
                     Clear Filters
                 </PrimaryButton>
-            </div>
-        </div>
+            </FieldCol>
+        </FieldRow>
     </Card>
 
     <!-- Kanban Board -->

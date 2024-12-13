@@ -10,6 +10,7 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
+import InputDate from '@/Components/Form/InputDate.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
@@ -26,6 +27,10 @@ const { filters } = defineProps({
         type: Object as PropType<PaginatedData<Expense>>,
         required: true,
     },
+    storeOptions: {
+        type: Object as PropType<Object>,
+        required: true,
+    },
     filters: {
         type: Object as PropType<Filters>,
         required: false,
@@ -34,9 +39,8 @@ const { filters } = defineProps({
 });
 
 const { filter, handleClearFilter } = useFilters('expenses.index', {
-    category: filters?.category ?? '',
+    date: filters?.date ?? '',
     store_id: filters?.store_id ?? '',
-    amount: filters?.amount ?? '',
 });
 </script>
 
@@ -54,12 +58,11 @@ const { filter, handleClearFilter } = useFilters('expenses.index', {
     </PageHeader>
 
     <Card class="mb-6 p-6">
-        <FieldRow class="flex md:grid-cols-4">
+        <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
             <FieldCol>
-                <InputSelect
-                    label="Category"
-                    v-model="filter.category"
-                    :options="categoryOptions"
+                <InputDate
+                    label="Date"
+                    v-model="filter.date"
                     placeholder="Filter by Category"
                 />
             </FieldCol>
@@ -71,16 +74,8 @@ const { filter, handleClearFilter } = useFilters('expenses.index', {
                     placeholder="Filter by Store"
                 />
             </FieldCol>
-            <FieldCol>
-                <InputSelect
-                    label="Amount"
-                    v-model="filter.amount"
-                    :options="amountOptions"
-                    placeholder="Filter by Amount"
-                />
-            </FieldCol>
             <FieldCol class="flex-none gap-2 self-end">
-                <PrimaryButton color="gray" @click="handleClearFilter">
+                <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </FieldCol>

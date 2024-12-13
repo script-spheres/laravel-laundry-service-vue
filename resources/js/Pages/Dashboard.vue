@@ -7,123 +7,90 @@ import { orderStatusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Order } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
-import { onUnmounted, PropType, ref } from 'vue';
+import { PropType } from 'vue';
 
-// Props Definition
+defineOptions({ layout: AuthenticatedLayout });
+
 const props = defineProps({
-    orders: {
-        type: Array as PropType<Order[]>,
-        required: true,
-    },
+    orders: Array as PropType<Order[]>,
     filters: Object as PropType<Filters>,
 });
 
-// Filters Reactive State
-const { filter } = useFilters('orders.index', {
-    search_query: props.filters?.search_query || '',
-    order_filter: props.filters?.order_filter || '',
-});
+const { filter } = useFilters(
+    'orders.index',
+    props.filters || { search_query: '', order_filter: '' },
+);
 
-// Register Chart.js components
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-// Define data for the chart
-const chartData = ref([513, 223, 486, 159, 19]);
-
-// Chart.js configuration
-const chartConfig = ref<Chart.ChartConfiguration>({
-    type: 'doughnut',
-    data: {
-        labels: [
-            'Pending',
-            'Processing',
-            'Ready To Deliver',
-            'Delivered',
-            'Returned',
-        ],
-        datasets: [
-            {
-                label: 'Orders',
-                data: chartData.value,
-                backgroundColor: [
-                    '#8392ab', // Pending
-                    '#faae42', // Processing
-                    '#2dce89', // Ready To Deliver
-                    '#0083ff', // Delivered
-                    '#f5365c', // Returned
-                ],
-                borderColor: '#fff',
-                borderWidth: 1,
-            },
-        ],
+const chartOptions = {
+    chart: { type: 'pie', toolbar: { show: true }, height: 600 },
+    labels: ['Pending', 'Processing', 'Ready To Deliver', 'Delivered'],
+    colors: ['#8392ab', '#faae42', '#2dce89', '#0083ff'],
+    legend: {
+        position: 'bottom',
+        horizontalAlign: 'center',
     },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom',
+    responsive: [
+        {
+            breakpoint: 768,
+            options: {
+                chart: { height: 400 },
+                legend: { position: 'bottom' },
             },
         },
-    },
-});
-
-// Reference to the chart instance
-let chartInstance: ChartJS | null = null;
-
-// Initialize the Chart.js instance
-const initChart = (canvas: HTMLCanvasElement) => {
-    if (chartInstance) chartInstance.destroy(); // Destroy previous instance if it exists
-    chartInstance = new ChartJS(canvas, chartConfig.value);
+        {
+            breakpoint: 480,
+            options: {
+                chart: { height: 300 },
+                legend: { position: 'bottom' },
+            },
+        },
+    ],
 };
 
-// Hook to destroy chart on unmount
-onUnmounted(() => {
-    if (chartInstance) chartInstance.destroy();
-});
-defineOptions({ layout: AuthenticatedLayout });
+const chartSeries = [513, 223, 486, 159];
 </script>
 
 <template>
     <Head title="Dashboard" />
 
-    <div class="grid gap-4 lg:grid-cols-2 2xl:grid-cols-4">
-        <div class="rounded bg-gray-100 p-4 shadow">
-            <p class="text-gray-500">Pending Orders</p>
-            <h6 class="text-xl font-bold">513</h6>
-        </div>
-        <div class="rounded bg-gray-100 p-4 shadow">
-            <p class="text-gray-500">Processing Orders</p>
-            <h6 class="text-xl font-bold">223</h6>
-        </div>
-        <div class="rounded bg-gray-100 p-4 shadow">
-            <p class="text-gray-500">Ready To Deliver</p>
-            <h6 class="text-xl font-bold">486</h6>
-        </div>
-        <div class="rounded bg-gray-100 p-4 shadow">
-            <p class="text-gray-500">Delivered Orders</p>
-            <h6 class="text-xl font-bold">159</h6>
+    <!-- Order Summary Grid -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+            v-for="(status, index) in [
+                'Pending',
+                'Processing',
+                'Ready To Deliver',
+                'Delivered',
+            ]"
+            :key="status"
+            class="rounded bg-gray-100 p-4 text-center shadow"
+        >
+            <p class="text-gray-500">{{ status }} Orders</p>
+            <h6 class="text-2xl font-bold">{{ chartSeries[index] }}</h6>
         </div>
     </div>
 
-    <div class="mt-4 grid grid-cols-4 gap-4">
-        <Card class="col-span-3 p-4">
-            <div class="flex justify-between">
-                <h6 class="text-lg font-bold">Today's Delivery</h6>
-                <div class="flex gap-4">
+    <!-- Filter and Card Grid -->
+    <div class="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <Card class="p-4 lg:col-span-2">
+            <div class="flex flex-col gap-4 md:flex-row md:justify-between">
+                <h6 class="text-lg font-bold">Today's Delivery:</h6>
+                <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
                     <InputText
                         placeholder="Search Here"
                         v-model="filter.search_query"
+                        class="w-full sm:w-auto"
                     />
                     <InputSelect
                         v-model="filter.order_filter"
                         :options="orderStatusOptions"
+                        class="w-full sm:w-auto"
                     />
                 </div>
             </div>
+
             <div
-                class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3"
+                class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
             >
                 <div
                     v-for="order in orders"
@@ -132,52 +99,15 @@ defineOptions({ layout: AuthenticatedLayout });
                 >
                     <p class="font-bold">{{ order.order_uuid }}</p>
                     <p class="text-gray-500">Customer: Walk In Customer</p>
-                    <p class="text-gray-500">
-                        <span>02/12/2024</span>
-                    </p>
+                    <p class="text-gray-500"><span>02/12/2024</span></p>
                 </div>
             </div>
         </Card>
+
         <Card class="p-4">
             <div>
-                <h6 class="text-lg font-bold">Overview</h6>
-                <canvas
-                    id="overviewChart"
-                    ref="chartCanvas"
-                    class="h-64 w-full"
-                ></canvas>
-                <ul class="mt-4 space-y-2">
-                    <li>
-                        <span
-                            class="inline-block h-4 w-4 rounded bg-[#8392ab]"
-                        ></span>
-                        <span>Pending</span>
-                    </li>
-                    <li>
-                        <span
-                            class="inline-block h-4 w-4 rounded bg-[#faae42]"
-                        ></span>
-                        <span>Processing</span>
-                    </li>
-                    <li>
-                        <span
-                            class="inline-block h-4 w-4 rounded bg-[#2dce89]"
-                        ></span>
-                        <span>Ready To Deliver</span>
-                    </li>
-                    <li>
-                        <span
-                            class="inline-block h-4 w-4 rounded bg-[#0083ff]"
-                        ></span>
-                        <span>Delivered</span>
-                    </li>
-                    <li>
-                        <span
-                            class="inline-block h-4 w-4 rounded bg-[#f5365c]"
-                        ></span>
-                        <span>Returned</span>
-                    </li>
-                </ul>
+                <h6 class="mb-4 text-lg font-bold">Order Overview:</h6>
+                <apexchart :options="chartOptions" :series="chartSeries" />
             </div>
         </Card>
     </div>

@@ -21,6 +21,11 @@ defineProps({
         type: Object as PropType<PaginatedData<Unit>>,
         required: true,
     },
+    filters: {
+        type: Object as PropType<Filters>,
+        required: false,
+        default: () => ({}),
+    },
 });
 </script>
 

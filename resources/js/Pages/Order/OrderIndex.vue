@@ -8,7 +8,8 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import InputLabel from '@/Components/Form/InputLabel.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
@@ -48,7 +49,6 @@ const getOrderStatusColor = (status: string) => {
 
     return statusColors[status.toLowerCase()] || 'gray';
 };
-
 </script>
 
 <template>
@@ -60,53 +60,49 @@ const getOrderStatusColor = (status: string) => {
         </template>
     </PageHeader>
 
-    <Card class="mb-6 p-4">
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
-            <!-- Order Number Input -->
-            <div class="w-full md:w-1/6">
-                <InputLabel for="order_uuid" value="Order No." />
+    <Card class="mb-6 p-6">
+        <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
+            <FieldCol>
                 <InputText
+                    label="Order No."
                     v-model="filter.order_uuid"
                     placeholder="Search by Order No."
                 />
-            </div>
+            </FieldCol>
 
-            <!-- Customer Name Filter -->
-            <div class="w-full md:w-1/6">
-                <InputLabel for="customer_name" value="Customer" />
+            <FieldCol>
                 <InputText
+                    label="Customer"
                     v-model="filter.customer_name"
                     placeholder="Filter by Customer"
                 />
-            </div>
+            </FieldCol>
 
-            <!-- Order Status Filter -->
-            <div class="w-full md:w-1/6">
-                <InputLabel for="order_status" value="Order Status" />
+            <FieldCol>
                 <InputSelect
+                    label="Order Status"
                     v-model="filter.order_status"
                     :options="orderStatusOptions"
                     placeholder="Order Status"
                 />
-            </div>
+            </FieldCol>
 
-            <!-- Payment Status Filter -->
-            <div class="w-full md:w-1/6">
-                <InputLabel for="payment_status" value="Payment Status" />
+            <FieldCol>
                 <InputSelect
+                    label="Payment Status"
                     v-model="filter.payment_status"
                     :options="paymentStatusOptions"
                     placeholder="Payment Status"
                 />
-            </div>
+            </FieldCol>
 
             <!-- Clear Filters Button -->
-            <div class="flex-none gap-2 self-end">
-                <PrimaryButton @click="handleClearFilter">
+            <FieldCol class="flex-none gap-2 self-end">
+                <PrimaryButton @click="handleClearFilter" color="danger">
                     Clear Filter
                 </PrimaryButton>
-            </div>
-        </div>
+            </FieldCol>
+        </FieldRow>
     </Card>
 
     <DataTable>
@@ -162,14 +158,14 @@ const getOrderStatusColor = (status: string) => {
                         {{ order.paid_amount }}
                     </p>
                 </TableCell>
-                <TableCell class="flex gap-2">
+                <TableCell class="flex h-20 items-center justify-end gap-2">
                     <LinkButton
                         :href="route('orders.show', order.id)"
                         color="secondary"
-                        class="flex-none self-end"
                     >
                         View
                     </LinkButton>
+
                     <LinkButton
                         :href="route('orders.edit', order.id)"
                         color="primary"

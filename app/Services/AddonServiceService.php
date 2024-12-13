@@ -17,13 +17,11 @@ class AddonServiceService
     public function getAddonServices()
     {
         return QueryBuilder::for(AddonService::class)
-            ->allowedIncludes(['parent', 'children'])
             ->allowedFilters([
-                AllowedFilter::exact('id'),
                 AllowedFilter::partial('name'),
                 AllowedFilter::exact('status'),
             ])
-            ->allowedSorts(['name', 'created_at'])
+            ->latest()
             ->paginate()
             ->appends(request()->query());
     }

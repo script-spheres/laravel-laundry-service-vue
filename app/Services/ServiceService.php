@@ -15,8 +15,8 @@ class ServiceService
     public function getServices()
     {
         return QueryBuilder::for(Service::class)
-            ->allowedFilters(['id', 'name'])
-            ->allowedSorts(['name', 'created_at'])
+            ->allowedFilters(['name', 'status'])
+            ->latest()
             ->paginate()
             ->appends(request()->query());
     }

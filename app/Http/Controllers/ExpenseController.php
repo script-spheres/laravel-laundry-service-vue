@@ -24,6 +24,7 @@ class ExpenseController extends Controller
         $expenses = $expenseService->getExpenses();
 
         return Inertia::render('Expense/ExpenseIndex', [
+            'storeOptions' => Store::pluck('name','id'),
             'expenses' => ExpenseResource::collection($expenses),
             'filters' => $request->get('filter'),
         ]);

@@ -39,8 +39,6 @@ const props = defineProps({
 const { filter, handleClearFilter } = useFilters('services.index', {
     name: props.filters?.name ?? '',
     status: props.filters?.status ?? '',
-    type: props.filters?.type ?? '',
-    title: props.filters?.title ?? '',
 });
 </script>
 
@@ -57,7 +55,7 @@ const { filter, handleClearFilter } = useFilters('services.index', {
         </template>
     </PageHeader>
     <Card class="mb-6 p-6">
-        <FieldRow class="flex grid-cols-4">
+        <FieldRow :cols="3">
             <FieldCol>
                 <InputText
                     label="Service Name"
@@ -74,7 +72,7 @@ const { filter, handleClearFilter } = useFilters('services.index', {
                 />
             </FieldCol>
             <FieldCol class="flex-none gap-2 self-end">
-                <PrimaryButton color="gray" @click="handleClearFilter">
+                <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </FieldCol>

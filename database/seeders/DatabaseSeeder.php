@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             OrderSeeder::class,
             TimeslotSeeder::class,
             DeliveryScaleSeeder::class,
+            ExpenseTypeSeeder::class,
+            ExpenseSeeder::class,
         ]);
     }
 }

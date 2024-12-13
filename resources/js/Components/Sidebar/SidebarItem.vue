@@ -17,6 +17,7 @@ defineProps<{ item: NavigationItem }>();
         <Link
             v-else
             preserve-scroll
+            prefetch
             :href="item.url"
             :class="[
                 'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium',

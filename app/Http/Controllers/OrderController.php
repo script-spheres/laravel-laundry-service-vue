@@ -38,7 +38,7 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Order/OrderForm',[
-            'services' => Service::get(),
+            'services' => Service::where('status','active')->get(),
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),

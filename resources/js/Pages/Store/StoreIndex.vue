@@ -81,7 +81,7 @@ const { filter, handleClearFilter } = useFilters('stores.index', {
                 />
             </div>
             <div class="flex-none gap-2 self-end">
-                <PrimaryButton color="gray" @click="handleClearFilter">
+                <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </div>

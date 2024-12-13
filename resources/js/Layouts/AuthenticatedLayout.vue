@@ -5,6 +5,7 @@ import DropdownLink from '@/Components/Dropdown/DropdownLink.vue';
 import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import SidebarLogo from '@/Components/Sidebar/SidebarLogo.vue';
 import { useMenu } from '@/Composables/useMenu';
+
 import {
     FaAngleDown,
     FaBarsStaggered,
@@ -126,7 +127,11 @@ const { isMenuOpen, toggleMenu } = useMenu(true);
 
         <!-- Content Area -->
         <section
-            class="relative w-full px-4 py-8 text-black dark:bg-gray-900 dark:text-white lg:px-10"
+            class="relative w-full text-black dark:bg-gray-900 dark:text-white"
+            :class="{
+                'px-4 py-8 lg:px-10':
+                    !$page.component.startsWith('Order/OrderForm'),
+            }"
         >
             <slot />
         </section>

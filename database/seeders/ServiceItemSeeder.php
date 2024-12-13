@@ -14,6 +14,6 @@ class ServiceItemSeeder extends Seeder
      */
     public function run(): void
     {
-        ServiceItem::factory()->count(10)->create();
+        ServiceItem::factory()->count(20)->create();
     }
 }

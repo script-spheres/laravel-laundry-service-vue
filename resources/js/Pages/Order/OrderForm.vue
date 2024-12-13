@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DateInput from '@/Components/Form/InputDate.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import { useFilters } from '@/Composables/useFilters';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import AddonCartItems from '@/Pages/Order/Partials/AddonCartItems.vue';
 import AddonServicesModal from '@/Pages/Order/Partials/AddonServicesModal.vue';
 import CartItems from '@/Pages/Order/Partials/CartItems.vue';
 import CouponModal from '@/Pages/Order/Partials/CouponModal.vue';
 import CustomerModal from '@/Pages/Order/Partials/CustomerModal.vue';
 import ServiceTypeModal from '@/Pages/Order/Partials/ServiceTypeModal.vue';
+import NoData from '@/Shared/NoData.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import {
     AddonService,
@@ -24,6 +25,8 @@ import { AkEdit, AkPlus, MdDiscount } from '@kalimahapps/vue-icons';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType, provide, ref } from 'vue';
 import { toast } from 'vue3-toastify';
+
+defineOptions({ layout: AuthenticatedLayout });
 
 const posStore = usePosStore();
 
@@ -110,8 +113,13 @@ const posSubmit = async () => {
         onSuccess: (page) => toast.success(page.props?.flash?.message),
     });
 };
+const handleCategoryClick = (item) => {
+    form.submit({
+        preserveScroll: true,
+        onSuccess: (page) => toast.success(page.props?.flash?.message),
+    });
+};
 
-console.log(posStore.items);
 provide('showAddonServiceModal', showAddonServiceModal);
 provide('showDiscountModal', showDiscountModal);
 provide('showCouponModal', showCouponModal);
@@ -121,89 +129,104 @@ provide('showServiceTypeModal', showServiceTypeModal);
 </script>
 
 <template>
-    <div class="grid grid-cols-3">
+    <div class="grid h-[calc(100vh-65px)] grid-cols-3">
         <!-- Left Sidebar -->
-        <div class="col-span-2 flex flex-col p-4">
-            <!-- Search and Reset -->
-            <div class="mb-4 flex items-center gap-2">
-                <LinkButton :href="route('orders.index')"> Back </LinkButton>
+        <div class="col-span-2">
+            <div class="flex items-center gap-6 p-4">
                 <InputText
                     v-model="filter.name"
-                    placeholder="Search items..."
+                    placeholder="Search items ..."
                 />
-                <PrimaryButton @click="handleClearFilter">
-                    Reset
-                </PrimaryButton>
             </div>
 
-            <!-- Categories and Items -->
-            <div class="flex">
-                <!-- Categories List -->
-                <div class="w-2/8 overflow-y-scroll border-r pr-2">
-                    <ul class="space-y-1">
+            <div class="flex h-[calc(100vh-135px)] space-x-2">
+                <div
+                    class="w-1/4 overflow-y-auto scrollbar-thin dark:text-white"
+                >
+                    <p
+                        class="sticky top-0 z-10 flex h-14 items-center justify-center border-b bg-gray-100 text-center dark:border-gray-600 dark:bg-gray-700"
+                    >
+                        Services List :
+                    </p>
+                    <ul class="space-y-2 p-2">
                         <li
-                            v-for="serviceType in services"
-                            :key="serviceType.id"
+                            v-for="service in services"
+                            :key="service.id"
+                            class="w-full"
                         >
-                            <PrimaryButton
-                                class="w-full"
+                            <button
+                                class="w-full rounded-lg border px-4 py-2 text-left font-medium transition-all duration-300"
                                 :class="{
-                                    'bg-blue-600 text-white':
-                                        filter.service_type_id ===
-                                        serviceType.id,
-                                    'bg-gray-200':
-                                        filter.service_type_id !==
-                                        serviceType.id,
+                                    'bg-blue-600 text-white hover:bg-blue-700':
+                                        filter.service_type_id === service.id,
+                                    'bg-gray-100 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-blue-600 dark:hover:text-white':
+                                        filter.service_type_id !== service.id,
                                 }"
-                                @click="handleIServiceTypeClick(serviceType.id)"
+                                @click="handleIServiceTypeClick(service.id)"
                             >
-                                {{ serviceType.name }}
-                            </PrimaryButton>
+                                {{ service.name }}
+                            </button>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Items Grid -->
-                <div class="w-4/6 pl-2">
+                <!-- Items List -->
+                <div class="flex-1 overflow-y-auto scrollbar-thin">
+                    <!-- Categories List (Sticky Header) -->
                     <div
-                        v-if="serviceItems.length"
-                        class="grid grid-cols-2 gap-4 pb-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
+                        class="sticky top-0 z-10 border-b bg-gray-100 dark:border-gray-600 dark:bg-gray-700"
                     >
-                        <div
-                            v-for="item in serviceItems"
-                            :key="item.id"
-                            class="cursor-pointer rounded-xl bg-white shadow hover:shadow-lg dark:bg-gray-900 dark:text-gray-200"
-                            @click="handleItemClick(item)"
-                        >
-                            <img
-                                :alt="item?.image?.basename"
-                                :src="item?.image?.url"
-                                class="h-40 w-full object-cover"
-                            />
-                            <div class="p-3">
-                                <p class="truncate text-sm font-medium">
+                        <ul class="flex space-x-2 p-2">
+                            <li v-for="item in categories" :key="item.id">
+                                <button
+                                    class="transform rounded-full border bg-gray-200 p-2 font-semibold text-gray-800 transition-all duration-300 hover:bg-gray-400 hover:text-white dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 dark:hover:text-white"
+                                    @click="handleCategoryClick(item)"
+                                >
                                     {{ item.name }}
-                                </p>
-                            </div>
-                        </div>
+                                </button>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div
-                        v-else
-                        class="flex h-full items-center justify-center rounded-xl bg-gray-100"
-                    >
-                        <p class="text-lg font-medium text-gray-500">
-                            No items available for the selected category or
-                            search.
-                        </p>
+                    <!-- Service Items List -->
+                    <div v-if="serviceItems.length" class="w-full">
+                        <ul class="space-y-2">
+                            <li
+                                v-for="item in serviceItems"
+                                :key="item.id"
+                                class="flex items-center space-x-2 rounded-lg bg-white p-2 shadow transition-all duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                                @click="handleItemClick(item)"
+                            >
+                                <img
+                                    :alt="item?.image?.basename"
+                                    :src="item?.image?.url"
+                                    class="h-12 w-12 rounded-lg object-cover"
+                                />
+                                <div>
+                                    <p
+                                        class="text-sm font-semibold text-gray-800 dark:text-gray-200"
+                                    >
+                                        {{ item.name }}
+                                    </p>
+                                    <p
+                                        class="text-xs text-gray-600 dark:text-gray-400"
+                                    >
+                                        {{ item.description }}
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
+
+                    <!-- No Items Available Message -->
+                    <NoData v-else />
                 </div>
             </div>
         </div>
 
         <!-- Right Sidebar -->
-        <div class="col-span-1 h-screen border-l">
-            <div class="flex h-screen flex-col rounded-xl dark:bg-gray-800">
+        <div class="col-span-1 border-l">
+            <div class="flex flex-col rounded-xl dark:bg-gray-800">
                 <div class="p-2">
                     <div class="grid gap-2 md:grid-cols-2">
                         <div class="mt-0">

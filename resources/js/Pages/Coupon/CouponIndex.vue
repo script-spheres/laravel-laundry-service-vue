@@ -8,8 +8,8 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import DateInput from '@/Components/Form/InputDate.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
@@ -19,7 +19,6 @@ import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { Coupon, PaginatedData } from '@/types';
 import { PropType } from 'vue';
-import InputText from '@/Components/Form/InputText.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 

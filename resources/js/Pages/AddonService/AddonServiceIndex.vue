@@ -39,8 +39,6 @@ const props = defineProps({
 const { filter, handleClearFilter } = useFilters('addon-services.index', {
     name: props.filters?.name ?? '',
     status: props.filters?.status ?? '',
-    type: props.filters?.type ?? '',
-    title: props.filters?.title ?? '',
 });
 </script>
 
@@ -52,12 +50,12 @@ const { filter, handleClearFilter } = useFilters('addon-services.index', {
         </template>
         <template #actions>
             <LinkButton :href="route('addon-services.create')">
-                Add Add-on Service
+                Create Add-on Service
             </LinkButton>
         </template>
     </PageHeader>
     <Card class="mb-6 p-6">
-        <FieldRow class="flex grid-cols-4">
+        <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
             <FieldCol>
                 <InputText
                     label="Service Name"
@@ -74,7 +72,7 @@ const { filter, handleClearFilter } = useFilters('addon-services.index', {
                 />
             </FieldCol>
             <FieldCol class="flex-none gap-2 self-end">
-                <PrimaryButton color="gray" @click="handleClearFilter">
+                <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </FieldCol>
@@ -85,7 +83,7 @@ const { filter, handleClearFilter } = useFilters('addon-services.index', {
             <TableHeadCell>Service Name</TableHeadCell>
             <TableHeadCell>Description</TableHeadCell>
             <TableHeadCell class="text-right">Status</TableHeadCell>
-            <TableHeadCell class="text-right">Actions</TableHeadCell>
+            <TableHeadCell class="sticky text-right">Actions</TableHeadCell>
         </TableHead>
         <TableBody>
             <TableRow
@@ -102,7 +100,7 @@ const { filter, handleClearFilter } = useFilters('addon-services.index', {
                         "
                     />
                 </TableCell>
-                <TableCell class="flex justify-end gap-2">
+                <TableCell class="sticky flex justify-end gap-2">
                     <LinkButton
                         :href="route('addon-services.edit', addonService.id)"
                     >
