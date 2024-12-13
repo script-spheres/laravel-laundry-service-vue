@@ -8,7 +8,6 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -73,7 +72,8 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol>
-                    <InputNumber
+                    <InputText
+                        type="number"
                         label="Add-on Service Price"
                         v-model="form.price"
                         :error="form.errors.price"

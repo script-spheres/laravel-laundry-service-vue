@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DeleteButton from '@/Shared/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
@@ -14,6 +13,7 @@ import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { PaginatedData, Store } from '@/types';

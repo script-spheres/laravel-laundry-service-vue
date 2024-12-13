@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import { PropType } from 'vue';
 
 const model = defineModel<ServiceEntry[]>({
@@ -90,13 +90,15 @@ const removeServiceEntry = (index: number) => {
                             />
                         </td>
                         <td class="py-2">
-                            <InputNumber
+                            <InputText
+                                type="number"
                                 v-model="entry.price"
                                 placeholder="Enter price"
                             />
                         </td>
                         <td class="flex items-center gap-1 py-2">
-                            <InputNumber
+                            <InputText
+                                type="number"
                                 v-model="entry.quantity"
                                 placeholder="Enter quantity"
                             />

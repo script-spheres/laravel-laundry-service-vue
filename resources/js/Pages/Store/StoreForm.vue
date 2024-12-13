@@ -3,7 +3,6 @@ import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
@@ -95,16 +94,16 @@ const submitForm = () => {
 
             <FieldRow :cols="{ sm: 1, md: 2, lg: 2 }">
                 <FieldCol>
-                    <InputNumber
+                    <InputText
+                        type="number"
                         label="Address Latitude"
                         v-model="form.address_lat"
-                        type="number"
                         step="0.0000001"
                         :error="form.errors.address_lat"
                     />
                 </FieldCol>
                 <FieldCol>
-                    <InputNumber
+                    <InputText
                         label="Address Longitude"
                         v-model="form.address_long"
                         type="number"

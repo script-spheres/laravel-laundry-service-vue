@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DeleteButton from '@/Shared/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
 import TableBody from '@/Components/DataTable/TableBody.vue';
@@ -9,6 +8,7 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { ExpenseType, PaginatedData } from '@/types';
 import { PropType } from 'vue';

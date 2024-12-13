@@ -2,7 +2,6 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -50,7 +49,8 @@ const submitForm = () => {
             <form @submit.prevent="submitForm">
                 <FieldRow class="grid-cols-2">
                     <FieldCol>
-                        <InputNumber
+                        <InputText
+                            type="number"
                             label="Tax Rate (%)"
                             v-model="form.tax_rate"
                             :error="form.errors.tax_rate"
@@ -58,7 +58,8 @@ const submitForm = () => {
                         />
                     </FieldCol>
                     <FieldCol>
-                        <InputNumber
+                        <InputText
+                            type="number"
                             label="Discount Rate (%)"
                             v-model="form.discount_rate"
                             :error="form.errors.discount_rate"

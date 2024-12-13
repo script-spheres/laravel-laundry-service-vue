@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import DateInput from '@/Components/Form/InputDate.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import { useFilters } from '@/Composables/useFilters';

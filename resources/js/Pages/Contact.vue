@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import InputEmail from '@/Components/Form/InputEmail.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { useForm } from 'laravel-precognition-vue-inertia';
-import { GoogleMap, Marker } from 'vue3-google-map';
 import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: PublicLayout });
@@ -16,8 +14,6 @@ const form = useForm('post', route('coupons.store'), {
     email: '',
     message: '',
 });
-
-const center = { lat: 40.689247, lng: -74.044502 };
 
 const submitForm = () => {
     form.submit({
@@ -58,7 +54,7 @@ const submitForm = () => {
                     </div>
 
                     <div>
-                        <InputEmail
+                        <InputText
                             label="Email"
                             v-model="form.email"
                             placeholder="Your Email"
@@ -124,16 +120,4 @@ const submitForm = () => {
             </div>
         </div>
     </section>
-
-    <!-- Google Map -->
-    <div class="mt-16">
-        <GoogleMap
-            api-key="YOUR_GOOGLE_MAPS_API_KEY"
-            style="width: 100%; height: 500px"
-            :center="center"
-            :zoom="15"
-        >
-            <Marker :options="{ position: center }" />
-        </GoogleMap>
-    </div>
 </template>

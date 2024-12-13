@@ -4,9 +4,9 @@ import { Banner, Service } from '@/types';
 import 'swiper/swiper-bundle.css';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { PropType } from 'vue';
-import { GoogleMap, Marker } from 'vue3-google-map';
 
 defineOptions({ layout: PublicLayout });
+
 defineProps({
     banners: {
         type: Object as PropType<Banner[]>,
@@ -138,17 +138,5 @@ const apiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
                 </div>
             </div>
         </section>
-    </div>
-
-    <!-- Google Map Section -->
-    <div class="mt-16">
-        <GoogleMap
-            :api-key="apiKey"
-            style="width: 100%; height: 500px"
-            :center="center"
-            :zoom="15"
-        >
-            <Marker :options="{ position: center }" />
-        </GoogleMap>
     </div>
 </template>

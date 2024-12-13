@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DeleteButton from '@/Shared/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
@@ -10,15 +9,16 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import InputDate from '@/Components/Form/InputDate.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Expense, PaginatedData } from '@/types';
 import { PropType } from 'vue';
+import InputText from '@/Components/Form/InputText.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
@@ -60,7 +60,8 @@ const { filter, handleClearFilter } = useFilters('expenses.index', {
     <Card class="mb-6 p-6">
         <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
             <FieldCol>
-                <InputDate
+                <InputText
+                    type="date"
                     label="Date"
                     v-model="filter.date"
                     placeholder="Filter by Category"

@@ -3,7 +3,6 @@ import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import DateInput from '@/Components/Form/InputDate.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
@@ -93,7 +92,8 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow>
                 <FieldCol>
-                    <DateInput
+                    <InputText
+                        type="date"
                         label="Date"
                         v-model="form.date"
                         :error="form.errors.date"

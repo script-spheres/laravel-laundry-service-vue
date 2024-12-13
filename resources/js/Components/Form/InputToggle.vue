@@ -3,12 +3,11 @@ import InputError from '@/Components/Form/InputError.vue';
 
 const model = defineModel<String | Boolean>({ required: true });
 
-const props = defineProps({
+defineProps({
     label: { type: String, required: false },
     size: { type: String as () => 'lg' | 'md' | 'sm', default: 'md' },
     error: { type: String, required: false },
 });
-
 </script>
 
 <template>

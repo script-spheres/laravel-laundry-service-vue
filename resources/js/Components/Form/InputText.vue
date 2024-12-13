@@ -4,7 +4,7 @@ import InputLabel from '@/Components/Form/InputLabel.vue';
 import { useInputClasses } from '@/Composables/useInputClasses';
 import { useId } from 'vue';
 
-const model = defineModel<string | null>({ required: true });
+const model = defineModel<string | number | null>({ required: true });
 
 const props = defineProps({
     label: { type: String, required: false },

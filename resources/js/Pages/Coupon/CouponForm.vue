@@ -3,7 +3,6 @@ import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
@@ -109,7 +108,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol v-if="isDiscountAmountVisible">
-                    <InputNumber
+                    <InputText
                         label="Discount Amount"
                         v-model="form.discount_amount"
                         type="number"
@@ -118,7 +117,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol v-if="isDiscountPercentageVisible">
-                    <InputNumber
+                    <InputText
                         label="Discount Percentage"
                         v-model="form.discount_percentage"
                         type="number"
@@ -129,7 +128,7 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow class="grid-cols-3">
                 <FieldCol>
-                    <InputNumber
+                    <InputText
                         label="Minimum Amount"
                         v-model="form.min_amount"
                         type="number"
@@ -138,7 +137,7 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol>
-                    <InputNumber
+                    <InputText
                         label="Maximum Amount"
                         v-model="form.max_amount"
                         type="number"

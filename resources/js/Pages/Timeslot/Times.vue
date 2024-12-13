@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FromField from '@/Components/Form/FromField.vue';
-import InputTime from '@/Components/Form/InputTime.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import { Times } from '@/types';
 import { defineModel } from 'vue';
 
@@ -31,13 +31,15 @@ const removeTimeslot = (index: number) => {
                 class="flex w-full items-center space-x-2"
             >
                 <FromField>
-                    <InputTime
+                    <InputText
+                        type="time"
                         v-model="timeslot.start_time"
                         :placeholder="'Enter start time ' + (index + 1)"
                     />
                 </FromField>
                 <FromField>
-                    <InputTime
+                    <InputText
+                        type="time"
                         v-model="timeslot.end_time"
                         :placeholder="'Enter end time ' + (index + 1)"
                     />
@@ -46,7 +48,7 @@ const removeTimeslot = (index: number) => {
                     v-if="model.length > 1"
                     @click.prevent="removeTimeslot(index)"
                     type="button"
-                    color="warning"
+                    color="danger"
                     class="flex-none items-end"
                 >
                     Del

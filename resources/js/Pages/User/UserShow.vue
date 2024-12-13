@@ -65,9 +65,7 @@ const update = () => form.post(route('Banner.update', banner.id));
                                     v-model="form.description"
                                     :label="'Description'"
                                 />
-                                <InputError
-                                    :error="form.errors.description"
-                                />
+                                <InputError :error="form.errors.description" />
                             </div>
                         </div>
                         <div class="-mx-3 mb-6 flex flex-wrap">
@@ -76,9 +74,7 @@ const update = () => form.post(route('Banner.update', banner.id));
                                     :label="'Image'"
                                     @input="form.image = $event.target.files[0]"
                                 />
-                                <InputError
-                                    :error="form.errors.description"
-                                />
+                                <InputError :error="form.errors.description" />
                             </div>
                         </div>
                         <div class="-mx-3 mb-2 flex flex-wrap">

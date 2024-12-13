@@ -4,7 +4,6 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputGroup from '@/Components/Form/InputGroup.vue';
-import InputNumber from '@/Components/Form/InputNumber.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { radiusUnitOptions, statusOptions } from '@/Constants/options';
@@ -14,6 +13,7 @@ import { DeliveryScale } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
+import InputText from '@/Components/Form/InputText.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
@@ -69,7 +69,7 @@ const submitForm = () => {
                         label="Radius"
                         :error="form.errors.radius || form.errors.radius_unit"
                     >
-                        <InputNumber v-model="form.radius" />
+                        <InputText type="number" v-model="form.radius" />
                         <InputSelect
                             v-model="form.radius_unit"
                             :options="radiusUnitOptions"
@@ -77,7 +77,8 @@ const submitForm = () => {
                     </InputGroup>
                 </FieldCol>
                 <FieldCol>
-                    <InputNumber
+                    <InputText
+                        type="number"
                         label="Minimum Order Amount"
                         v-model="form.min_order_amount"
                         :error="form.errors.min_order_amount"
@@ -86,7 +87,8 @@ const submitForm = () => {
             </FieldRow>
             <FieldRow class="grid-cols-2">
                 <FieldCol>
-                    <InputNumber
+                    <InputText
+                        type="number"
                         label="Delivery Charges"
                         v-model="form.delivery_charges"
                         :error="form.errors.delivery_charges"

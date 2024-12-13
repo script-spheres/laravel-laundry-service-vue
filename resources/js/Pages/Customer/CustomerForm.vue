@@ -3,8 +3,6 @@ import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import EmailInput from '@/Components/Form/InputEmail.vue';
-import PhoneInput from '@/Components/Form/InputPhone.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import Card from '@/Components/Panel/Card.vue';
@@ -72,14 +70,15 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol>
-                    <EmailInput
+                    <InputText
+                        type="email"
                         label="Email"
                         v-model="form.email"
                         :error="form.errors.email"
                     />
                 </FieldCol>
                 <FieldCol>
-                    <PhoneInput
+                    <InputText
                         label="Phone Number"
                         v-model="form.phone_number"
                         :error="form.errors.phone_number"

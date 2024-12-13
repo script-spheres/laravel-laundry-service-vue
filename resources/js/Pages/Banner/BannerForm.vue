@@ -60,7 +60,6 @@ const submitForm = () => {
         onSuccess: (page) => toast.success(page.props?.flash?.message),
     });
 };
-
 </script>
 
 <template>
