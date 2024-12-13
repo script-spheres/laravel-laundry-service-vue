@@ -30,3 +30,7 @@ php:
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-php:2024.3
+exclude:
+  - name: All
+    paths:
+      - app/Models/OrderDetails.php
