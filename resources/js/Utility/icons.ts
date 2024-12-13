@@ -1,9 +1,12 @@
 import {
     AnFilledDatabase,
+    BxSolidCoupon,
     BxSolidReport,
     BySettings,
     CaCloudServices,
+    CaCustomerService,
     CaFinance,
+    FlFilledDualScreenStatusBar,
     GlWork,
     IcBox,
     IcDashboardDots,
@@ -11,39 +14,30 @@ import {
     McRoundLine,
     MdInventory,
     MdLoyalty,
+    MdPointOfSale,
     PhUsersFour,
 } from '@kalimahapps/vue-icons';
-const getIcon = (icon: string) => {
-    switch (icon) {
-        case 'IcDashboardDots':
-            return IcDashboardDots;
-        case 'box':
-            return IcBox;
-        case 'McRoundLine':
-            return McRoundLine;
-        case 'BySettings':
-            return BySettings;
-        case 'BxSolidReport':
-            return BxSolidReport;
-        case 'PhUsersFour':
-            return PhUsersFour;
-        case 'CaCloudServices':
-            return CaCloudServices;
-        case 'IcPackages':
-            return IcPackages;
-        case 'AnFilledDatabase':
-            return AnFilledDatabase;
-        case 'MdInventory':
-            return MdInventory;
-        case 'MdLoyalty':
-            return MdLoyalty;
-        case 'GlWork':
-            return GlWork;
-        case 'CaFinance':
-            return CaFinance;
-        default:
-            return null;
-    }
+
+const iconMap: Record<string, any> = {
+    IcDashboardDots,
+    IcBox,
+    McRoundLine,
+    BySettings,
+    BxSolidReport,
+    PhUsersFour,
+    CaCloudServices,
+    IcPackages,
+    AnFilledDatabase,
+    MdInventory,
+    MdLoyalty,
+    GlWork,
+    CaFinance,
+    CaCustomerService,
+    BxSolidCoupon,
+    MdPointOfSale,
+    FlFilledDualScreenStatusBar,
 };
+
+const getIcon = (icon: string) => iconMap[icon] || null;
 
 export default getIcon;

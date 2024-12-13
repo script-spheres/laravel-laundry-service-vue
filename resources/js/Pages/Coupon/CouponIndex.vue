@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DeleteButton from '@/Components/Buttons/DeleteButton.vue';
+import DeleteButton from '@/Shared/DeleteButton.vue';
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';

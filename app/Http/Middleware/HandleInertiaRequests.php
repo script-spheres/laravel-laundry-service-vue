@@ -56,16 +56,16 @@ class HandleInertiaRequests extends Middleware
     {
         return app(Navigation::class)
             ->add('Dashboard', route('dashboard'), fn($s) => $s->attributes(['icon' => 'IcDashboardDots']))
-            ->add('Orders Pos Portal', route('orders.create'), fn($s) => $s->attributes(['icon' => 'GlWork']))
-            ->add('Orders Status Screen', route('orders-status.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
+            ->add('Orders Pos Portal', route('orders.create'), fn($s) => $s->attributes(['icon' => 'MdPointOfSale']))
+            ->add('Orders Status Screen', route('orders-status.index'), fn($s) => $s->attributes(['icon' => 'FlFilledDualScreenStatusBar']))
             ->add('Orders Management', route('orders.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
             ->add('Stores Management', route('stores.index'), fn($s) => $s->attributes(['icon' => 'AnFilledDatabase']))
             ->add('Banners Management', route('banners.index'), fn($s) => $s->attributes(['icon' => 'GlWork']))
             ->add('Customer Management', route('customers.index'), fn($s) => $s->attributes(['icon' => 'PhUsersFour']))
-            ->add('Coupons Management', route('coupons.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+            ->add('Coupons Management', route('coupons.index'), fn($s) => $s->attributes(['icon' => 'BxSolidCoupon']))
             ->add('Services Management', '', function (Section $section) {
                 $section
-                    ->attributes(['icon' => 'MdLoyalty'])
+                    ->attributes(['icon' => 'CaCustomerService'])
                     ->add('Categories', route('categories.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Services', route('services.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Service Items', route('service-items.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
@@ -80,9 +80,9 @@ class HandleInertiaRequests extends Middleware
             })
             ->add('Expenses Management', '', function (Section $section) {
                 $section
-                    ->attributes(['icon' => 'MdLoyalty'])
-                    ->add('Expenses Type', route('expense-types.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']))
-                    ->add('Expenses Management', route('expenses.index'), fn($s) => $s->attributes(['icon' => 'CaFinance']));
+                    ->attributes(['icon' => 'CaFinance'])
+                    ->add('Expenses Type', route('expense-types.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+                    ->add('Expenses Management', route('expenses.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
             ->add('Report Management', '', function (Section $section) {
                 $section

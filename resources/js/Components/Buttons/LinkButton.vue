@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import classNames from 'classnames';
+import { useId } from 'vue';
 
 const {
     size = 'md',
@@ -29,11 +30,14 @@ const colorClasses = {
     success:
         'bg-green-600 text-white hover:bg-green-500 focus:bg-green-500 active:bg-green-700 dark:bg-green-500 dark:hover:bg-green-400 dark:focus:bg-green-400 dark:active:bg-green-600 focus:ring-green-500',
 };
+
+const id = useId();
 </script>
 
 <template>
     <Link
         :href="href"
+        :data-test-id="`link-${id}`"
         :class="
             classNames(
                 'items-center rounded-md border border-transparent px-4 py-2 font-semibold tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800',

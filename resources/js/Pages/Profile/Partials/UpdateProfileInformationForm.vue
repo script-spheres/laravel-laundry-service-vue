@@ -32,9 +32,13 @@ const form = useForm({
         </header>
 
         <form @submit.prevent="form.patch(route('profile.update'))">
-            <div class="flex">
-                <InputFilepond />
-                <div class="mt-6 space-y-6">
+            <div class="mt-4 grid grid-cols-2 gap-4">
+                <InputFilepond
+                    stylePanelLayout="circle"
+                    imagePreviewHeight="100"
+                    :error="form.errors.name"
+                />
+                <div class="space-y-6">
                     <div>
                         <InputLabel for="name" value="Name" />
 
@@ -48,7 +52,7 @@ const form = useForm({
                             autocomplete="name"
                         />
 
-                        <InputError class="mt-2" :message="form.errors.name" />
+                        <InputError class="mt-2" :error="form.errors.name" />
                     </div>
 
                     <div>
@@ -63,27 +67,29 @@ const form = useForm({
                             autocomplete="username"
                         />
 
-                        <InputError class="mt-2" :message="form.errors.email" />
+                        <InputError class="mt-2" :error="form.errors.email" />
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <PrimaryButton :disabled="form.processing"
+                            >Save</PrimaryButton
+                        >
+
+                        <Transition
+                            enter-active-class="transition ease-in-out"
+                            enter-from-class="opacity-0"
+                            leave-active-class="transition ease-in-out"
+                            leave-to-class="opacity-0"
+                        >
+                            <p
+                                v-if="form.recentlySuccessful"
+                                class="text-sm text-gray-600 dark:text-gray-400"
+                            >
+                                Saved.
+                            </p>
+                        </Transition>
                     </div>
                 </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
-                <Transition
-                    enter-active-class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600 dark:text-gray-400"
-                    >
-                        Saved.
-                    </p>
-                </Transition>
             </div>
         </form>
     </section>

@@ -58,7 +58,7 @@ const update = () => form.post(route('Banner.update', banner.id));
                         <div class="-mx-3 mb-6 flex flex-wrap">
                             <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                                 <Input v-model="form.title" :label="'Title'" />
-                                <InputError :message="form.errors.title" />
+                                <InputError :error="form.errors.title" />
                             </div>
                             <div class="w-full px-3 md:w-1/2">
                                 <Input
@@ -66,7 +66,7 @@ const update = () => form.post(route('Banner.update', banner.id));
                                     :label="'Description'"
                                 />
                                 <InputError
-                                    :message="form.errors.description"
+                                    :error="form.errors.description"
                                 />
                             </div>
                         </div>
@@ -77,7 +77,7 @@ const update = () => form.post(route('Banner.update', banner.id));
                                     @input="form.image = $event.target.files[0]"
                                 />
                                 <InputError
-                                    :message="form.errors.description"
+                                    :error="form.errors.description"
                                 />
                             </div>
                         </div>
@@ -87,7 +87,7 @@ const update = () => form.post(route('Banner.update', banner.id));
                                     v-model="form.status"
                                     :label="'Status'"
                                 />
-                                <InputError :message="form.errors.status" />
+                                <InputError :error="form.errors.status" />
                             </div>
                         </div>
                         <div

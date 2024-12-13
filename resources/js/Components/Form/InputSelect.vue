@@ -1,43 +1,42 @@
 <script setup lang="ts">
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
+import { useInputClasses } from '@/Composables/useInputClasses';
 import { PropType, useId } from 'vue';
 
 const model = defineModel({ required: true });
 
-defineProps({
-    label: { type: String, required: false },
+const props = defineProps({
     options: {
         type: Object as PropType<Record<string, string>>,
         required: true,
     },
+    label: { type: String, required: false },
+    size: { type: String as () => 'lg' | 'md' | 'sm', default: 'md' },
     error: { type: String, required: false },
+});
+
+const { inputClasses } = useInputClasses({
+    size: props.size,
 });
 
 const id = useId();
 </script>
 
 <template>
-    <div>
-        <label
-            v-if="label"
-            :for="id"
-            class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            :data-test-id="`label-${id}`"
-        >
-            {{ label }} :
-        </label>
-        <select
-            :id="id"
-            v-model="model"
-            class="w-full appearance-none rounded border border-gray-200 px-3 py-2 leading-tight text-gray-700 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:border-gray-600 dark:bg-gray-900 dark:text-white dark:focus:border-indigo-500 dark:focus:ring-indigo-500"
-            :data-test-id="`input-${id}`"
-        >
-            <option value="">Please select</option>
-            <option v-for="(value, key) in options" :key="key" :value="key">
-                {{ value }}
-            </option>
-        </select>
-        <p v-if="error" class="text-sm text-red-600 dark:text-red-400">
-            {{ error }}
-        </p>
-    </div>
+    <InputLabel v-if="label" :for="`label-${id}`" :data-test-id="`label-${id}`">
+        {{ label }} :
+    </InputLabel>
+    <select
+        :id="id"
+        v-model="model"
+        :class="inputClasses"
+        :data-test-id="`input-${id}`"
+    >
+        <option value="">Please select</option>
+        <option v-for="(value, key) in options" :key="key" :value="key">
+            {{ value }}
+        </option>
+    </select>
+    <InputError v-if="error" :message="error" />
 </template>

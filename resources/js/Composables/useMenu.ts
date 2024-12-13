@@ -3,7 +3,6 @@ import { readonly, ref, watch } from 'vue';
 export function useMenu(initialMenuState: boolean = false) {
     const isMobileDevice = ref(window.innerWidth < 1024);
 
-    // Renamed to avoid conflict with the parameter name
     const menuState = ref(initialMenuState);
 
     const toggleMenu = () => {

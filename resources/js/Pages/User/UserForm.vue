@@ -76,12 +76,12 @@ const submitForm = () => {
                         v-model="form.role_id"
                         :options="rolesOptions"
                     />
-                    <InputError :message="form.errors.role_id" />
+                    <InputError :error="form.errors.role_id" />
                 </div>
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
                     <InputLabel for="name" value="Name" />
                     <InputText v-model="form.name" />
-                    <InputError :message="form.errors.name" />
+                    <InputError :error="form.errors.name" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap">
@@ -90,19 +90,19 @@ const submitForm = () => {
                     <FilepondInput
                         @input="form.image = $event.target.files[0]"
                     />
-                    <InputError :message="form.errors.image" />
+                    <InputError :error="form.errors.image" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
                     <InputLabel for="email" value="Email" />
                     <InputText v-model="form.email" />
-                    <InputError :message="form.errors.email" />
+                    <InputError :error="form.errors.email" />
                 </div>
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
                     <InputLabel for="mobile" value="Mobile" />
                     <InputText v-model="form.mobile" />
-                    <InputError :message="form.errors.mobile" />
+                    <InputError :error="form.errors.mobile" />
                 </div>
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
                     <InputLabel for="status" value="Status" />
@@ -110,7 +110,7 @@ const submitForm = () => {
                         v-model="form.status"
                         :options="statusOptions"
                     />
-                    <InputError :message="form.errors.status" />
+                    <InputError :error="form.errors.status" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap gap-3 px-3 md:mb-0">

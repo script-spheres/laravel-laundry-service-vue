@@ -24,7 +24,12 @@ const deleteData = async () => {
 </script>
 
 <template>
-    <PrimaryButton type="button" @click="deleteData" color="danger">
+    <PrimaryButton
+        type="button"
+        @click="deleteData"
+        color="danger"
+        :data-test-id="`delete-link-button`"
+    >
         <slot />
     </PrimaryButton>
 </template>
