@@ -2,7 +2,6 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import DateInput from '@/Components/Form/InputDate.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
@@ -111,7 +110,8 @@ const cloneDog = (order: Order) => {
             </FieldCol>
 
             <FieldCol>
-                <DateInput
+                <InputText
+                    type="date"
                     label="Order Date"
                     v-model="filter.order_date"
                     placeholder="Select Order Date"
