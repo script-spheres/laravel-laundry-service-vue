@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
-use App\Models\User;
-use App\Services\UserService;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
+use App\Http\Resources\RoleResource;
+use App\Services\RoleService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
-class UserController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, UserService $userService)
+    public function index(Request $request, RoleService $roleService)
     {
-        $users = $userService->getUsers();
+        $roles = $roleService->getRoles();
 
-        return Inertia::render('User/UserIndex', [
-            'users' => UserResource::collection($users),
+        return Inertia::render('Role/RoleIndex', [
+            'roles' => RoleResource::collection($roles),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -32,59 +31,60 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('User/UserForm',[
-            'rolesOptions' =>Role::all()
+        return Inertia::render('Role/RoleForm', [
+            'permissions' => Permission::all(),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request, UserService $userService)
+    public function store(StoreRoleRequest $request, RoleService $roleService)
     {
-        $userService->create($request);
+        $roleService->create($request);
 
-        return redirect()->route('users.index')->with(['message' => 'Created successfully']);
+        return redirect()->route('roles.index')->with(['message' => 'Created successfully']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Role $role)
     {
-        return Inertia::render('User/UserShow', [
-            'user' => UserResource::make($user)->resolve(),
-        'permissions' => Inertia::defer(fn () => Permission::all()),
+        return Inertia::render('Role/RoleShow', [
+            'role' => RoleResource::make($role)->resolve(),
+            'permissions' => Inertia::defer(fn () => Permission::all()),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Role $role)
     {
-        return Inertia::render('User/UserForm', [
-            'user' => UserResource::make($user)->resolve()
+        return Inertia::render('Role/RoleForm', [
+            'role' => RoleResource::make($role)->resolve(),
+            'permissions' => Permission::all(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user, UserService $userService)
+    public function update(UpdateRoleRequest $request, Role $role, RoleService $roleService)
     {
-        $userService->update($user, $request);
+        $roleService->update($role, $request);
 
-        return redirect()->route('users.index')->with(['message' => 'Updated successfully']);
+        return redirect()->route('roles.index')->with(['message' => 'Updated successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, UserService $userService)
+    public function destroy(Role $role, RoleService $roleService)
     {
-        $userService->delete($user);
+        $roleService->delete($role);
 
-        return redirect()->route('users.index')->with(['message' => 'Deleted successfully']);
+        return redirect()->route('roles.index')->with(['message' => 'Deleted successfully']);
     }
 }

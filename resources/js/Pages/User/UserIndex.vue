@@ -7,158 +7,128 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import InputLabel from '@/Components/Form/InputLabel.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import ToggleInput from '@/Components/Form/InputToggle.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
+import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import DeleteButton from '@/Shared/DeleteButton.vue';
+import PageHeader from '@/Shared/PageHeader.vue';
+import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { PaginatedData, User } from '@/types';
-import { router } from '@inertiajs/vue3';
-import { PropType, reactive, watch } from 'vue';
-import { toast } from 'vue3-toastify';
+import { PropType } from 'vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
-    users: {
-        type: Object as PropType<PaginatedData<any>>,
+    roleOptions: {
+        type: Object as PropType<Object>,
         required: true,
     },
-    filters: Object as PropType<Filters>,
+    users: {
+        type: Object as PropType<PaginatedData<User>>,
+        required: true,
+    },
+    filters: {
+        type: Object as PropType<Filters>,
+        required: false,
+        default: () => ({}),
+    },
 });
 
-const filter = reactive<Filters>({
+const { filter, handleClearFilter } = useFilters('users.index', {
     name: props.filters?.name ?? '',
     email: props.filters?.email ?? '',
     role: props.filters?.role ?? '',
     status: props.filters?.status ?? '',
 });
-
-const deleteData = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this user?')) return;
-
-    router.delete(route('users.destroy', id), {
-        preserveScroll: true,
-    });
-};
-
-const handleClearFilter = () => {
-    Object.keys(filter).forEach((key) => (filter[key as keyof Filters] = ''));
-};
-
-const handleActiveStatusChange = async (user: User, event: Event) => {
-    const newStatus = (event.target as HTMLInputElement).checked
-        ? 'active'
-        : 'inactive';
-    const data = { ...user, status: newStatus };
-    router.put(route('users.update', user.id), data, {
-        preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props?.flash?.message),
-    });
-};
-
-watch(filter, (newFilters) => {
-    const { name, email, role, status } = newFilters;
-
-    const filterParams: Record<string, string> = {
-        ...(name && { 'filter[name]': name }),
-        ...(email && { 'filter[email]': email }),
-        ...(role && { 'filter[role]': role }),
-        ...(status && { 'filter[status]': status }),
-    };
-
-    router.get(route('users.index'), filterParams, {
-        preserveScroll: true,
-    });
-});
 </script>
 
 <template>
-    <div class="mb-4 flex items-center justify-between">
-        <div>
-            <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                User Management
-            </h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Manage your users with filters and actions.
-            </p>
-        </div>
-        <div>
+    <PageHeader>
+        <template #title> User Management </template>
+        <template #subtitle>
+            Manage your users with filters and actions.
+        </template>
+        <template #actions>
             <LinkButton :href="route('users.create')"> Add User </LinkButton>
-        </div>
-    </div>
+        </template>
+    </PageHeader>
 
-    <Card class="mb-6 p-4">
-        <div class="flex items-center gap-x-3">
-            <div class="mb-6 w-full md:w-1/3">
-                <InputLabel for="name" value="Name" />
-                <InputText v-model="filter.name" placeholder="Search by name" />
-            </div>
-            <div class="mb-6 w-full md:w-1/3">
-                <InputLabel for="email" value="Email" />
+    <Card class="mb-6 p-6">
+        <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
+            <FieldCol>
                 <InputText
+                    label="Name"
+                    v-model="filter.name"
+                    placeholder="Filter by Name"
+                />
+            </FieldCol>
+            <FieldCol>
+                <InputText
+                    label="Email"
                     v-model="filter.email"
-                    placeholder="Search by email"
+                    placeholder="Filter by Email"
                 />
-            </div>
-            <div class="mb-6 w-full md:w-1/3">
-                <InputLabel for="role" value="Role" />
+            </FieldCol>
+            <FieldCol>
                 <InputSelect
+                    label="Role"
                     v-model="filter.role"
-                    :options="['Admin', 'User']"
-                    placeholder="Select role"
+                    :options="roleOptions"
+                    placeholder="Filter by Role"
                 />
-            </div>
-            <div class="mb-6 w-full md:w-1/2">
-                <InputLabel for="status" value="Status" />
+            </FieldCol>
+            <FieldCol>
                 <InputSelect
+                    label="Status"
                     v-model="filter.status"
                     :options="statusOptions"
-                    placeholder="Select status"
+                    placeholder="Filter by Status"
                 />
-            </div>
-            <div class="mb-6 flex-none gap-2 self-end">
-                <PrimaryButton color="gray" @click="handleClearFilter">
-                    Clear Filter
+            </FieldCol>
+            <FieldCol class="flex-none gap-2 self-end">
+                <PrimaryButton color="danger" @click="handleClearFilter">
+                    Clear Filters
                 </PrimaryButton>
-            </div>
-        </div>
+            </FieldCol>
+        </FieldRow>
     </Card>
 
-    <div class="mx-auto mt-6">
-        <DataTable>
-            <TableHead>
-                <TableHeadCell>Name</TableHeadCell>
-                <TableHeadCell>Email</TableHeadCell>
-                <TableHeadCell>Role</TableHeadCell>
-                <TableHeadCell>Status</TableHeadCell>
-                <TableHeadCell class="text-right">Actions</TableHeadCell>
-            </TableHead>
-            <TableBody>
-                <TableRow v-for="user in users.data" :key="user.id">
-                    <TableCell>{{ user.name }}</TableCell>
-                    <TableCell>{{ user.email }}</TableCell>
-                    <TableCell>{{ user.role }}</TableCell>
-                    <TableCell>
-                        <ToggleInput
-                            :modelValue="user.status === 'active'"
-                            @change="handleActiveStatusChange(user, $event)"
-                        />
-                    </TableCell>
-                    <TableCell class="space-x-2 text-right">
-                        <LinkButton :href="route('users.edit', user.id)">
-                            Edit
-                        </LinkButton>
-                        <PrimaryButton @click="deleteData(user.id)">
-                            Delete
-                        </PrimaryButton>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </DataTable>
-        <Pagination :links="users.meta" />
-    </div>
+    <DataTable>
+        <TableHead>
+            <TableHeadCell>Name</TableHeadCell>
+            <TableHeadCell>Email</TableHeadCell>
+            <TableHeadCell>Role</TableHeadCell>
+            <TableHeadCell class="text-right">Status</TableHeadCell>
+            <TableHeadCell class="text-right">Actions</TableHeadCell>
+        </TableHead>
+        <TableBody>
+            <TableRow v-for="user in users.data" :key="user.id">
+                <TableCell>{{ user.name }}</TableCell>
+                <TableCell>{{ user.email }}</TableCell>
+                <TableCell>{{ user.role }}</TableCell>
+                <TableCell class="text-right">
+                    <StatusToggleInput
+                        :data="user"
+                        :action="route('users.update', user.id)"
+                    />
+                </TableCell>
+                <TableCell class="flex justify-end gap-2">
+                    <LinkButton :href="route('users.edit', user.id)">
+                        Edit
+                    </LinkButton>
+                    <DeleteButton :action="route('users.destroy', user.id)">
+                        Delete
+                    </DeleteButton>
+                </TableCell>
+            </TableRow>
+        </TableBody>
+    </DataTable>
+
+    <Pagination :links="users.meta" />
 </template>

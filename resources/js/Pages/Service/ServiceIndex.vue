@@ -55,7 +55,7 @@ const { filter, handleClearFilter } = useFilters('services.index', {
         </template>
     </PageHeader>
     <Card class="mb-6 p-6">
-        <FieldRow :cols="3">
+        <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
             <FieldCol>
                 <InputText
                     label="Service Name"

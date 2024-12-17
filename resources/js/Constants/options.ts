@@ -119,10 +119,3 @@ export const tableTypeOptions: Record<string, string> = {
     available: 'Available',
     vip: 'VIP',
 };
-
-export const rolesOptions: Record<string, string> = {
-    admin: 'Admin',
-    restaurant_owner: 'Restaurant Owner',
-    customer: 'Customer',
-    staff: 'Staff',
-};

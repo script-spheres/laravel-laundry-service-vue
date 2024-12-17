@@ -1,108 +1,127 @@
 <script setup lang="ts">
-import { LinkButton, PrimaryButton } from '@/Components/Buttons';
-import { InputError } from '@/Components/Form';
-import FileUpload from '@/Components/Form/FileUpload.vue';
+import LinkButton from '@/Components/Buttons/LinkButton.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+import InputError from '@/Components/Form/InputError.vue';
+import InputLabel from '@/Components/Form/InputLabel.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import Card from '@/Components/Panel/Card.vue';
 
-const banner = usePage().props.banner;
+import FilepondInput from '@/Components/Form/InputFilepond.vue';
+import { rolesOptions, statusOptions } from '@/Constants/options';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { User } from '@/types';
+import { useForm } from 'laravel-precognition-vue-inertia';
+import { PropType } from 'vue';
+import { toast } from 'vue3-toastify';
 
-const form = useForm({
-    _method: 'PUT',
-    title: banner.title ?? '',
-    description: banner.description ?? '',
-    image: banner.image ?? '',
-    status: banner.status ?? '',
+defineOptions({ layout: AuthenticatedLayout });
+
+const props = defineProps({
+    user: {
+        type: Object as PropType<User>,
+        required: true,
+    },
+    unitsOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
 });
 
-const update = () => form.post(route('Banner.update', banner.id));
+const { user } = props;
+
+const method = user ? 'put' : 'post';
+const url = user ? route('users.update', user.id) : route('users.store');
+
+const form = useForm(method, url, {
+    role_id: user.role_id ?? '',
+    name: user.name ?? '',
+    email: user.email ?? '',
+    image: user.image ?? '',
+    mobile: user.mobile ?? '',
+    status: user.status ?? '',
+});
+
+const submitForm = () => {
+    form.submit({
+        preserveScroll: true,
+        onSuccess: (page) => toast.success(page.props?.flash?.message),
+    });
+};
 </script>
 
 <template>
-    <Head title="Dashboard" />
-
-    <div>
-        <template>
-            <div class="flex items-center justify-between py-4">
-                <div>
-                    <div class="flex items-center gap-x-3">
-                        <h2
-                            class="text-lg font-medium text-gray-800 dark:text-white"
-                        >
-                            Banners
-                        </h2>
-                        <span
-                            class="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-600 dark:bg-gray-800 dark:text-blue-400"
-                            >240 subscriptions</span
-                        >
-                    </div>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                        These companies have purchased in the last 12 months.
-                    </p>
-                </div>
-
-                <div class="flex items-center gap-x-3">
-                    <Link
-                        :to="{ name: 'Banner.index' }"
-                        class="flex w-1/2 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-blue-500 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 sm:w-auto"
-                    >
-                        <span>Back</span>
-                    </Link>
-                </div>
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-x-3">
+                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
+                    {{ user ? 'Edit' : 'Create New' }} User
+                </h2>
             </div>
-        </template>
-        <div class="pb-20 pt-6">
-            <div class="mx-auto px-4">
-                <div
-                    class="w-full overflow-hidden bg-white p-4 shadow-sm dark:bg-gray-800 sm:rounded-lg"
-                >
-                    <form class="w-full" @submit.prevent="update">
-                        <div class="-mx-3 mb-6 flex flex-wrap">
-                            <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                                <Input v-model="form.title" :label="'Title'" />
-                                <InputError :error="form.errors.title" />
-                            </div>
-                            <div class="w-full px-3 md:w-1/2">
-                                <Input
-                                    v-model="form.description"
-                                    :label="'Description'"
-                                />
-                                <InputError :error="form.errors.description" />
-                            </div>
-                        </div>
-                        <div class="-mx-3 mb-6 flex flex-wrap">
-                            <div class="mb-6 w-full px-3 md:mb-0">
-                                <FileUpload
-                                    :label="'Image'"
-                                    @input="form.image = $event.target.files[0]"
-                                />
-                                <InputError :error="form.errors.description" />
-                            </div>
-                        </div>
-                        <div class="-mx-3 mb-2 flex flex-wrap">
-                            <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-                                <Select
-                                    v-model="form.status"
-                                    :label="'Status'"
-                                />
-                                <InputError :error="form.errors.status" />
-                            </div>
-                        </div>
-                        <div
-                            class="-mx-3 mb-6 flex flex-wrap gap-3 px-3 md:mb-0"
-                        >
-                            <PrimaryButton
-                                :class="{ 'opacity-25': form.processing }"
-                                :disabled="form.processing"
-                                type="submit"
-                            >
-                                Submit
-                            </PrimaryButton>
-                            <LinkButton :to="{ name: 'Banner.index' }"
-                                >Cancel</LinkButton
-                            >
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
+                Fill in the details for your
+                {{ user ? 'existing' : 'new' }} user.
+            </p>
+        </div>
+        <div class="flex items-center gap-x-3">
+            <LinkButton :href="route('users.index')"> Back </LinkButton>
         </div>
     </div>
+    <Card class="mx-auto mt-6 p-6">
+        <form class="w-full" @submit.prevent="submitForm">
+            <div class="-mx-3 mb-6 flex flex-wrap">
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                    <InputLabel for="role_id" value="Role" />
+                    <InputSelect
+                        v-model="form.role_id"
+                        :options="rolesOptions"
+                    />
+                    <InputError :error="form.errors.role_id" />
+                </div>
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+                    <InputLabel for="name" value="Name" />
+                    <InputText v-model="form.name" />
+                    <InputError :error="form.errors.name" />
+                </div>
+            </div>
+            <div class="-mx-3 mb-6 flex flex-wrap">
+                <div class="mb-6 w-full px-3 md:mb-0">
+                    <InputLabel for="image" value="Image" />
+                    <FilepondInput
+                        @input="form.image = $event.target.files[0]"
+                    />
+                    <InputError :error="form.errors.image" />
+                </div>
+            </div>
+            <div class="-mx-3 mb-6 flex flex-wrap">
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
+                    <InputLabel for="email" value="Email" />
+                    <InputText v-model="form.email" />
+                    <InputError :error="form.errors.email" />
+                </div>
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
+                    <InputLabel for="mobile" value="Mobile" />
+                    <InputText v-model="form.mobile" />
+                    <InputError :error="form.errors.mobile" />
+                </div>
+                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
+                    <InputLabel for="status" value="Status" />
+                    <InputSelect
+                        v-model="form.status"
+                        :options="statusOptions"
+                    />
+                    <InputError :error="form.errors.status" />
+                </div>
+            </div>
+            <div class="-mx-3 mb-6 flex flex-wrap gap-3 px-3 md:mb-0">
+                <PrimaryButton
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
+                    Submit
+                </PrimaryButton>
+                <LinkButton :href="route('users.index')"> Cancel </LinkButton>
+            </div>
+        </form>
+    </Card>
 </template>

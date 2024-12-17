@@ -9,28 +9,21 @@ import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
-import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
-import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
-import { PaginatedData, User } from '@/types';
+import { PaginatedData, Role } from '@/types';
 import { PropType } from 'vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
-    roleOptions: {
-        type: Object as PropType<Object>,
-        required: true,
-    },
-    users: {
-        type: Object as PropType<PaginatedData<User>>,
+    roles: {
+        type: Object as PropType<PaginatedData<Role>>,
         required: true,
     },
     filters: {
@@ -40,55 +33,29 @@ const props = defineProps({
     },
 });
 
-const { filter, handleClearFilter } = useFilters('users.index', {
+const { filter, handleClearFilter } = useFilters('roles.index', {
     name: props.filters?.name ?? '',
-    email: props.filters?.email ?? '',
-    role: props.filters?.role ?? '',
-    status: props.filters?.status ?? '',
 });
 </script>
 
 <template>
     <PageHeader>
-        <template #title> User Management </template>
+        <template #title> Role Management </template>
         <template #subtitle>
-            Manage your users with filters and actions.
+            Manage your roles with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('users.create')"> Add User </LinkButton>
+            <LinkButton :href="route('roles.create')"> Add Role </LinkButton>
         </template>
     </PageHeader>
 
     <Card class="mb-6 p-6">
-        <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
+        <FieldRow :cols="{ sm: 2, md: 4 }">
             <FieldCol>
                 <InputText
                     label="Name"
                     v-model="filter.name"
-                    placeholder="Filter by Name"
-                />
-            </FieldCol>
-            <FieldCol>
-                <InputText
-                    label="Email"
-                    v-model="filter.email"
-                    placeholder="Filter by Email"
-                />
-            </FieldCol>
-            <FieldCol>
-                <InputSelect
-                    label="Role"
-                    v-model="filter.role"
-                    :options="roleOptions"
-                    placeholder="Filter by Role"
-                />
-            </FieldCol>
-            <FieldCol>
-                <InputSelect
-                    label="Status"
-                    v-model="filter.status"
-                    :options="statusOptions"
-                    placeholder="Filter by Status"
+                    placeholder="Filter by Role Name"
                 />
             </FieldCol>
             <FieldCol class="flex-none gap-2 self-end">
@@ -102,27 +69,18 @@ const { filter, handleClearFilter } = useFilters('users.index', {
     <DataTable>
         <TableHead>
             <TableHeadCell>Name</TableHeadCell>
-            <TableHeadCell>Email</TableHeadCell>
-            <TableHeadCell>Role</TableHeadCell>
-            <TableHeadCell class="text-right">Status</TableHeadCell>
+            <TableHeadCell>Permissions</TableHeadCell>
             <TableHeadCell class="text-right">Actions</TableHeadCell>
         </TableHead>
         <TableBody>
-            <TableRow v-for="user in users.data" :key="user.id">
-                <TableCell>{{ user.name }}</TableCell>
-                <TableCell>{{ user.email }}</TableCell>
-                <TableCell>{{ user.role }}</TableCell>
-                <TableCell class="text-right">
-                    <StatusToggleInput
-                        :data="user"
-                        :action="route('users.update', user.id)"
-                    />
-                </TableCell>
+            <TableRow v-for="role in roles.data" :key="role.id">
+                <TableCell>{{ role.name }}</TableCell>
+                <TableCell>{{ role.permissions.map(p => p.name).join(', ') }}</TableCell>
                 <TableCell class="flex justify-end gap-2">
-                    <LinkButton :href="route('users.edit', user.id)">
+                    <LinkButton :href="route('roles.edit', role.id)">
                         Edit
                     </LinkButton>
-                    <DeleteButton :action="route('users.destroy', user.id)">
+                    <DeleteButton :action="route('roles.destroy', role.id)">
                         Delete
                     </DeleteButton>
                 </TableCell>
@@ -130,5 +88,5 @@ const { filter, handleClearFilter } = useFilters('users.index', {
         </TableBody>
     </DataTable>
 
-    <Pagination :links="users.meta" />
+    <Pagination :links="roles.meta" />
 </template>

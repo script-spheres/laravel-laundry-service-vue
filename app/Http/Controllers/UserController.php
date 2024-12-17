@@ -10,6 +10,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -31,7 +32,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('User/UserForm');
+        return Inertia::render('User/UserForm',[
+            'rolesOptions' =>Role::all()
+        ]);
     }
 
     /**

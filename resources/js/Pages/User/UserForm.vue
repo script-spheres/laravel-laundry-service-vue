@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import InputError from '@/Components/Form/InputError.vue';
-import InputLabel from '@/Components/Form/InputLabel.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
+import FilepondInput from '@/Components/Form/InputFilepond.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
-
-import FilepondInput from '@/Components/Form/InputFilepond.vue';
-import { rolesOptions, statusOptions } from '@/Constants/options';
+import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import PageHeader from '@/Shared/PageHeader.vue';
 import { User } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
@@ -20,107 +20,118 @@ defineOptions({ layout: AuthenticatedLayout });
 const props = defineProps({
     user: {
         type: Object as PropType<User>,
-        required: true,
+        required: false,
     },
-    unitsOptions: {
+    rolesOptions: {
         type: Object as PropType<Options>,
         required: true,
     },
 });
 
-const { user } = props;
-
-const method = user ? 'put' : 'post';
-const url = user ? route('users.update', user.id) : route('users.store');
+const method = props.user ? 'put' : 'post';
+const url = props.user
+    ? route('users.update', props.user.id)
+    : route('users.store');
 
 const form = useForm(method, url, {
-    role_id: user.role_id ?? '',
-    name: user.name ?? '',
-    email: user.email ?? '',
-    image: user.image ?? '',
-    mobile: user.mobile ?? '',
-    status: user.status ?? '',
+    role_id: props.user?.role_id ?? '',
+    name: props.user?.name ?? '',
+    email: props.user?.email ?? '',
+    image: props.user?.image ?? '',
+    mobile: props.user?.mobile ?? '',
+    status: props.user?.status ?? '',
 });
 
 const submitForm = () => {
     form.submit({
         preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props?.flash?.message),
+        onSuccess: (page) => toast.success(page?.props?.flash?.message),
     });
 };
 </script>
 
 <template>
-    <div class="flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-x-3">
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    {{ user ? 'Edit' : 'Create New' }} User
-                </h2>
-            </div>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Fill in the details for your
-                {{ user ? 'existing' : 'new' }} user.
-            </p>
-        </div>
-        <div class="flex items-center gap-x-3">
-            <LinkButton :href="route('users.index')"> Back </LinkButton>
-        </div>
-    </div>
-    <Card class="mx-auto mt-6 p-6">
-        <form class="w-full" @submit.prevent="submitForm">
-            <div class="-mx-3 mb-6 flex flex-wrap">
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                    <InputLabel for="role_id" value="Role" />
-                    <InputSelect
-                        v-model="form.role_id"
-                        :options="rolesOptions"
-                    />
-                    <InputError :error="form.errors.role_id" />
-                </div>
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/2">
-                    <InputLabel for="name" value="Name" />
-                    <InputText v-model="form.name" />
-                    <InputError :error="form.errors.name" />
-                </div>
-            </div>
-            <div class="-mx-3 mb-6 flex flex-wrap">
-                <div class="mb-6 w-full px-3 md:mb-0">
-                    <InputLabel for="image" value="Image" />
+    <PageHeader>
+        <template #title> {{ user ? 'Edit' : 'Create New' }} User </template>
+        <template #subtitle>
+            Fill in the details for your {{ user ? 'existing' : 'new' }} user.
+        </template>
+        <template #actions>
+            <LinkButton :href="route('users.index')">Back</LinkButton>
+        </template>
+    </PageHeader>
+
+    <Card class="mx-auto mt-6 p-4 sm:p-6">
+        <form @submit.prevent="submitForm">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-8">
+                <!-- Image Upload for Medium and Larger Screens -->
+                <div class="flex justify-center md:col-span-2">
                     <FilepondInput
-                        @input="form.image = $event.target.files[0]"
+                        stylePanelLayout="circle"
+                        label="Image"
+                        :error="form.errors.image"
                     />
-                    <InputError :error="form.errors.image" />
                 </div>
-            </div>
-            <div class="-mx-3 mb-6 flex flex-wrap">
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-                    <InputLabel for="email" value="Email" />
-                    <InputText v-model="form.email" />
-                    <InputError :error="form.errors.email" />
+
+                <!-- Form Fields -->
+                <div class="md:col-span-6">
+                    <FieldRow :cols="1" class="md:grid-cols-2">
+                        <FieldCol>
+                            <InputSelect
+                                label="Role"
+                                v-model="form.role_id"
+                                :options="rolesOptions"
+                                :error="form.errors.role_id"
+                            />
+                        </FieldCol>
+                        <FieldCol>
+                            <InputText
+                                label="Name"
+                                v-model="form.name"
+                                :error="form.errors.name"
+                            />
+                        </FieldCol>
+                    </FieldRow>
+
+                    <FieldRow :cols="1" class="md:grid-cols-3">
+                        <FieldCol>
+                            <InputText
+                                label="Email"
+                                v-model="form.email"
+                                :error="form.errors.email"
+                            />
+                        </FieldCol>
+                        <FieldCol>
+                            <InputText
+                                label="Mobile"
+                                v-model="form.mobile"
+                                :error="form.errors.mobile"
+                            />
+                        </FieldCol>
+                        <FieldCol>
+                            <InputSelect
+                                label="Status"
+                                v-model="form.status"
+                                :options="statusOptions"
+                                :error="form.errors.status"
+                            />
+                        </FieldCol>
+                    </FieldRow>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-6 flex flex-col gap-2 md:flex-row">
+                        <PrimaryButton
+                            :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing"
+                            type="submit"
+                        >
+                            {{ user ? 'Update' : 'Submit' }}
+                        </PrimaryButton>
+                        <LinkButton :href="route('users.index')" color="danger">
+                            Cancel
+                        </LinkButton>
+                    </div>
                 </div>
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-                    <InputLabel for="mobile" value="Mobile" />
-                    <InputText v-model="form.mobile" />
-                    <InputError :error="form.errors.mobile" />
-                </div>
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-                    <InputLabel for="status" value="Status" />
-                    <InputSelect
-                        v-model="form.status"
-                        :options="statusOptions"
-                    />
-                    <InputError :error="form.errors.status" />
-                </div>
-            </div>
-            <div class="-mx-3 mb-6 flex flex-wrap gap-3 px-3 md:mb-0">
-                <PrimaryButton
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Submit
-                </PrimaryButton>
-                <LinkButton :href="route('users.index')"> Cancel </LinkButton>
             </div>
         </form>
     </Card>

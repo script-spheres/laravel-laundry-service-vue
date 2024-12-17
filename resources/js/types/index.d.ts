@@ -45,11 +45,26 @@ export type Image = {
     url: string;
 };
 
+export type Role = {
+    id: number;
+    name: string;
+    permissions: Permission[];
+    created_at: string;
+    updated_at: string;
+};
+
 export type User = {
     id: number;
     name: string;
     email: string;
     email_verified_at?: string;
+};
+
+export type Permission = {
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
 };
 
 export type ExpenseType = {

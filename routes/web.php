@@ -26,6 +26,7 @@ use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceItemController;
 use App\Http\Controllers\SettingController;
@@ -100,6 +101,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('expenses', ExpenseController::class);
     Route::resource('expense-types', ExpenseTypeController::class);
     Route::resource('financial-years', FinancialYearController::class);
+
+    Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('points', UserController::class);
     Route::resource('rewards', UserController::class);
