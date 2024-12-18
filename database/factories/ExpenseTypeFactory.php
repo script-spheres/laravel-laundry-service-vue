@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\ExpenseType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ExpenseType>
+ * @extends Factory<ExpenseType>
  */
 class ExpenseTypeFactory extends Factory
 {
@@ -17,7 +18,9 @@ class ExpenseTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->word,
+            'description' => $this->faker->sentence,
+            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }
