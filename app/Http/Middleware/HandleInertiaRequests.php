@@ -95,6 +95,7 @@ class HandleInertiaRequests extends Middleware
                     ->add('Profit Reports', route('reports.profits'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
             ->add('User Management', route('users.index'), fn($s) => $s->attributes(['icon' => 'BxSolidCoupon']))
+            ->add('Role Management', route('roles.index'), fn($s) => $s->attributes(['icon' => 'BxSolidCoupon']))
             ->add('Settings', '', function (Section $section) {
                 $section
                     ->attributes(['icon' => 'BySettings'])

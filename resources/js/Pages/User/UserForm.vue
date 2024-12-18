@@ -4,10 +4,8 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import FilepondInput from '@/Components/Form/InputFilepond.vue';
-import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
-import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { User } from '@/types';
@@ -34,12 +32,9 @@ const url = props.user
     : route('users.store');
 
 const form = useForm(method, url, {
-    role_id: props.user?.role_id ?? '',
     name: props.user?.name ?? '',
     email: props.user?.email ?? '',
     image: props.user?.image ?? '',
-    mobile: props.user?.mobile ?? '',
-    status: props.user?.status ?? '',
 });
 
 const submitForm = () => {
@@ -77,14 +72,6 @@ const submitForm = () => {
                 <div class="md:col-span-6">
                     <FieldRow :cols="1" class="md:grid-cols-2">
                         <FieldCol>
-                            <InputSelect
-                                label="Role"
-                                v-model="form.role_id"
-                                :options="rolesOptions"
-                                :error="form.errors.role_id"
-                            />
-                        </FieldCol>
-                        <FieldCol>
                             <InputText
                                 label="Name"
                                 v-model="form.name"
@@ -99,21 +86,6 @@ const submitForm = () => {
                                 label="Email"
                                 v-model="form.email"
                                 :error="form.errors.email"
-                            />
-                        </FieldCol>
-                        <FieldCol>
-                            <InputText
-                                label="Mobile"
-                                v-model="form.mobile"
-                                :error="form.errors.mobile"
-                            />
-                        </FieldCol>
-                        <FieldCol>
-                            <InputSelect
-                                label="Status"
-                                v-model="form.status"
-                                :options="statusOptions"
-                                :error="form.errors.status"
                             />
                         </FieldCol>
                     </FieldRow>

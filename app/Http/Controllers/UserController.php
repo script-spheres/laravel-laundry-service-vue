@@ -23,6 +23,7 @@ class UserController extends Controller
 
         return Inertia::render('User/UserIndex', [
             'users' => UserResource::collection($users),
+            'roleOptions' => Role::pluck('name', 'id'),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -32,8 +33,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('User/UserForm',[
-            'rolesOptions' =>Role::all()
+        return Inertia::render('User/UserForm', [
+            'roleOptions' => Role::all()
         ]);
     }
 
@@ -54,7 +55,7 @@ class UserController extends Controller
     {
         return Inertia::render('User/UserShow', [
             'user' => UserResource::make($user)->resolve(),
-        'permissions' => Inertia::defer(fn () => Permission::all()),
+            'permissions' => Inertia::defer(fn() => Permission::all()),
         ]);
     }
 

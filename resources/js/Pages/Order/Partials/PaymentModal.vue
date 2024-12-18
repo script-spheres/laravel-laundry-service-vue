@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import ApplicationLogo from '@/Shared/ApplicationLogo.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
 import Modal from '@/Components/Modal/Modal.vue';
+import ApplicationLogo from '@/Shared/ApplicationLogo.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
-const cartStore = usePosStore();
+const posStore = usePosStore();
 
 const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
+
 const paymentMode = ref('Cash');
-const moneys = ref([50, 100, 200, 5000, 10000, 20000, 50000, 100000]);
 
 const form = useForm({
     password: '',
@@ -24,7 +23,7 @@ const closeModal = () => {
     form.reset();
 };
 
-const setPaymentMode = (mode) => {
+const setPaymentMode = (mode: any) => {
     paymentMode.value = mode;
 };
 </script>
@@ -88,11 +87,11 @@ const setPaymentMode = (mode) => {
             <span class="flex-grow text-left font-medium">CASH:</span>
             <div class="flex items-center">
                 <span class="mr-2 text-gray-600">Rp</span>
-                <input
-                    v-model="posStore.cash"
-                    type="text"
-                    class="w-24 rounded-md bg-gray-100 px-2 py-1 text-right shadow focus:ring focus:ring-blue-200"
-                />
+                <!--                <input-->
+                <!--                    v-model="posStore.cash"-->
+                <!--                    type="text"-->
+                <!--                    class="w-24 rounded-md bg-gray-100 px-2 py-1 text-right shadow focus:ring focus:ring-blue-200"-->
+                <!--                />-->
             </div>
         </div>
         <div v-if="posStore.change !== 0" class="mt-3">
@@ -113,7 +112,6 @@ const setPaymentMode = (mode) => {
         :class="{ 'opacity-25': form.processing }"
         :disabled="form.processing"
         class="w-full rounded-2xl py-3 text-lg text-white focus:outline-none"
-        @click="confirmUserDeletion"
     >
         SUBMIT
     </PrimaryButton>
@@ -145,48 +143,29 @@ const setPaymentMode = (mode) => {
                                 <th class="w-3/12 py-1 text-right">Subtotal</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr v-for="item in cartStore.items" :key="item.id">
-                                <td
-                                    class="py-2 text-center"
-                                    x-text="index+1"
-                                ></td>
-                                <td class="py-2 text-left">
-                                    <span>{{ item.title }}</span>
-                                    <br />
-                                    <small>{{ item.selling_price }}</small>
-                                </td>
-                                <td class="py-2 text-center">
-                                    {{ item.quantity }}
-                                </td>
-                                <td class="py-2 text-right">
-                                    {{ item.item_total }}
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </DataTable>
                 </div>
                 <hr class="my-2" />
                 <div>
                     <div class="flex font-semibold">
                         <div class="flex-grow">TOTAL</div>
-                        <div>Rp. {{ cartStore.totalCost }}</div>
+                        <div>Rp. {{ posStore.totalCost }}</div>
                     </div>
                     <div class="flex text-xs font-semibold">
                         <div class="flex-grow">PAY AMOUNT</div>
-                        <div>Rp. {{ cartStore.cash }}</div>
+                        <!--                        <div>Rp. {{ posStore.cash }}</div>-->
                     </div>
                     <hr class="my-2" />
                     <div class="flex text-xs font-semibold">
                         <div class="flex-grow">CHANGE</div>
-                        <div>Rp. {{ cartStore.change }}</div>
+                        <div>Rp. {{ posStore.change }}</div>
                     </div>
                 </div>
             </div>
             <div class="w-full p-4">
                 <PrimaryButton
                     class="w-full rounded-2xl px-4 py-3 text-lg text-white focus:outline-none"
-                    @click=""
                 >
                     PROCEED
                 </PrimaryButton>

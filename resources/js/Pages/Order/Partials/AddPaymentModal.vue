@@ -4,7 +4,6 @@ import { usePosStore } from '@/Stores/PosStore';
 import { AddonService } from '@/types';
 import { inject, Ref } from 'vue';
 
-const addonServices = inject('addonServices') as AddonService[];
 const showAddonServiceModal = inject('showAddonServiceModal') as Ref<boolean>;
 
 const posStore = usePosStore();
@@ -15,18 +14,6 @@ const handleClose = () => {
 
 const isInCart = (id: number) => {
     return posStore.addonItems.some((item) => item.id === id);
-};
-
-const toggleCartItem = (item: AddonService) => {
-    if (isInCart(item.id)) {
-        posStore.removeAddonItem(item.id);
-    } else {
-        posStore.addAddonItem({
-            id: item.id,
-            name: item.name,
-            price: item.price,
-        });
-    }
 };
 </script>
 

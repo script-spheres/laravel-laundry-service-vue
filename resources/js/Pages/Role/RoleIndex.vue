@@ -75,7 +75,9 @@ const { filter, handleClearFilter } = useFilters('roles.index', {
         <TableBody>
             <TableRow v-for="role in roles.data" :key="role.id">
                 <TableCell>{{ role.name }}</TableCell>
-                <TableCell>{{ role.permissions.map(p => p.name).join(', ') }}</TableCell>
+                <TableCell>{{
+                    role.permissions.map((p) => p.name).join(', ')
+                }}</TableCell>
                 <TableCell class="flex justify-end gap-2">
                     <LinkButton :href="route('roles.edit', role.id)">
                         Edit

@@ -3,6 +3,13 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import { PropType } from 'vue';
+interface ServiceEntry {
+    service_id: string;
+    category_id: string;
+    unit_id: string;
+    price: string;
+    quantity: string;
+}
 
 const model = defineModel<ServiceEntry[]>({
     required: true,
@@ -16,14 +23,6 @@ const model = defineModel<ServiceEntry[]>({
         },
     ],
 });
-
-interface ServiceEntry {
-    service_id: string;
-    category_id: string;
-    unit_id: string;
-    price: string;
-    quantity: string;
-}
 
 const props = defineProps({
     serviceOptions: {

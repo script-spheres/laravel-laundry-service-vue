@@ -5,6 +5,7 @@ import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputGroup from '@/Components/Form/InputGroup.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { radiusUnitOptions, statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -13,7 +14,6 @@ import { DeliveryScale } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
-import InputText from '@/Components/Form/InputText.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 

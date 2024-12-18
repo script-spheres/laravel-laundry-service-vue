@@ -82,55 +82,47 @@ const { filter, handleClearFilter } = useFilters('service-items.index', {
                 />
             </div>
             <div class="flex-none gap-2 self-end">
-                <PrimaryButton color="gray" @click="handleClearFilter">
+                <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </div>
         </div>
     </Card>
 
-    <div class="mx-auto mt-6">
-        <DataTable>
-            <TableHead>
-                <TableHeadCell>Service Item Name</TableHeadCell>
-                <TableHeadCell>Description</TableHeadCell>
-                <TableHeadCell>Store</TableHeadCell>
-                <TableHeadCell class="text-right">Status</TableHeadCell>
-                <TableHeadCell class="text-right">Actions</TableHeadCell>
-            </TableHead>
-            <TableBody>
-                <TableRow
-                    v-for="serviceItem in serviceItems.data"
-                    :key="serviceItem.id"
-                >
-                    <TableCell>{{ serviceItem.name }}</TableCell>
-                    <TableCell>{{ serviceItem.description }}</TableCell>
-                    <TableCell>{{ serviceItem.store_name }}</TableCell>
-                    <TableCell class="text-right">
-                        <StatusToggleInput
-                            :action="
-                                route('service-items.update', serviceItem.id)
-                            "
-                            :data="serviceItem"
-                        />
-                    </TableCell>
-                    <TableCell class="flex justify-end gap-2">
-                        <LinkButton
-                            :href="route('service-items.edit', serviceItem.id)"
-                        >
-                            Edit
-                        </LinkButton>
-                        <DeleteButton
-                            :action="
-                                route('service-items.destroy', serviceItem.id)
-                            "
-                        >
-                            Delete
-                        </DeleteButton>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </DataTable>
-        <Pagination :links="serviceItems.meta" />
-    </div>
+    <DataTable class="mx-auto mt-6">
+        <TableHead>
+            <TableHeadCell>Service Item Name</TableHeadCell>
+            <TableHeadCell>Description</TableHeadCell>
+            <TableHeadCell class="text-right">Status</TableHeadCell>
+            <TableHeadCell class="text-right">Actions</TableHeadCell>
+        </TableHead>
+        <TableBody>
+            <TableRow
+                v-for="serviceItem in serviceItems.data"
+                :key="serviceItem.id"
+            >
+                <TableCell>{{ serviceItem.name }}</TableCell>
+                <TableCell>{{ serviceItem.description }}</TableCell>
+                <TableCell class="text-right">
+                    <StatusToggleInput
+                        :action="route('service-items.update', serviceItem.id)"
+                        :data="serviceItem"
+                    />
+                </TableCell>
+                <TableCell class="flex justify-end gap-2">
+                    <LinkButton
+                        :href="route('service-items.edit', serviceItem.id)"
+                    >
+                        Edit
+                    </LinkButton>
+                    <DeleteButton
+                        :action="route('service-items.destroy', serviceItem.id)"
+                    >
+                        Delete
+                    </DeleteButton>
+                </TableCell>
+            </TableRow>
+        </TableBody>
+    </DataTable>
+    <Pagination :links="serviceItems.meta" />
 </template>

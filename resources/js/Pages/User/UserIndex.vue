@@ -14,7 +14,6 @@ import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
@@ -26,7 +25,7 @@ defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
     roleOptions: {
-        type: Object as PropType<Object>,
+        type: Object as PropType<Options>,
         required: true,
     },
     users: {
@@ -44,7 +43,6 @@ const { filter, handleClearFilter } = useFilters('users.index', {
     name: props.filters?.name ?? '',
     email: props.filters?.email ?? '',
     role: props.filters?.role ?? '',
-    status: props.filters?.status ?? '',
 });
 </script>
 
@@ -83,14 +81,6 @@ const { filter, handleClearFilter } = useFilters('users.index', {
                     placeholder="Filter by Role"
                 />
             </FieldCol>
-            <FieldCol>
-                <InputSelect
-                    label="Status"
-                    v-model="filter.status"
-                    :options="statusOptions"
-                    placeholder="Filter by Status"
-                />
-            </FieldCol>
             <FieldCol class="flex-none gap-2 self-end">
                 <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
@@ -103,7 +93,7 @@ const { filter, handleClearFilter } = useFilters('users.index', {
         <TableHead>
             <TableHeadCell>Name</TableHeadCell>
             <TableHeadCell>Email</TableHeadCell>
-            <TableHeadCell>Role</TableHeadCell>
+            <TableHeadCell>Roles</TableHeadCell>
             <TableHeadCell class="text-right">Status</TableHeadCell>
             <TableHeadCell class="text-right">Actions</TableHeadCell>
         </TableHead>
@@ -111,7 +101,7 @@ const { filter, handleClearFilter } = useFilters('users.index', {
             <TableRow v-for="user in users.data" :key="user.id">
                 <TableCell>{{ user.name }}</TableCell>
                 <TableCell>{{ user.email }}</TableCell>
-                <TableCell>{{ user.role }}</TableCell>
+                <TableCell>{{ user?.roles }}</TableCell>
                 <TableCell class="text-right">
                     <StatusToggleInput
                         :data="user"

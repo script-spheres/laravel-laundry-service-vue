@@ -4,7 +4,6 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputText from '@/Components/Form/InputText.vue';
-import InputMultiSelect from '@/Components/Form/InputMultiSelect.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
@@ -22,7 +21,7 @@ const props = defineProps({
     },
     permissionsOptions: {
         type: Array as PropType<Array<{ value: string; label: string }>>,
-        required: true,
+        required: false,
     },
 });
 
@@ -63,17 +62,6 @@ const submitForm = () => {
                         label="Role Name"
                         v-model="form.name"
                         :error="form.errors.name"
-                    />
-                </FieldCol>
-            </FieldRow>
-
-            <FieldRow :cols="1">
-                <FieldCol>
-                    <InputMultiSelect
-                        label="Permissions"
-                        v-model="form.permissions"
-                        :options="permissionsOptions"
-                        :error="form.errors.permissions"
                     />
                 </FieldCol>
             </FieldRow>

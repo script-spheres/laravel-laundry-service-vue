@@ -24,6 +24,7 @@ export type FlashMessage = {
 
 interface PaginationMeta {
     current_page: number;
+    per_page: number;
     last_page_url: string;
     next_page_url?: string;
     total: number;
@@ -56,8 +57,10 @@ export type Role = {
 export type User = {
     id: number;
     name: string;
+    image: Image;
     email: string;
     email_verified_at?: string;
+    roles: string[];
 };
 
 export type Permission = {
@@ -182,8 +185,8 @@ export type ServiceDetail = {
     category_id: number;
     unit_id: number;
     service_item_id: number;
-    service?: Service;
-    service_item?: ServiceItem;
+    service: Service;
+    service_item: ServiceItem;
     category?: Category;
     unit?: Unit;
     price: number;
@@ -214,27 +217,41 @@ export type Times = {
 export type Order = {
     id: number;
     order_uuid: string;
+    order_display_id: string | null;
+    customer_id: number;
+    store_id: number;
+    total_weight_kg: number;
     sub_total: number;
-    tax_amount: number;
     total_amount: number;
+    tax_amount: number;
     discount_amount: number;
     paid_amount: number;
-    order_status: string;
     delivery_date: string;
-    payment_status: string;
-    created_at: string;
+    quick_note: string | null;
+    order_status: 'pending' | 'in-progress' | 'ready-to-deliver' | 'delivered';
     payments: Payment[];
     store: Store;
     customer: Customer;
     order_details: OrderDetail[];
+    created_at: string;
 };
 
 export type OrderDetail = {
     id: number;
-    product_id: number;
-    quantity: number;
+    order_id: number;
+    serviceable_type: string;
+    serviceable_id: number;
+    color: string;
     price: number;
+    quantity: number;
+    serviceable?: Serviceable;
 };
+
+export interface Serviceable {
+    id: number;
+    name: string;
+    [key: string]: any;
+}
 
 export type DeliveryScale = {
     id: number;
@@ -256,6 +273,8 @@ export type Payment = {
 
 export type Expense = {
     id: number;
+    expense_type_id: number;
+    store_id: number;
     expense_type: ExpenseType;
     amount: number;
     store: Store;

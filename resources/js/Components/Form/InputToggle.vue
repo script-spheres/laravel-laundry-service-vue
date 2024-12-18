@@ -13,9 +13,8 @@ defineProps({
 <template>
     <label class="inline-flex cursor-pointer items-center">
         <input
-            v-bind="{ ...$props, ...$attrs }"
             type="checkbox"
-            :checked="model"
+            v-model="model"
             class="peer sr-only h-6 w-11 appearance-none"
         />
         <div

@@ -13,7 +13,7 @@ import { inject, PropType, Ref } from 'vue';
 
 defineProps({
     coupons: {
-        type: Object as PropType<Coupon>,
+        type: Object as PropType<Coupon[]>,
         required: false,
     },
 });
@@ -31,19 +31,7 @@ const handleClose = () => {
 
 // Add Coupon to Cart
 const applyCoupon = (coupon: Coupon) => {
-    posStore.applyCoupon({
-        id: coupon.id,
-        code: coupon.code,
-        discount: coupon.discount,
-    });
-    console.log('Coupon applied:', coupon);
-    handleClose();
-};
-
-// Remove Coupon from Cart
-const removeCoupon = (coupon: Coupon) => {
-    posStore.removeCoupon(coupon.id);
-    console.log('Coupon removed:', coupon);
+    console.log('Coupon apply:', coupon);
 };
 </script>
 
@@ -63,7 +51,9 @@ const removeCoupon = (coupon: Coupon) => {
                 <TableBody>
                     <TableRow v-for="coupon in coupons" :key="coupon.id">
                         <TableCell>{{ coupon.code }}</TableCell>
-                        <TableCell>{{ coupon.discount }}%</TableCell>
+                        <TableCell>{{ coupon.discount_type }}</TableCell>
+                        <TableCell>{{ coupon.discount_amount }}</TableCell>
+                        <TableCell>{{ coupon.discount_percentage }}%</TableCell>
                         <TableCell class="flex justify-end gap-2">
                             <RadioInput @click="applyCoupon(coupon)">
                                 Apply

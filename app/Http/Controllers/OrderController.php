@@ -11,6 +11,7 @@ use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Service;
+use App\Models\ServiceDetail;
 use App\Models\ServiceItem;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -39,11 +40,11 @@ class OrderController extends Controller
     {
         return Inertia::render('Order/OrderForm',[
             'services' => Service::where('status','active')->get(),
-            'customerOptions' => Customer::get(),
+            'customerOptions' => Customer::pluck('name','id'),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
             'categories' => Category::get(),
-            'serviceItems' => ServiceItem::with(['serviceDetails','serviceDetails.service'])->get(),
+            'serviceDetails' => ServiceDetail::with(['serviceItem','service'])->get(),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -84,7 +85,7 @@ class OrderController extends Controller
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
-            'serviceItems' => ServiceItem::with(['serviceDetails','serviceDetails.serviceType'])->get(),
+            'serviceDetails' => ServiceDetail::with(['serviceItem','service'])->get(),
             'filters' => $request->get('filter'),
         ]);
     }

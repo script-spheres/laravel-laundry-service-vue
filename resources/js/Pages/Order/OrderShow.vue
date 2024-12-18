@@ -27,7 +27,6 @@ defineProps({
 // Payment logic placeholders
 const addPayment = () => {
     console.log('Add Payment clicked');
-    // Logic to handle adding a payment goes here
 };
 
 const printInvoice = () => {};
@@ -58,7 +57,6 @@ const printInvoice = () => {};
                             <p>+{{ order.customer?.phone_number }}</p>
                             <p>{{ order.customer?.email }}</p>
                             <p>{{ order.customer?.address }}</p>
-                            <p>Tax: {{ order.tax_number }}</p>
                         </div>
                     </div>
 
@@ -69,7 +67,7 @@ const printInvoice = () => {};
                                 >Order ID:</span
                             >
                             <span class="text-primary"
-                                >#{{ order.order_id }}</span
+                                >#{{ order.order_display_id }}</span
                             >
                         </p>
                         <p class="text-sm">
@@ -85,13 +83,12 @@ const printInvoice = () => {};
                             {{ order.delivery_date }}
                         </p>
                         <div class="mt-2">
-                            <span class="font-medium text-gray-700"
-                                >Order Status:</span
-                            >
+                            <span class="font-medium text-gray-700">
+                                Order Status:
+                            </span>
                             <InputSelect
                                 v-model="order.order_status"
                                 :options="orderStatusOptions"
-                                @change="handleOrderStatusChange(order, $event)"
                             />
                         </div>
                     </div>
@@ -118,8 +115,15 @@ const printInvoice = () => {};
                                 <TableCell>{{ index + 1 }}</TableCell>
                                 <TableCell>
                                     <div class="flex items-center gap-4">
+                                        <!-- Display serviceable image and name -->
                                         <img
-                                            :src="orderDetail.icon_url"
+                                            v-if="
+                                                orderDetail.serviceable &&
+                                                orderDetail.serviceable.icon_url
+                                            "
+                                            :src="
+                                                orderDetail.serviceable.icon_url
+                                            "
                                             alt="Service Icon"
                                             class="h-10 w-10 object-contain"
                                         />
@@ -127,23 +131,43 @@ const printInvoice = () => {};
                                             <p
                                                 class="font-medium text-gray-800"
                                             >
-                                                {{ orderDetail.service_name }}
+                                                {{
+                                                    orderDetail.serviceable
+                                                        ? orderDetail
+                                                              .serviceable.name
+                                                        : 'Unknown Service'
+                                                }}
                                             </p>
-                                            <p class="text-sm text-gray-500">
-                                                {{ orderDetail.description }}
+                                            <p
+                                                v-if="
+                                                    orderDetail.serviceable
+                                                        ?.description
+                                                "
+                                                class="text-sm text-gray-500"
+                                            >
+                                                {{
+                                                    orderDetail.serviceable
+                                                        .description
+                                                }}
                                             </p>
                                         </div>
                                     </div>
                                 </TableCell>
-                                <TableCell>{{ orderDetail.color }}</TableCell>
-                                <TableCell>
-                                    RP {{ orderDetail.rate }}
-                                </TableCell>
-                                <TableCell>{{ orderDetail.qty }}</TableCell>
-                                <TableCell>
-                                    RP
-                                    {{ orderDetail.rate * orderDetail.qty }}
-                                </TableCell>
+                                <TableCell>{{
+                                    orderDetail.serviceable?.color || 'N/A'
+                                }}</TableCell>
+                                <TableCell
+                                    >RP {{ orderDetail.price }}</TableCell
+                                >
+                                <TableCell>{{
+                                    orderDetail.quantity
+                                }}</TableCell>
+                                <TableCell
+                                    >RP
+                                    {{
+                                        orderDetail.price * orderDetail.quantity
+                                    }}</TableCell
+                                >
                             </TableRow>
                         </TableBody>
                     </DataTable>

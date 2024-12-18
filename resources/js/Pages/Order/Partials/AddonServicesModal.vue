@@ -17,7 +17,7 @@ const posStore = usePosStore();
 
 defineProps({
     addonServices: {
-        type: Object as PropType<AddonService>,
+        type: Object as PropType<AddonService[]>,
         required: true,
     },
 });

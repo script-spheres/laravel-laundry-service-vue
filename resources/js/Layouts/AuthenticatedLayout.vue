@@ -102,7 +102,7 @@ const { isMenuOpen, toggleMenu } = useMenu(true);
                                     <p
                                         class="hidden text-sm font-medium lg:block"
                                     >
-                                        {{ $page.props.auth.user.name }}
+                                        {{ $page.props.auth?.user?.name }}
                                     </p>
                                     <FaAngleDown class="ms-2 h-4 w-4" />
                                 </div>

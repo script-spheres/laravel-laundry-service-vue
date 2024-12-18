@@ -6,6 +6,8 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserService
 {
@@ -22,21 +24,32 @@ class UserService
     }
 
     /**
-     * Store a new user.
+     * Store a new user and optionally assign roles.
      */
     public function create(StoreUserRequest $request): User
     {
         $attributes = $request->validated();
-        return User::create($attributes);
+        $user = User::create($attributes);
+
+        if ($request->has('roles')) {
+            $user->syncRoles($request->input('roles'));
+        }
+
+        return $user;
     }
 
     /**
-     * Update an existing user.
+     * Update an existing user and optionally update roles.
      */
     public function update(User $user, UpdateUserRequest $request): User
     {
         $attributes = $request->validated();
         $user->update($attributes);
+
+        if ($request->has('roles')) {
+            $user->syncRoles($request->input('roles'));
+        }
+
         return $user;
     }
 
@@ -46,5 +59,37 @@ class UserService
     public function delete(User $user): void
     {
         $user->delete();
+    }
+
+    /**
+     * Assign a role to a user.
+     */
+    public function assignRole(User $user, string $roleName): void
+    {
+        $user->assignRole($roleName);
+    }
+
+    /**
+     * Remove a role from a user.
+     */
+    public function removeRole(User $user, string $roleName): void
+    {
+        $user->removeRole($roleName);
+    }
+
+    /**
+     * Assign a permission to a user.
+     */
+    public function givePermission(User $user, string $permissionName): void
+    {
+        $user->givePermissionTo($permissionName);
+    }
+
+    /**
+     * Remove a permission from a user.
+     */
+    public function revokePermission(User $user, string $permissionName): void
+    {
+        $user->revokePermissionTo($permissionName);
     }
 }

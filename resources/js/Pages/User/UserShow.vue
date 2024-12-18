@@ -7,8 +7,6 @@ import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
 
-import FilepondInput from '@/Components/Form/InputFilepond.vue';
-import { rolesOptions, statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { User } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
@@ -22,24 +20,21 @@ const props = defineProps({
         type: Object as PropType<User>,
         required: true,
     },
-    unitsOptions: {
+    rolesOptions: {
         type: Object as PropType<Options>,
         required: true,
     },
 });
 
-const { user } = props;
-
-const method = user ? 'put' : 'post';
-const url = user ? route('users.update', user.id) : route('users.store');
+const method = props.user ? 'put' : 'post';
+const url = props.user
+    ? route('users.update', props.user.id)
+    : route('users.store');
 
 const form = useForm(method, url, {
-    role_id: user.role_id ?? '',
-    name: user.name ?? '',
-    email: user.email ?? '',
-    image: user.image ?? '',
-    mobile: user.mobile ?? '',
-    status: user.status ?? '',
+    role_id: props.user.name ?? '',
+    name: props.user.name ?? '',
+    email: props.user.email ?? '',
 });
 
 const submitForm = () => {
@@ -84,33 +79,12 @@ const submitForm = () => {
                     <InputError :error="form.errors.name" />
                 </div>
             </div>
-            <div class="-mx-3 mb-6 flex flex-wrap">
-                <div class="mb-6 w-full px-3 md:mb-0">
-                    <InputLabel for="image" value="Image" />
-                    <FilepondInput
-                        @input="form.image = $event.target.files[0]"
-                    />
-                    <InputError :error="form.errors.image" />
-                </div>
-            </div>
+
             <div class="-mx-3 mb-6 flex flex-wrap">
                 <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
                     <InputLabel for="email" value="Email" />
                     <InputText v-model="form.email" />
                     <InputError :error="form.errors.email" />
-                </div>
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-                    <InputLabel for="mobile" value="Mobile" />
-                    <InputText v-model="form.mobile" />
-                    <InputError :error="form.errors.mobile" />
-                </div>
-                <div class="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-                    <InputLabel for="status" value="Status" />
-                    <InputSelect
-                        v-model="form.status"
-                        :options="statusOptions"
-                    />
-                    <InputError :error="form.errors.status" />
                 </div>
             </div>
             <div class="-mx-3 mb-6 flex flex-wrap gap-3 px-3 md:mb-0">

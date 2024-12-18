@@ -10,7 +10,6 @@ import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import ServiceDetails from '@/Pages/ServiceItem/ServiceDetails.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { ServiceItem } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
@@ -48,15 +47,7 @@ const form = useForm(method, url, {
     description: props.serviceItem?.description || '',
     image: props.serviceItem?.image || {},
     new_image: null as string | null,
-    service_details: props.serviceItem?.service_details || [
-        {
-            service_id: '',
-            category_id: '',
-            unit_id: '',
-            price: '',
-            quantity: '',
-        },
-    ],
+    service_details: props.serviceItem?.service_details || [],
     status: props.serviceItem?.status || '',
 });
 
@@ -138,12 +129,12 @@ const submitForm = () => {
                     />
                 </FieldCol>
             </FieldRow>
-            <ServiceDetails
-                :unitOptions="unitOptions"
-                :categoryOptions="categoryOptions"
-                :serviceOptions="serviceOptions"
-                v-model="form.service_details"
-            />
+            <!--            <ServiceDetails-->
+            <!--                :unitOptions="unitOptions"-->
+            <!--                :categoryOptions="categoryOptions"-->
+            <!--                :serviceOptions="serviceOptions"-->
+            <!--                v-model="form.service_details"-->
+            <!--            />-->
 
             <div class="flex gap-2">
                 <PrimaryButton

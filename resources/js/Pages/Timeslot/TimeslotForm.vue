@@ -7,7 +7,6 @@ import InputSelect from '@/Components/Form/InputSelect.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { daysOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import Times from '@/Pages/Timeslot/Times.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Timeslot } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
@@ -70,7 +69,7 @@ const submitForm = () => {
                 </FieldCol>
             </FieldRow>
 
-            <Times v-model="form.timeslots" />
+            <!--            <Times v-model="form.timeslots" />-->
 
             <div class="flex gap-2">
                 <PrimaryButton

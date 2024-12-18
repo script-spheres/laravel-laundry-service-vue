@@ -6,7 +6,6 @@ import ImagePreview from '@/Components/Image/ImagePreview.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { useCartStore } from '@/Stores/CartStore';
 import { Banner, Category, Service } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { PropType } from 'vue';
@@ -41,18 +40,12 @@ const props = defineProps({
     },
 });
 
-const { filter, handleClearFilter } = useFilters('services', {
+const { filter } = useFilters('services', {
     city_id: props.filters?.city_id ?? '',
     category_id: props.filters?.category_id ?? '',
     service_id: props.filters?.service_id ?? '',
     store_id: props.filters?.store_id ?? '',
 });
-
-// Cart store
-const cartStore = useCartStore();
-const addToCart = (item: Banner) => {
-    cartStore.addItem(item);
-};
 
 const handleServiceClick = (serviceId: any) => {
     filter.service_id = filter.service_id === serviceId ? '' : serviceId;
@@ -177,12 +170,6 @@ const handleServiceClick = (serviceId: any) => {
                                     >
                                         {{ serviceItem.description }}
                                     </p>
-                                    <button
-                                        @click="addToCart(serviceItem)"
-                                        class="mt-4 w-full rounded-full bg-blue-600 px-4 py-3 text-lg font-semibold text-white shadow-md transition-all hover:bg-blue-700 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-700"
-                                    >
-                                        Add to Cart
-                                    </button>
                                 </div>
                             </div>
                         </template>

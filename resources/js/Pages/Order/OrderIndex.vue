@@ -37,18 +37,6 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
     order_status: props.filters?.order_status || '',
     payment_status: props.filters?.payment_status || '',
 });
-
-// Function to determine badge color based on order_status
-const getOrderStatusColor = (status: string) => {
-    const statusColors: Record<string, string> = {
-        pending: 'yellow',
-        'in-progress': 'blue',
-        'ready-to-deliver': 'purple',
-        delivered: 'green',
-    };
-
-    return statusColors[status.toLowerCase()] || 'gray';
-};
 </script>
 
 <template>
@@ -144,7 +132,7 @@ const getOrderStatusColor = (status: string) => {
                     </p>
                 </TableCell>
                 <TableCell class="text-right">
-                    <Badge :color="getOrderStatusColor(order.order_status)">
+                    <Badge>
                         {{ order.order_status }}
                     </Badge>
                 </TableCell>

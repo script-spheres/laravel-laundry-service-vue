@@ -9,7 +9,6 @@ import AddonServicesModal from '@/Pages/Order/Partials/AddonServicesModal.vue';
 import CartItems from '@/Pages/Order/Partials/CartItems.vue';
 import CouponModal from '@/Pages/Order/Partials/CouponModal.vue';
 import CustomerModal from '@/Pages/Order/Partials/CustomerModal.vue';
-import ServiceTypeModal from '@/Pages/Order/Partials/ServiceTypeModal.vue';
 import NoData from '@/Shared/NoData.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import {
@@ -18,7 +17,7 @@ import {
     Coupon,
     Order,
     Service,
-    ServiceItem,
+    ServiceDetail,
 } from '@/types';
 import { AkEdit, AkPlus, MdDiscount } from '@kalimahapps/vue-icons';
 import { useForm } from 'laravel-precognition-vue-inertia';
@@ -38,8 +37,8 @@ const props = defineProps({
         type: Object as PropType<Category[]>,
         required: true,
     },
-    serviceItems: {
-        type: Object as PropType<ServiceItem[]>,
+    serviceDetails: {
+        type: Object as PropType<ServiceDetail[]>,
         required: true,
     },
     addonServices: {
@@ -56,32 +55,16 @@ const props = defineProps({
     },
     customerOptions: {
         type: Object as PropType<Options>,
-        required: false,
+        required: true,
     },
     filters: Object as PropType<Filters>,
 });
 
 // Filters
-const { filter, handleClearFilter } = useFilters('orders.create', {
+const { filter } = useFilters('orders.create', {
     name: props.filters?.name ?? '',
-    service_type_id: props.filters?.service_type_id ?? '',
+    service_id: props.filters?.service_id ?? '',
 });
-
-// Modal State
-const showServiceTypeModal = ref(false);
-const selectedServiceItem = ref<ServiceItem>({});
-
-// Methods
-const handleItemClick = (item: ServiceItem) => {
-    selectedServiceItem.value = item;
-    showServiceTypeModal.value = true;
-};
-
-const handleIServiceTypeClick = (serviceTypeId: string) => {
-    filter.service_type_id =
-        filter.service_type_id === serviceTypeId ? '' : serviceTypeId;
-};
-const { order } = props;
 
 const showDiscountModal = ref(false);
 const showCouponModal = ref(false);
@@ -89,8 +72,10 @@ const showCustomerModal = ref(false);
 const showNoteModal = ref(false);
 const showAddonServiceModal = ref(false);
 
-const method = order ? 'put' : 'post';
-const url = order ? route('orders.update', order.id) : route('orders.store');
+const method = props.order ? 'put' : 'post';
+const url = props.order
+    ? route('orders.update', props.order.id)
+    : route('orders.store');
 
 const form = useForm(method, url, {
     customer_id: '',
@@ -112,19 +97,12 @@ const posSubmit = async () => {
         onSuccess: (page) => toast.success(page.props?.flash?.message),
     });
 };
-const handleCategoryClick = (item) => {
-    form.submit({
-        preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props?.flash?.message),
-    });
-};
 
 provide('showAddonServiceModal', showAddonServiceModal);
 provide('showDiscountModal', showDiscountModal);
 provide('showCouponModal', showCouponModal);
 provide('showCustomerModal', showCustomerModal);
 provide('showNoteModal', showNoteModal);
-provide('showServiceTypeModal', showServiceTypeModal);
 </script>
 
 <template>
@@ -155,13 +133,6 @@ provide('showServiceTypeModal', showServiceTypeModal);
                         >
                             <button
                                 class="w-full rounded-lg border px-4 py-2 text-left font-medium transition-all duration-300"
-                                :class="{
-                                    'bg-blue-600 text-white hover:bg-blue-700':
-                                        filter.service_type_id === service.id,
-                                    'bg-gray-100 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-blue-600 dark:hover:text-white':
-                                        filter.service_type_id !== service.id,
-                                }"
-                                @click="handleIServiceTypeClick(service.id)"
                             >
                                 {{ service.name }}
                             </button>
@@ -179,7 +150,6 @@ provide('showServiceTypeModal', showServiceTypeModal);
                             <li v-for="item in categories" :key="item.id">
                                 <button
                                     class="transform rounded-full border bg-gray-200 p-2 font-semibold text-gray-800 transition-all duration-300 hover:bg-gray-400 hover:text-white dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 dark:hover:text-white"
-                                    @click="handleCategoryClick(item)"
                                 >
                                     {{ item.name }}
                                 </button>
@@ -188,29 +158,28 @@ provide('showServiceTypeModal', showServiceTypeModal);
                     </div>
 
                     <!-- Service Items List -->
-                    <div v-if="serviceItems.length" class="w-full">
+                    <div v-if="serviceDetails.length" class="w-full">
                         <ul class="space-y-2">
                             <li
-                                v-for="item in serviceItems"
+                                v-for="item in serviceDetails"
                                 :key="item.id"
                                 class="flex items-center space-x-2 rounded-lg bg-white p-2 shadow transition-all duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-                                @click="handleItemClick(item)"
                             >
                                 <img
-                                    :alt="item?.image?.basename"
-                                    :src="item?.image?.url"
+                                    :alt="item?.service_item?.image?.basename"
+                                    :src="item?.service_item?.image?.url"
                                     class="h-12 w-12 rounded-lg object-cover"
                                 />
                                 <div>
                                     <p
                                         class="text-sm font-semibold text-gray-800 dark:text-gray-200"
                                     >
-                                        {{ item.name }}
+                                        {{ item?.service_item?.name }}
                                     </p>
                                     <p
                                         class="text-xs text-gray-600 dark:text-gray-400"
                                     >
-                                        {{ item.description }}
+                                        {{ item?.service_item?.description }}
                                     </p>
                                 </div>
                             </li>
@@ -229,7 +198,8 @@ provide('showServiceTypeModal', showServiceTypeModal);
                 <div class="p-2">
                     <div class="grid gap-2 md:grid-cols-2">
                         <div class="mt-0">
-                            <DateInput
+                            <InputText
+                                type="date"
                                 v-model="form.delivery_date"
                                 label="Delivery Date"
                                 :error="form.errors.delivery_date"
@@ -330,7 +300,6 @@ provide('showServiceTypeModal', showServiceTypeModal);
     </div>
 
     <CustomerModal />
-    <ServiceTypeModal :selectedServiceItem="selectedServiceItem" />
     <AddonServicesModal :addonServices="addonServices" />
     <CouponModal :coupons="coupons" />
 </template>

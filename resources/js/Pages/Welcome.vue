@@ -44,8 +44,6 @@ const categoryConfig = {
         },
     },
 };
-const center = { lat: 40.689247, lng: -74.044502 };
-const apiKey = import.meta.env.VITE_GOOGLE_MAP_API_KEY;
 </script>
 
 <template>

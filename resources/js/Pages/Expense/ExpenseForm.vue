@@ -22,11 +22,11 @@ const props = defineProps({
         required: false,
     },
     expenseTypeOptions: {
-        type: Object as PropType<Object>,
+        type: Object as PropType<Options>,
         required: true,
     },
     storeOptions: {
-        type: Object as PropType<Object>,
+        type: Object as PropType<Options>,
         required: true,
     },
 });

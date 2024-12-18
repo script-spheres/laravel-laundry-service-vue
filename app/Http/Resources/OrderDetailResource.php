@@ -16,15 +16,14 @@ class OrderDetailResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'quantity' => $this->quantity,
+            'order_id' => $this->order_id,
+            'serviceable_type' => $this->serviceable_type,
+            'serviceable_id' => $this->serviceable_id,
             'price' => $this->price,
-            'subtotal' => $this->subtotal,
-            'restaurant_notes' => $this->restaurant_notes,
-            'request_notes' => $this->request_notes,
-            'serve_status' => $this->serve_status,
-            'kitchen_status' => $this->kitchen_status,
-            'order_status' => $this->order_status,
-            'order' => OrderResource::make($this->whenLoaded('order')),
+            'quantity' => $this->quantity,
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
+            'serviceable' => $this->whenLoaded('serviceable'),
         ];
     }
 }

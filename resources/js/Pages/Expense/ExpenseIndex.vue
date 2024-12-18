@@ -10,6 +10,7 @@ import TableRow from '@/Components/DataTable/TableRow.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
@@ -18,7 +19,6 @@ import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Expense, PaginatedData } from '@/types';
 import { PropType } from 'vue';
-import InputText from '@/Components/Form/InputText.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
@@ -28,7 +28,7 @@ const { filters } = defineProps({
         required: true,
     },
     storeOptions: {
-        type: Object as PropType<Object>,
+        type: Object as PropType<Options>,
         required: true,
     },
     filters: {
