@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->enum('discount_type', ['flat', 'percentage']);
             $table->decimal('discount_amount', 10, 2)->nullable();
-            $table->decimal('discount_percentage', 2, 2)->nullable();
+            $table->decimal('discount_percentage', 10, 2)->nullable();
             $table->decimal('min_amount');
             $table->decimal('max_amount');
             $table->enum('status', ['active', 'inactive'])->default('active');
