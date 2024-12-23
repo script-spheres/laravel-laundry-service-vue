@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import InputToggle from '@/Components/Form/InputToggle.vue';
 import { router } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { toast } from 'vue3-toastify';
 
 const props = defineProps({
@@ -13,22 +15,24 @@ const props = defineProps({
     },
 });
 
-const handleStatusChange = (event: Event) => {
-    const newStatus = (event.target as HTMLInputElement).checked
-        ? 'active'
-        : 'inactive';
-    router.put(
-        props.action,
-        { ...props.data, status: newStatus },
-        {
-            preserveState: true,
-            preserveScroll: true,
-            onSuccess: (page) => toast.success(page.props?.flash?.message),
-        },
-    );
-};
+// Computed property to convert status string to boolean
+const isActive = computed({
+    get: () => props.data.status === 'active',
+    set: (newValue: boolean) => {
+        const newStatus = newValue ? 'active' : 'inactive';
+        router.put(
+            props.action,
+            { ...props.data, status: newStatus },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: (page) => toast.success(page.props?.flash?.message),
+            },
+        );
+    },
+});
 </script>
 
 <template>
-    <input type="checkbox" @change="handleStatusChange" />
+    <InputToggle v-model="isActive" />
 </template>

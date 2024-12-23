@@ -5,9 +5,8 @@ namespace App\Services;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class UserService
 {
@@ -17,7 +16,20 @@ class UserService
     public function getUsers()
     {
         return QueryBuilder::for(User::class)
-            ->allowedFilters(['id', 'name', 'email'])
+            ->allowedFilters([
+                'name',
+                'email',
+                AllowedFilter::callback('role', function ($query, $value) {
+                    $query->whereHas('roles', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('permission', function ($query, $value) {
+                    $query->whereHas('permissions', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                }),
+            ])
             ->allowedSorts(['name', 'created_at'])
             ->paginate()
             ->appends(request()->query());

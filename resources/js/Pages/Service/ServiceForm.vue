@@ -15,6 +15,7 @@ import PageHeader from '@/Shared/PageHeader.vue';
 import { Service } from '@/types';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
+import IconPicker from '@/Components/Icons/IconPicker.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
@@ -32,6 +33,7 @@ const url = service
 
 const form = useForm(method, url, {
     name: service?.name || '',
+    icon: service?.icon || '',
     description: service?.description || '',
     status: service?.status || '',
 });
@@ -66,6 +68,13 @@ const submitForm = () => {
                         label="Service Name"
                         v-model="form.name"
                         :error="form.errors.name"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <IconPicker
+                        label="Select Icon"
+                        v-model="form.icon"
+                        :error="form.errors.icon"
                     />
                 </FieldCol>
                 <FieldCol>

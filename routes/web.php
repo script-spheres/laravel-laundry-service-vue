@@ -28,6 +28,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceDetailController;
 use App\Http\Controllers\ServiceItemController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StoreController;
@@ -76,9 +77,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('banners', BannerController::class);
     Route::resource('delivery-scales', DeliveryScaleController::class);
 
-//    Route::resource('redemptions', PackageController::class);
-//    Route::resource('rewards', PackageController::class);
-//    Route::resource('points', PackageController::class);
+    Route::resource('redemptions', RedemptionController::class);
+    Route::resource('rewards', RewardController::class);
+    Route::resource('points', PointController::class);
 
     Route::resource('cities', CityController::class);
     Route::resource('categories', CategoryController::class);
@@ -88,6 +89,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('service-items', ServiceItemController::class);
+    Route::resource('service-details', ServiceDetailController::class);
     Route::resource('addon-services', AddonServiceController::class);
     Route::resource('coupons', CouponController::class);
     Route::resource('timeslots', TimeslotController::class);

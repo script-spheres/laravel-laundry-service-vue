@@ -94,19 +94,14 @@ const { filter, handleClearFilter } = useFilters('users.index', {
             <TableHeadCell>Name</TableHeadCell>
             <TableHeadCell>Email</TableHeadCell>
             <TableHeadCell>Roles</TableHeadCell>
-            <TableHeadCell class="text-right">Status</TableHeadCell>
             <TableHeadCell class="text-right">Actions</TableHeadCell>
         </TableHead>
         <TableBody>
             <TableRow v-for="user in users.data" :key="user.id">
                 <TableCell>{{ user.name }}</TableCell>
                 <TableCell>{{ user.email }}</TableCell>
-                <TableCell>{{ user?.roles }}</TableCell>
-                <TableCell class="text-right">
-                    <StatusToggleInput
-                        :data="user"
-                        :action="route('users.update', user.id)"
-                    />
+                <TableCell>
+                    {{ user?.roles?.map(role => role).join(', ') || 'No roles assigned' }}
                 </TableCell>
                 <TableCell class="flex justify-end gap-2">
                     <LinkButton :href="route('users.edit', user.id)">

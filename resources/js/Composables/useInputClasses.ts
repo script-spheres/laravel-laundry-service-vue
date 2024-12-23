@@ -11,7 +11,7 @@ const baseClasses =
 // Size classes for different input sizes
 const sizeClasses: Record<InputSize, string> = {
     lg: 'p-4 text-base',
-    md: 'p-2.5 text-sm',
+    md: 'p-2 text-sm',
     sm: 'p-2 text-sm',
 };
 

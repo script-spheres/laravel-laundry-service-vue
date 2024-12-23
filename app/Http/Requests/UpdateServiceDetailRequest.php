@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCouponRequest extends FormRequest
+class UpdateServiceDetailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,23 +23,13 @@ class UpdateCouponRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'discount_type' => 'required|in:flat,percentage',
-            'discount_amount' => [
-                'required_if:discount_type,flat',
-                'numeric',
-                'min:0',
-            ],
-            'discount_percentage' => [
-                'required_if:discount_type,percentage',
-                'numeric',
-                'min:0',
-                'max:100',
-            ],
-            'min_amount' => 'nullable|numeric|min:0',
-            'max_amount' => 'nullable|numeric|min:0',
             'status' => 'required|in:active,inactive',
+            'service_prices' => 'nullable|array',
+            'service_prices.*.service_type_id' => 'required|exists:service_types,id',
+            'service_prices.*.price' => 'required|numeric',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import InputError from '@/Components/Form/InputError.vue';
 
+// Define the model as a boolean
 const model = defineModel<String | Boolean>({ required: true });
 
 defineProps({

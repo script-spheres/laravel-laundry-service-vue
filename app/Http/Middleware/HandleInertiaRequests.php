@@ -69,6 +69,7 @@ class HandleInertiaRequests extends Middleware
                     ->add('Categories', route('categories.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Services', route('services.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Service Items', route('service-items.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+                    ->add('Fare Management', route('service-details.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Addon Services', route('addon-services.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
             ->add('Customer Loyalty Program', '', function (Section $section) {

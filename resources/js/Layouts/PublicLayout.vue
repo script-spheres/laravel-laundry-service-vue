@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DarkModeButton from '@/Components/Buttons/DarkModeButton.vue';
-import FooterCopyright from '@/Components/Footer/FooterCopyright.vue';
-import FooterLinkGroup from '@/Components/Footer/FooterLinkGroup.vue';
+import FooterCopyright from '@/Shared/Footer/FooterCopyright.vue';
+import FooterLinkGroup from '@/Shared/Footer/FooterLinkGroup.vue';
 import NavbarLink from '@/Components/Navigation/NavbarLink.vue';
 import { useMenu } from '@/Composables/useMenu';
 import { Link } from '@inertiajs/vue3';

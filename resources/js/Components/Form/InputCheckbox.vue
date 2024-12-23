@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import InputError from '@/Components/Form/InputError.vue';
 import { computed } from 'vue';
 
 const emit = defineEmits(['update:checked']);
@@ -6,13 +7,15 @@ const emit = defineEmits(['update:checked']);
 const props = defineProps<{
     checked: boolean;
     value?: any;
+    label?: string;
+    size?: 'lg' | 'md' | 'sm';
+    error?: string;
 }>();
 
 const proxyChecked = computed({
     get() {
         return props.checked;
     },
-
     set(val) {
         emit('update:checked', val);
     },
@@ -20,13 +23,15 @@ const proxyChecked = computed({
 </script>
 
 <template>
-    <input
-        type="checkbox"
-        :value="value"
-        v-model="proxyChecked"
-        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-    />
-    <p v-show="$attrs.error" class="text-sm text-red-600 dark:text-red-400">
-        {{ $attrs.error }}
-    </p>
+    <label class="inline-flex items-center gap-2">
+        <input
+            type="checkbox"
+            v-model="proxyChecked"
+            class="rounded border-gray-300 text-gray-600 shadow-sm focus:ring-gray-500 dark:border-gray-700 dark:bg-gray-900 dark:focus:ring-gray-600 dark:focus:ring-offset-gray-800"
+        />
+        <span v-if="label" class="text-sm text-gray-700 dark:text-gray-300">
+            {{ label }}
+        </span>
+    </label>
+    <InputError v-if="error" :message="error" />
 </template>

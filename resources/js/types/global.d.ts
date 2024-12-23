@@ -10,7 +10,6 @@ declare global {
         Pusher: typeof Pusher;
     }
 
-    /* eslint-disable no-var */
     let route: typeof ziggyRoute;
 
     interface Filters {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Resources\RoleResource;
+use App\Services\PermissionService;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -29,10 +30,10 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(PermissionService $permissionService)
     {
         return Inertia::render('Role/RoleForm', [
-            'permissions' => Permission::all(),
+            'permissionsOptions' => $permissionService->getPermissionsOptions(),
         ]);
     }
 
@@ -60,11 +61,11 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Role $role)
+    public function edit(Role $role, PermissionService $permissionService)
     {
         return Inertia::render('Role/RoleForm', [
             'role' => RoleResource::make($role)->resolve(),
-            'permissions' => Permission::all(),
+            'permissionsOptions' => $permissionService->getPermissionsOptions(),
         ]);
     }
 

@@ -23,11 +23,9 @@
     "require-dev": {
         "alirezasedghi/laravel-image-faker": "^1.0",
         "fakerphp/faker": "^1.24",
-        "laravel/breeze": "^2.2",
         "laravel/dusk": "^8.2",
         "laravel/pail": "^1.2",
         "laravel/pint": "^1.18",
-        "laravel/sail": "^1.38",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.5",
         "pestphp/pest": "^3.5",

@@ -30,13 +30,15 @@ const form = useForm({
         </header>
 
         <form @submit.prevent="form.patch(route('profile.update'))">
-            <div class="mt-4 grid grid-cols-2 gap-4">
-                <InputFilepond
-                    stylePanelLayout="circle"
-                    imagePreviewHeight="100"
-                    :error="form.errors.name"
-                />
-                <div class="space-y-6">
+            <div class="mt-4 grid grid-cols-6 gap-4">
+                <div class="col-span-2">
+                    <InputFilepond
+                        stylePanelLayout="circle"
+                        imagePreviewHeight="100"
+                        :error="form.errors.name"
+                    />
+                </div>
+                <div class="col-span-4 space-y-6">
                     <div>
                         <InputText
                             label="name"

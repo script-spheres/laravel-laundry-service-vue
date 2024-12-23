@@ -2,19 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\Role;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role as SpatieRole;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Spatie\Permission\Models\Role;
 
 class RoleService
 {
     /**
      * Get a list of roles with optional filtering.
      */
-    public function getRoles($filters = [])
+    public function getRoles($filters = []): LengthAwarePaginator
     {
-        return SpatieRole::query()
+        return Role::query()
             ->when(isset($filters['search']), function ($query) use ($filters) {
                 $query->where('name', 'like', '%' . $filters['search'] . '%');
             })
@@ -26,7 +25,7 @@ class RoleService
      */
     public function create(Request $request)
     {
-        $role = SpatieRole::create([
+        $role = Role::create([
             'name' => $request->input('name'),
         ]);
 
@@ -39,7 +38,7 @@ class RoleService
     /**
      * Update an existing role.
      */
-    public function update(SpatieRole $role, Request $request)
+    public function update(Role $role, Request $request): Role
     {
         $role->update([
             'name' => $request->input('name'),
@@ -54,7 +53,7 @@ class RoleService
     /**
      * Delete a role.
      */
-    public function delete(SpatieRole $role)
+    public function delete(Role $role): ?bool
     {
         return $role->delete();
     }
