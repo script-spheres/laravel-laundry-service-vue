@@ -6,14 +6,13 @@ import { computed, ref, useId } from 'vue';
 const model = defineModel({ required: true });
 
 const props = defineProps({
-    label: { type: String, required: false },
-    error: { type: String, required: false },
+    label: String,
+    error: String,
 });
 
 const emit = defineEmits(['update:modelValue']);
 const id = useId();
 
-const modelValue = ref('');
 const searchQuery = ref('');
 const isModalOpen = ref(false);
 
@@ -24,32 +23,30 @@ const filteredIcons = computed(() =>
 );
 
 const selectIcon = (iconName: string) => {
-    modelValue.value = iconName;
     emit('update:modelValue', iconName);
-    closeModal();
-};
-
-const openModal = () => {
-    isModalOpen.value = true;
-};
-
-const closeModal = () => {
     isModalOpen.value = false;
 };
 </script>
 
 <template>
-    <InputLabel v-if="label" :for="`label-${id}`" :data-test-id="`label-${id}`">
-        {{ label }} :
-    </InputLabel>
+    <InputLabel v-if="label" :for="`label-${id}`">{{ label }}</InputLabel>
+
     <!-- Trigger Button -->
     <button
-        @click="openModal"
+        @click="isModalOpen = true"
         class="mb-4 rounded bg-indigo-600 px-4 py-2 text-white"
     >
-        <span v-if="modelValue">Selected Icon: {{ modelValue }}</span>
-        <span v-else>Choose Icon</span>
+        Choose Icon
     </button>
+
+    <!-- Display Selected Icon -->
+    <div v-if="model" class="flex items-center gap-2">
+        <div
+            v-html="icons.find((icon) => icon.name === model)?.svg"
+            class="h-6 w-6"
+        ></div>
+        <span>{{ model }}</span>
+    </div>
 
     <!-- Modal -->
     <div
@@ -60,7 +57,9 @@ const closeModal = () => {
             <!-- Modal Header -->
             <div class="mb-4 flex items-center justify-between">
                 <h2 class="text-lg font-bold">Pick an Icon</h2>
-                <button @click="closeModal" class="text-gray-500">✖</button>
+                <button @click="isModalOpen = false" class="text-gray-500">
+                    ✖
+                </button>
             </div>
 
             <!-- Search Input -->
@@ -68,24 +67,23 @@ const closeModal = () => {
                 v-model="searchQuery"
                 type="text"
                 placeholder="Search icons..."
-                class="search-input mb-4 w-full rounded border p-2"
+                class="mb-4 w-full rounded border p-2"
             />
 
             <!-- Icon Grid -->
-            <div class="icon-grid grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-3 gap-4">
                 <div
                     v-for="icon in filteredIcons"
                     :key="icon.name"
-                    class="icon-item cursor-pointer rounded border p-2"
-                    :class="{
-                        'border-indigo-500 bg-indigo-100':
-                            icon.name === modelValue,
-                        'border-gray-300': icon.name !== modelValue,
-                    }"
                     @click="selectIcon(icon.name)"
+                    class="cursor-pointer rounded border p-2 text-center"
+                    :class="{
+                        'border-indigo-500 bg-indigo-100': icon.name === model,
+                        'border-gray-300': icon.name !== model,
+                    }"
                 >
-                    <!-- Render SVG -->
-                    <div v-html="icon.svg" class="h-6 w-6"></div>
+                    <div v-html="icon.svg" class="mx-auto h-6 w-6"></div>
+                    <span class="mt-1 text-xs">{{ icon.name }}</span>
                 </div>
             </div>
         </div>

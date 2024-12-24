@@ -41,10 +41,10 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
 
 <template>
     <PageHeader>
-        <template #title> Order Management </template>
-        <template #subtitle> Manage and view details of all orders. </template>
+        <template #title> Order Management</template>
+        <template #subtitle> Manage and view details of all orders.</template>
         <template #actions>
-            <LinkButton :href="route('orders.create')"> Add Order </LinkButton>
+            <LinkButton :href="route('orders.create')"> Add Order</LinkButton>
         </template>
     </PageHeader>
 

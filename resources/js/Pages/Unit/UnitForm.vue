@@ -43,7 +43,7 @@ const submitForm = () => {
 
 <template>
     <PageHeader>
-        <template #title> {{ unit ? 'Edit ' : 'Create New' }} Unit </template>
+        <template #title> {{ unit ? 'Edit ' : 'Create New' }} Unit</template>
         <template #subtitle>
             Fill in the details for your
             {{ unit ? 'existing' : 'new' }} unit.

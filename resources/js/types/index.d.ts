@@ -250,6 +250,7 @@ export type OrderDetail = {
 export interface Serviceable {
     id: number;
     name: string;
+
     [key: string]: any;
 }
 

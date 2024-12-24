@@ -62,7 +62,7 @@ const submitForm = () => {
 
 <template>
     <PageHeader>
-        <template #title> {{ role ? 'Edit' : 'Create New' }} Role </template>
+        <template #title> {{ role ? 'Edit' : 'Create New' }} Role</template>
         <template #subtitle>
             Fill in the details for your {{ role ? 'existing' : 'new' }} role.
         </template>

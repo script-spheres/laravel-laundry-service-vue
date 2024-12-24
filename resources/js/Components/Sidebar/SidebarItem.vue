@@ -3,8 +3,17 @@ import SidebarDropdownItem from '@/Components/Sidebar/SidebarDropdownItem.vue';
 import { NavigationItem } from '@/types';
 import getIcon from '@/Utility/icons';
 import { Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps<{ item: NavigationItem }>();
+
+// Track the currently open dropdown item (only one at a time)
+const collapsedItem = ref<string | null>(null);
+
+// Function to toggle the collapse state for a specific item
+const toggleCollapse = (itemId: string) => {
+    collapsedItem.value = collapsedItem.value === itemId ? null : itemId;
+};
 </script>
 
 <template>
@@ -13,6 +22,8 @@ defineProps<{ item: NavigationItem }>();
             v-if="item.children.length > 0"
             :item="item"
             :active="item.active"
+            :is-collapsed="collapsedItem !== item.id"
+            @toggle-collapse="toggleCollapse(item.id)"
         />
         <Link
             v-else

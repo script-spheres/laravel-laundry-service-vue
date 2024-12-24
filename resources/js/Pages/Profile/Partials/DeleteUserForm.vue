@@ -55,8 +55,8 @@ const closeModal = () => {
         </header>
 
         <PrimaryButton @click="confirmUserDeletion"
-            >Delete Account</PrimaryButton
-        >
+            >Delete Account
+        </PrimaryButton>
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">

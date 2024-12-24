@@ -45,12 +45,12 @@ const { filter, handleClearFilter } = useFilters('stores.index', {
 
 <template>
     <PageHeader>
-        <template #title> Store Management </template>
+        <template #title> Store Management</template>
         <template #subtitle>
             Manage your stores with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('stores.create')"> Add Store </LinkButton>
+            <LinkButton :href="route('stores.create')"> Add Store</LinkButton>
         </template>
     </PageHeader>
     <Card class="mb-6 p-6">

@@ -31,12 +31,12 @@ defineProps({
 
 <template>
     <PageHeader>
-        <template #title> Unit Management </template>
+        <template #title> Unit Management</template>
         <template #subtitle>
             Manage your units with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('units.create')"> Add Unit </LinkButton>
+            <LinkButton :href="route('units.create')"> Add Unit</LinkButton>
         </template>
     </PageHeader>
 

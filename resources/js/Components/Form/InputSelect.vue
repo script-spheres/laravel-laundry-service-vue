@@ -2,32 +2,31 @@
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import { useInputClasses } from '@/Composables/useInputClasses';
-import { PropType, useId } from 'vue';
+import { PropType, ref, useId } from 'vue';
 
 const model = defineModel({ required: true });
 
 const props = defineProps({
-    options: {
-        type: Object as PropType<Record<string, string>>,
-        required: true,
-    },
-    label: { type: String, required: false },
+    options: Object as PropType<Record<string, string>>,
+    label: String,
     size: { type: String as () => 'lg' | 'md' | 'sm', default: 'md' },
-    error: { type: String, required: false },
+    error: String,
 });
 
-const { inputClasses } = useInputClasses({
-    size: props.size,
-});
-
+const { inputClasses } = useInputClasses({ size: props.size });
 const id = useId();
+const input = ref<HTMLInputElement | null>(null);
+
+defineExpose({ focus: () => input.value?.focus() });
 </script>
 
 <template>
-    <InputLabel v-if="label" :for="`label-${id}`" :data-test-id="`label-${id}`">
-        {{ label }} :
+    <InputLabel v-if="label" :for="id" :data-test-id="`label-${id}`">
+        {{ label }}
     </InputLabel>
     <select
+        ref="input"
+        v-bind="$attrs"
         :id="id"
         v-model="model"
         :class="inputClasses"

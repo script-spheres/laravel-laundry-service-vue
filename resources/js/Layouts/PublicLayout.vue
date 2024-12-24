@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import DarkModeButton from '@/Components/Buttons/DarkModeButton.vue';
-import FooterCopyright from '@/Shared/Footer/FooterCopyright.vue';
-import FooterLinkGroup from '@/Shared/Footer/FooterLinkGroup.vue';
 import NavbarLink from '@/Components/Navigation/NavbarLink.vue';
 import { useMenu } from '@/Composables/useMenu';
+import FooterCopyright from '@/Shared/Footer/FooterCopyright.vue';
+import FooterLinkGroup from '@/Shared/Footer/FooterLinkGroup.vue';
 import { Link } from '@inertiajs/vue3';
 import { FaBars } from '@kalimahapps/vue-icons';
 
@@ -39,7 +39,9 @@ const { isMenuOpen, toggleMenu } = useMenu();
                     <li>
                         <NavbarLink :href="route('welcome')" label="Home" />
                     </li>
-                    <li><NavbarLink :href="route('about')" label="About" /></li>
+                    <li>
+                        <NavbarLink :href="route('about')" label="About" />
+                    </li>
                     <li>
                         <NavbarLink
                             :href="route('services')"
@@ -68,7 +70,9 @@ const { isMenuOpen, toggleMenu } = useMenu();
                     <li>
                         <NavbarLink :href="route('welcome')" label="Home" />
                     </li>
-                    <li><NavbarLink :href="route('about')" label="About" /></li>
+                    <li>
+                        <NavbarLink :href="route('about')" label="About" />
+                    </li>
                     <li>
                         <NavbarLink
                             :href="route('services')"

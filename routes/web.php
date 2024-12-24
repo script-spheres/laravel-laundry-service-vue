@@ -87,6 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('stores', StoreController::class);
 
     Route::resource('customers', CustomerController::class);
+    Route::resource('order-labels', \App\Http\Controllers\OrderLabelController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('service-items', ServiceItemController::class);
     Route::resource('service-details', ServiceDetailController::class);

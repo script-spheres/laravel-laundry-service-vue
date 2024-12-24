@@ -17,7 +17,6 @@ import { useFilters } from '@/Composables/useFilters';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
-import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { PaginatedData, User } from '@/types';
 import { PropType } from 'vue';
 
@@ -48,12 +47,12 @@ const { filter, handleClearFilter } = useFilters('users.index', {
 
 <template>
     <PageHeader>
-        <template #title> User Management </template>
+        <template #title> User Management</template>
         <template #subtitle>
             Manage your users with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('users.create')"> Add User </LinkButton>
+            <LinkButton :href="route('users.create')"> Add User</LinkButton>
         </template>
     </PageHeader>
 
@@ -101,7 +100,10 @@ const { filter, handleClearFilter } = useFilters('users.index', {
                 <TableCell>{{ user.name }}</TableCell>
                 <TableCell>{{ user.email }}</TableCell>
                 <TableCell>
-                    {{ user?.roles?.map(role => role).join(', ') || 'No roles assigned' }}
+                    {{
+                        user?.roles?.map((role) => role).join(', ') ||
+                        'No roles assigned'
+                    }}
                 </TableCell>
                 <TableCell class="flex justify-end gap-2">
                     <LinkButton :href="route('users.edit', user.id)">

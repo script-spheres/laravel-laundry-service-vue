@@ -100,9 +100,13 @@ const { filter, handleClearFilter } = useFilters('delivery-scales.index', {
                     v-for="deliveryScale in deliveryScales.data"
                     :key="deliveryScale.id"
                 >
-                    <TableCell>{{
-                        deliveryScale.radius + ' ' + deliveryScale.radius_unit
-                    }}</TableCell>
+                    <TableCell
+                        >{{
+                            deliveryScale.radius +
+                            ' ' +
+                            deliveryScale.radius_unit
+                        }}
+                    </TableCell>
                     <TableCell>{{ deliveryScale.min_order_amount }}</TableCell>
                     <TableCell>{{ deliveryScale.delivery_charges }}</TableCell>
                     <TableCell class="text-right">

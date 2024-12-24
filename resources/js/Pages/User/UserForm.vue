@@ -47,7 +47,7 @@ const submitForm = () => {
 
 <template>
     <PageHeader>
-        <template #title> {{ user ? 'Edit' : 'Create New' }} User </template>
+        <template #title> {{ user ? 'Edit' : 'Create New' }} User</template>
         <template #subtitle>
             Fill in the details for your {{ user ? 'existing' : 'new' }} user.
         </template>

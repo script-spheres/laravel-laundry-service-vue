@@ -46,7 +46,7 @@ const { filter, handleClearFilter } = useFilters('expenses.index', {
 
 <template>
     <PageHeader>
-        <template #title> Expense Management </template>
+        <template #title> Expense Management</template>
         <template #subtitle>
             Manage your expenses with filters and actions.
         </template>

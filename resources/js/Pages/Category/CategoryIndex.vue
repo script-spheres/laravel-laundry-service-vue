@@ -26,7 +26,7 @@ defineProps({
 
 <template>
     <PageHeader>
-        <template #title> Category Management </template>
+        <template #title> Category Management</template>
         <template #subtitle>
             Manage your categories with filters and actions.
         </template>

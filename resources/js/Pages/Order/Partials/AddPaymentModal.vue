@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Modal from '@/Components/Modal/Modal.vue';
 import { usePosStore } from '@/Stores/PosStore';
-import { AddonService } from '@/types';
 import { inject, Ref } from 'vue';
 
 const showAddonServiceModal = inject('showAddonServiceModal') as Ref<boolean>;

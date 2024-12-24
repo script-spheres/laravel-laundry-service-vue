@@ -79,6 +79,7 @@ const submitForm = () => {
                         label="Service"
                         v-model="form.service_id"
                         :options="serviceOptions"
+                        :error="form.errors.service_id"
                         placeholder="Select Service"
                     />
                 </FieldCol>
@@ -87,6 +88,7 @@ const submitForm = () => {
                         label="Category"
                         v-model="form.category_id"
                         :options="categoryOptions"
+                        :error="form.errors.category_id"
                         placeholder="Select Category"
                     />
                 </FieldCol>
@@ -97,6 +99,7 @@ const submitForm = () => {
                         label="Price"
                         type="number"
                         v-model="form.price"
+                        :error="form.errors.price"
                         placeholder="Enter price"
                     />
                 </FieldCol>
@@ -105,6 +108,7 @@ const submitForm = () => {
                         label="Quantity"
                         type="number"
                         v-model="form.quantity"
+                        :error="form.errors.quantity"
                         placeholder="Enter quantity"
                     />
                 </FieldCol>
@@ -115,6 +119,7 @@ const submitForm = () => {
                         label="Unit"
                         v-model="form.unit_id"
                         :options="unitOptions"
+                        :error="form.errors.unit_id"
                         placeholder="Select Unit"
                     />
                 </FieldCol>

@@ -1,14 +1,42 @@
 export const icons = [
     {
         name: 'home',
-        svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>',
+        svg: '/path/to/icons/home.svg',
     },
     {
         name: 'user',
-        svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 1.2c-2.5 0-7.2 1.3-7.2 3.6v1.2c0 .7.5 1.2 1.2 1.2h12c.7 0 1.2-.5 1.2-1.2v-1.2c0-2.3-4.7-3.6-7.2-3.6z"/></svg>',
+        svg: '/path/to/icons/user.svg',
     },
     {
         name: 'settings',
-        svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.6c2 0 3.6-1.6 3.6-3.6S14 8.4 12 8.4s-3.6 1.6-3.6 3.6 1.6 3.6 3.6 3.6zm7.9-4.6l1.8-1.3c.3-.2.3-.7 0-.9l-1.8-1.3c-.2-.2-.4-.5-.3-.7l.7-2c.1-.4-.3-.7-.6-.5l-2.1.8c-.3.1-.6 0-.8-.2l-1.4-1.7c-.2-.3-.7-.3-.9 0l-1.3 1.8c-.2.2-.4.4-.7.3l-2-.7c-.4-.1-.7.3-.5.6l.8 2.1c.1.3 0 .6-.2.8l-1.7 1.4c-.3.2-.3.7 0 .9l1.8 1.3c.2.2.3.5.3.7l-.7 2c-.1.4.3.7.6.5l2.1-.8c.3-.1.6 0 .8.2l1.4 1.7c.2.3.7.3.9 0l1.3-1.8c.2-.2.5-.4.7-.3l2 .7c.4.1.7-.3.5-.6l-.8-2.1c-.1-.3 0-.6.2-.8zm-7.9 2.1c-1.9 0-3.6-1.5-3.6-3.6 0-2 1.5-3.6 3.6-3.6 2 0 3.6 1.5 3.6 3.6 0 2-1.5 3.6-3.6 3.6z"/></svg>',
+        svg: '/path/to/icons/settings.svg',
+    },
+    {
+        name: 'laundry-basket',
+        svg: '/path/to/icons/laundry-basket.svg',
+    },
+    {
+        name: 'washing-machine',
+        svg: '/path/to/icons/washing-machine.svg',
+    },
+    {
+        name: 'iron',
+        svg: '/path/to/icons/iron.svg',
+    },
+    {
+        name: 'delivery-truck',
+        svg: '/path/to/icons/delivery-truck.svg',
+    },
+    {
+        name: 'calendar',
+        svg: '/path/to/icons/calendar.svg',
+    },
+    {
+        name: 'pricing-tag',
+        svg: '/path/to/icons/pricing-tag.svg',
+    },
+    {
+        name: 'clipboard',
+        svg: '/path/to/icons/clipboard.svg',
     },
 ];

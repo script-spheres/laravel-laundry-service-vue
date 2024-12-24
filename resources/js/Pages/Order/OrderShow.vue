@@ -34,7 +34,7 @@ const printInvoice = () => {};
 
 <template>
     <PageHeader>
-        <template #title> Order Management </template>
+        <template #title> Order Management</template>
         <template #subtitle>
             Show the details for your order details.
         </template>
@@ -153,21 +153,23 @@ const printInvoice = () => {};
                                         </div>
                                     </div>
                                 </TableCell>
-                                <TableCell>{{
-                                    orderDetail.serviceable?.color || 'N/A'
-                                }}</TableCell>
                                 <TableCell
-                                    >RP {{ orderDetail.price }}</TableCell
-                                >
-                                <TableCell>{{
-                                    orderDetail.quantity
-                                }}</TableCell>
+                                    >{{
+                                        orderDetail.serviceable?.color || 'N/A'
+                                    }}
+                                </TableCell>
+                                <TableCell
+                                    >RP {{ orderDetail.price }}
+                                </TableCell>
+                                <TableCell
+                                    >{{ orderDetail.quantity }}
+                                </TableCell>
                                 <TableCell
                                     >RP
                                     {{
                                         orderDetail.price * orderDetail.quantity
-                                    }}</TableCell
-                                >
+                                    }}
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </DataTable>

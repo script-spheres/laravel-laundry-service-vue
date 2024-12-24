@@ -42,7 +42,7 @@ const submitForm = () => {
 
 <template>
     <PageHeader>
-        <template #title> {{ city ? 'Edit ' : 'Create New' }} City </template>
+        <template #title> {{ city ? 'Edit ' : 'Create New' }} City</template>
         <template #subtitle>
             Fill in the details for your
             {{ city ? 'existing' : 'new' }} city.

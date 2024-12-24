@@ -43,7 +43,7 @@ const { filter, handleClearFilter } = useFilters('customers.index', {
 
 <template>
     <PageHeader>
-        <template #title> Customer Management </template>
+        <template #title> Customer Management</template>
         <template #subtitle>
             Overview of all customers and their details.
         </template>

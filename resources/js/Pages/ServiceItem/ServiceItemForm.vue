@@ -85,7 +85,7 @@ const submitForm = () => {
             {{ serviceItem ? 'existing' : 'new' }} service item.
         </template>
         <template #actions>
-            <LinkButton :href="route('service-items.index')"> Back </LinkButton>
+            <LinkButton :href="route('service-items.index')"> Back</LinkButton>
         </template>
     </PageHeader>
 
@@ -129,12 +129,6 @@ const submitForm = () => {
                     />
                 </FieldCol>
             </FieldRow>
-            <!--            <ServiceDetails-->
-            <!--                :unitOptions="unitOptions"-->
-            <!--                :categoryOptions="categoryOptions"-->
-            <!--                :serviceOptions="serviceOptions"-->
-            <!--                v-model="form.service_details"-->
-            <!--            />-->
 
             <div class="flex gap-2">
                 <PrimaryButton

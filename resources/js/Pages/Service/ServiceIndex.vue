@@ -44,7 +44,7 @@ const { filter, handleClearFilter } = useFilters('services.index', {
 
 <template>
     <PageHeader>
-        <template #title> Service Management </template>
+        <template #title> Service Management</template>
         <template #subtitle>
             Manage your services with filters and actions.
         </template>

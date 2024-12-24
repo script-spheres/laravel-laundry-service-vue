@@ -26,12 +26,12 @@ defineProps({
 
 <template>
     <PageHeader>
-        <template #title> City Management </template>
+        <template #title> City Management</template>
         <template #subtitle>
             Manage your cities with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('cities.create')"> Add City </LinkButton>
+            <LinkButton :href="route('cities.create')"> Add City</LinkButton>
         </template>
     </PageHeader>
 

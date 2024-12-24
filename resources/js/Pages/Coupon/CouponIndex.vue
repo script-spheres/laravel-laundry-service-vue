@@ -43,7 +43,7 @@ const { filter, handleClearFilter } = useFilters('coupons.index', {
 
 <template>
     <PageHeader>
-        <template #title> Coupon Management </template>
+        <template #title> Coupon Management</template>
         <template #subtitle>
             Manage your coupons with filters and actions.
         </template>

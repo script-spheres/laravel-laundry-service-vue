@@ -72,7 +72,7 @@ const submitForm = () => {
                         />
                     </div>
 
-                    <PrimaryButton type="submit"> Send Message </PrimaryButton>
+                    <PrimaryButton type="submit"> Send Message</PrimaryButton>
                 </form>
             </div>
 

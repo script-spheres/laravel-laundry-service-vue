@@ -2,51 +2,41 @@
 import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import { NavigationItem } from '@/types';
 import getIcon from '@/Utility/icons';
-import { computed, ref, watch } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 
-const props = defineProps<{ item: NavigationItem }>();
+const props = defineProps<{
+    item: NavigationItem;
+    isCollapsed: boolean;
+}>();
 
-// Check if any child is active
-const hasActiveChild = computed(() =>
-    props.item.children?.some((child) => child.active),
-);
-
-// Initialize isCollapsed with the value of hasActiveChild
-const isCollapsed = ref(hasActiveChild.value);
-
-// Watch for changes in hasActiveChild and update isCollapsed accordingly
-watch(hasActiveChild, (newValue) => {
-    if (newValue) {
-        isCollapsed.value = true;
-    }
-});
+const emit = defineEmits<{
+    (event: 'toggle-collapse'): void;
+}>();
 
 const toggleCollapse = () => {
-    isCollapsed.value = !isCollapsed.value;
+    emit('toggle-collapse');
 };
-
-const svgClasses = computed(() => [
-    'w-4 h-4 ml-auto transition-transform duration-300',
-    isCollapsed.value ? 'rotate-0' : '-rotate-90',
-]);
 </script>
 
 <template>
-    <div>
+    <li>
         <button
             @click="toggleCollapse"
             :class="[
                 'flex w-full transform items-center gap-0 rounded-md px-2 py-2 text-left text-sm font-medium duration-200 hover:bg-gray-300 dark:text-gray-200 dark:hover:bg-gray-600',
-                isCollapsed ? 'rounded-t-md' : '',
+                props.isCollapsed ? 'rounded-t-md' : '',
             ]"
         >
             <component
-                :is="getIcon(item.attributes.icon)"
+                :is="getIcon(props.item.attributes.icon)"
                 class="mr-2 h-5 w-5"
             />
-            <span>{{ item.title }}</span>
+            <span>{{ props.item.title }}</span>
             <svg
-                :class="svgClasses"
+                :class="[
+                    'ml-auto h-4 w-4 transition-transform duration-300',
+                    props.isCollapsed ? '-rotate-90' : 'rotate-0',
+                ]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -60,6 +50,7 @@ const svgClasses = computed(() => [
                 ></path>
             </svg>
         </button>
+
         <Transition
             enter-active-class="transition-max-height ease-in-out duration-300"
             enter-from-class="max-h-0 opacity-0"
@@ -68,13 +59,13 @@ const svgClasses = computed(() => [
             leave-from-class="max-h-96 opacity-100"
             leave-to-class="max-h-0 opacity-0"
         >
-            <ul v-if="isCollapsed" class="space-y-1 overflow-hidden">
+            <ul v-if="!props.isCollapsed" class="space-y-1 overflow-hidden">
                 <SidebarItem
-                    v-for="(childItem, index) in item.children"
+                    v-for="(childItem, index) in props.item.children"
                     :key="index"
                     :item="childItem"
                 />
             </ul>
         </Transition>
-    </div>
+    </li>
 </template>

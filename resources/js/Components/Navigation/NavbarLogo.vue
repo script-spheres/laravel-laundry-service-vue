@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import { FaBars } from '@kalimahapps/vue-icons';
 import { ref } from 'vue';
+
 const isMenuOpen = ref(false);
 
 // Function to toggle the menu

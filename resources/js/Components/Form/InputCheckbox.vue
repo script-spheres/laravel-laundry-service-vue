@@ -27,6 +27,7 @@ const proxyChecked = computed({
         <input
             type="checkbox"
             v-model="proxyChecked"
+            v-bind="$attrs"
             class="rounded border-gray-300 text-gray-600 shadow-sm focus:ring-gray-500 dark:border-gray-700 dark:bg-gray-900 dark:focus:ring-gray-600 dark:focus:ring-offset-gray-800"
         />
         <span v-if="label" class="text-sm text-gray-700 dark:text-gray-300">

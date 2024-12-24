@@ -7,6 +7,8 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
@@ -17,14 +19,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
-import { PaginatedData, Service } from '@/types';
+import { PaginatedData, OrderLabel } from '@/types';
 import { PropType } from 'vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
-    serviceItems: {
-        type: Object as PropType<PaginatedData<Service>>,
+    orderLabels: {
+        type: Object as PropType<PaginatedData<OrderLabel>>,
         required: true,
     },
     filters: {
@@ -34,79 +36,71 @@ const props = defineProps({
     },
 });
 
-const { filter, handleClearFilter } = useFilters('service-items.index', {
-    status: props.filters?.status ?? '',
+const { filter, handleClearFilter } = useFilters('order-labels.index', {
     name: props.filters?.name ?? '',
+    status: props.filters?.status ?? '',
 });
 </script>
 
 <template>
     <PageHeader>
-        <template #title>Service Item Management</template>
+        <template #title> Order Labels Management </template>
         <template #subtitle>
-            Manage your service items with filters and actions.
+            Manage your order labels with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('service-items.create')">
-                Add Service Item
+            <LinkButton :href="route('order-labels.create')">
+                Add Order Label
             </LinkButton>
         </template>
     </PageHeader>
-
     <Card class="mb-6 p-6">
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
-            <div class="w-full md:mb-0 md:w-1/4">
+        <FieldRow :cols="{ sm: 2, md: 4, lg: 6 }">
+            <FieldCol>
                 <InputText
-                    type="text"
-                    label="Store"
+                    label="Order Label Name"
                     v-model="filter.name"
-                    placeholder="Filter by Store"
+                    placeholder="Filter by Label Name"
                 />
-            </div>
-            <div class="w-full md:mb-0 md:w-1/4">
+            </FieldCol>
+            <FieldCol>
                 <InputSelect
                     label="Status"
                     v-model="filter.status"
                     :options="statusOptions"
                     placeholder="Filter by Active Status"
                 />
-            </div>
-            <div class="flex-none gap-2 self-end">
+            </FieldCol>
+            <FieldCol class="flex-none gap-2 self-end">
                 <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
-            </div>
-        </div>
+            </FieldCol>
+        </FieldRow>
     </Card>
-
-    <DataTable class="mx-auto mt-6">
+    <DataTable>
         <TableHead>
-            <TableHeadCell>Service Item Name</TableHeadCell>
+            <TableHeadCell>Label Name</TableHeadCell>
             <TableHeadCell>Description</TableHeadCell>
             <TableHeadCell class="text-right">Status</TableHeadCell>
             <TableHeadCell class="text-right">Actions</TableHeadCell>
         </TableHead>
         <TableBody>
-            <TableRow
-                v-for="serviceItem in serviceItems.data"
-                :key="serviceItem.id"
-            >
-                <TableCell>{{ serviceItem.name }}</TableCell>
-                <TableCell>{{ serviceItem.description }}</TableCell>
+            <TableRow v-for="label in orderLabels.data" :key="label.id">
+                <TableCell>{{ label.name }}</TableCell>
+                <TableCell>{{ label.description }}</TableCell>
                 <TableCell class="text-right">
                     <StatusToggleInput
-                        :action="route('service-items.update', serviceItem.id)"
-                        :data="serviceItem"
+                        :data="label"
+                        :action="route('order-labels.update', label.id)"
                     />
                 </TableCell>
                 <TableCell class="flex justify-end gap-2">
-                    <LinkButton
-                        :href="route('service-items.edit', serviceItem.id)"
-                    >
+                    <LinkButton :href="route('order-labels.edit', label.id)">
                         Edit
                     </LinkButton>
                     <DeleteButton
-                        :action="route('service-items.destroy', serviceItem.id)"
+                        :action="route('order-labels.destroy', label.id)"
                     >
                         Delete
                     </DeleteButton>
@@ -114,5 +108,5 @@ const { filter, handleClearFilter } = useFilters('service-items.index', {
             </TableRow>
         </TableBody>
     </DataTable>
-    <Pagination :links="serviceItems.meta" />
+    <Pagination :links="orderLabels.meta" />
 </template>

@@ -42,7 +42,7 @@ const { filter, handleClearFilter } = useFilters('banners.index', {
 
 <template>
     <PageHeader>
-        <template #title> Banner Management </template>
+        <template #title> Banner Management</template>
         <template #subtitle>
             Manage your banners with filters and actions.
         </template>

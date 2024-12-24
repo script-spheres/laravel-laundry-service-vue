@@ -40,11 +40,11 @@ const { filter, handleClearFilter } = useFilters('timeslots.index', {
 
 <template>
     <PageHeader>
-        <template #title> Timeslot Management </template>
+        <template #title> Timeslot Management</template>
         <template #subtitle>
             Manage your timeslots with filters and actions.
         </template>
-        <template #actions> </template>
+        <template #actions></template>
     </PageHeader>
 
     <Card class="mb-6 p-6">

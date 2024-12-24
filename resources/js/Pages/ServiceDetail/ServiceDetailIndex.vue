@@ -8,12 +8,14 @@ import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteButton from '@/Shared/DeleteButton.vue';
+import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { PaginatedData, ServiceDetail } from '@/types';
 import { PropType } from 'vue';
@@ -25,10 +27,6 @@ const props = defineProps({
         type: Object as PropType<PaginatedData<ServiceDetail>>,
         required: true,
     },
-    storesOptions: {
-        type: Object as PropType<Options>,
-        required: true,
-    },
     filters: {
         type: Object as PropType<Filters>,
         required: false,
@@ -38,39 +36,30 @@ const props = defineProps({
 
 const { filter, handleClearFilter } = useFilters('service-details.index', {
     status: props.filters?.status ?? '',
-    type: props.filters?.type ?? '',
-    title: props.filters?.title ?? '',
-    store_id: props.filters?.store_id ?? '',
+    name: props.filters?.name ?? '',
 });
 </script>
 
 <template>
-    <div class="mb-4 flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-x-3">
-                <h2 class="text-lg font-medium text-gray-800 dark:text-white">
-                    Service Detail Management
-                </h2>
-            </div>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                Manage your service details with filters and actions.
-            </p>
-        </div>
-        <div class="flex items-center gap-x-3">
+    <PageHeader>
+        <template #title>Service Detail Management</template>
+        <template #subtitle>
+            Manage your service details with filters and actions.
+        </template>
+        <template #actions>
             <LinkButton :href="route('service-details.create')">
                 Add Service Detail
             </LinkButton>
-        </div>
-    </div>
+        </template>
+    </PageHeader>
 
     <Card class="mb-6 p-6">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
             <div class="w-full md:mb-0 md:w-1/4">
-                <InputSelect
-                    label="Store"
-                    v-model="filter.store_id"
-                    :options="storesOptions"
-                    placeholder="Filter by Store"
+                <InputText
+                    label="Name"
+                    v-model="filter.name"
+                    placeholder="Filter by Name"
                 />
             </div>
             <div class="w-full md:mb-0 md:w-1/4">
@@ -105,7 +94,9 @@ const { filter, handleClearFilter } = useFilters('service-details.index', {
                 <TableCell>{{ serviceDetail.description }}</TableCell>
                 <TableCell class="text-right">
                     <StatusToggleInput
-                        :action="route('service-details.update', serviceDetail.id)"
+                        :action="
+                            route('service-details.update', serviceDetail.id)
+                        "
                         :data="serviceDetail"
                     />
                 </TableCell>
@@ -116,7 +107,9 @@ const { filter, handleClearFilter } = useFilters('service-details.index', {
                         Edit
                     </LinkButton>
                     <DeleteButton
-                        :action="route('service-details.destroy', serviceDetail.id)"
+                        :action="
+                            route('service-details.destroy', serviceDetail.id)
+                        "
                     >
                         Delete
                     </DeleteButton>

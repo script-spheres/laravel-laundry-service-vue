@@ -30,12 +30,12 @@ defineProps({
 
 <template>
     <PageHeader>
-        <template #title> Role Management </template>
+        <template #title> Role Management</template>
         <template #subtitle>
             Manage your roles with filters and actions.
         </template>
         <template #actions>
-            <LinkButton :href="route('roles.create')"> Add Role </LinkButton>
+            <LinkButton :href="route('roles.create')"> Add Role</LinkButton>
         </template>
     </PageHeader>
 

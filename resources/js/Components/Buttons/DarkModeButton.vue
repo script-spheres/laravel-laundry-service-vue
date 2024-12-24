@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDarkMode } from '@/Composables/useDarkMode';
 import { AkMoonFill, AkSunFill } from '@kalimahapps/vue-icons';
+
 const { isDark, toggleDark } = useDarkMode();
 </script>
 

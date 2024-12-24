@@ -59,7 +59,7 @@ const submitForm = () => {
             </p>
         </div>
         <div class="flex items-center gap-x-3">
-            <LinkButton :href="route('users.index')"> Back </LinkButton>
+            <LinkButton :href="route('users.index')"> Back</LinkButton>
         </div>
     </div>
     <Card class="mx-auto mt-6 p-6">
@@ -94,7 +94,7 @@ const submitForm = () => {
                 >
                     Submit
                 </PrimaryButton>
-                <LinkButton :href="route('users.index')"> Cancel </LinkButton>
+                <LinkButton :href="route('users.index')"> Cancel</LinkButton>
             </div>
         </form>
     </Card>

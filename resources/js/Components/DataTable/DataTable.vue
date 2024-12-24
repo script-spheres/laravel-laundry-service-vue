@@ -22,7 +22,7 @@ provide('stripedColumns', props.stripedColumns);
 </script>
 
 <template>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow sm:rounded-lg">
         <table
             class="w-full text-left text-sm text-gray-500 dark:text-gray-400"
         >

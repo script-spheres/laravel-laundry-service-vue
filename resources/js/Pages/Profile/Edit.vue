@@ -6,6 +6,7 @@ import PageHeader from '@/Shared/PageHeader.vue';
 import { Head } from '@inertiajs/vue3';
 
 defineOptions({ layout: AuthenticatedLayout });
+
 defineProps<{
     mustVerifyEmail?: boolean;
     status?: string;

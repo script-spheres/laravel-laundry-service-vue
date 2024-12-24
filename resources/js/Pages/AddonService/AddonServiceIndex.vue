@@ -44,7 +44,7 @@ const { filter, handleClearFilter } = useFilters('addon-services.index', {
 
 <template>
     <PageHeader>
-        <template #title> Add-on Service Management </template>
+        <template #title> Add-on Service Management</template>
         <template #subtitle>
             Manage your add-on services with filters and actions.
         </template>

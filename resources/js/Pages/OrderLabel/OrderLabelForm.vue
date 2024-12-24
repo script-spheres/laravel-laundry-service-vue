@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import InputText from '@/Components/Form/InputText.vue';
@@ -9,33 +9,31 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
-import IconPicker from '@/Components/Icons/IconPicker.vue';
 import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
-import { Service } from '@/types';
+import { OrderLabel } from '@/types';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AuthenticatedLayout });
 
-const { service } = defineProps({
-    service: {
-        type: Object as PropType<Service>,
+const { orderLabel } = defineProps({
+    orderLabel: {
+        type: Object as PropType<OrderLabel>,
         required: false,
     },
 });
 
-const method = service ? 'put' : 'post';
-const url = service
-    ? route('services.update', service.id)
-    : route('services.store');
+const method = orderLabel ? 'put' : 'post';
+const url = orderLabel
+    ? route('order-labels.update', orderLabel.id)
+    : route('order-labels.store');
 
 const form = useForm(method, url, {
-    name: service?.name || '',
-    icon: service?.icon || '',
-    description: service?.description || '',
-    status: service?.status || '',
+    name: orderLabel?.name || '',
+    description: orderLabel?.description || '',
+    status: orderLabel?.status || '',
 });
 
 const submitForm = () => {
@@ -49,14 +47,14 @@ const submitForm = () => {
 <template>
     <PageHeader>
         <template #title>
-            {{ service ? 'Edit ' : 'Create New' }} Service
+            {{ orderLabel ? 'Edit ' : 'Create New' }} Order Label
         </template>
         <template #subtitle>
             Fill in the details for your
-            {{ service ? 'existing' : 'new' }} service.
+            {{ orderLabel ? 'existing' : 'new' }} order label.
         </template>
         <template #actions>
-            <LinkButton :href="route('services.index')"> Back</LinkButton>
+            <LinkButton :href="route('order-labels.index')"> Back</LinkButton>
         </template>
     </PageHeader>
 
@@ -65,16 +63,9 @@ const submitForm = () => {
             <FieldRow :cols="2">
                 <FieldCol>
                     <InputText
-                        label="Service Name"
+                        label="Order Label Name"
                         v-model="form.name"
                         :error="form.errors.name"
-                    />
-                </FieldCol>
-                <FieldCol>
-                    <IconPicker
-                        label="Select Icon"
-                        v-model="form.icon"
-                        :error="form.errors.icon"
                     />
                 </FieldCol>
                 <FieldCol>
@@ -91,7 +82,7 @@ const submitForm = () => {
                     <InputTextarea
                         label="Description"
                         v-model="form.description"
-                        placeholder="Service Description (optional)"
+                        placeholder="Label Description (optional)"
                         :error="form.errors.description"
                     />
                 </FieldCol>
@@ -102,9 +93,9 @@ const submitForm = () => {
                     :disabled="form.processing"
                     type="submit"
                 >
-                    {{ service ? 'Update' : 'Submit' }}
+                    {{ orderLabel ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('services.index')" color="danger">
+                <LinkButton :href="route('order-labels.index')" color="danger">
                     Cancel
                 </LinkButton>
             </div>
