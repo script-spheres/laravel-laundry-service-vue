@@ -22,6 +22,7 @@ use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\FinancialYearController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderInvoiceController;
+use App\Http\Controllers\OrderLabelController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -77,17 +78,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('banners', BannerController::class);
     Route::resource('delivery-scales', DeliveryScaleController::class);
 
-    Route::resource('redemptions', RedemptionController::class);
-    Route::resource('rewards', RewardController::class);
-    Route::resource('points', PointController::class);
-
     Route::resource('cities', CityController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('units', UnitController::class);
     Route::resource('stores', StoreController::class);
 
     Route::resource('customers', CustomerController::class);
-    Route::resource('order-labels', \App\Http\Controllers\OrderLabelController::class);
+    Route::resource('order-labels', OrderLabelController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('service-items', ServiceItemController::class);
     Route::resource('service-details', ServiceDetailController::class);
