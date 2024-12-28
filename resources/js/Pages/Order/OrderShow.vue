@@ -87,7 +87,7 @@ const printInvoice = () => {};
                                 Order Status:
                             </span>
                             <InputSelect
-                                v-model="order.order_status"
+                                v-model="order.order_label.name"
                                 :options="orderStatusOptions"
                             />
                         </div>

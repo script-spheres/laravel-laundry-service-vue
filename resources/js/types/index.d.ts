@@ -236,7 +236,7 @@ export type Order = {
     paid_amount: number;
     delivery_date: string;
     quick_note: string | null;
-    order_status: 'pending' | 'in-progress' | 'ready-to-deliver' | 'delivered';
+    order_label: OrderLabel;
     payments: Payment[];
     store: Store;
     customer: Customer;
@@ -315,9 +315,10 @@ export type Review = {
     review: string;
     in_testimonial: boolean;
     rating: number;
-    model_id: number;
-    author_id: number;
-    author: User;
+    order_id: number;
+    customer_id: number;
+    order: Order;
+    customer: Customer;
 };
 
 export type About = {

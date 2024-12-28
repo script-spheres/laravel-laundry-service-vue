@@ -10,7 +10,7 @@ import Pagination from '@/Components/Pagination/Pagination.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
-import { PaginatedData, Faq } from '@/types';
+import { Faq, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
 defineOptions({ layout: AuthenticatedLayout });

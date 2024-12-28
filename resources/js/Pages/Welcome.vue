@@ -245,22 +245,22 @@ const categoryConfig = {
                 <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
                     <div
                         v-for="testimonial in testimonials"
-                        :key="testimonial.name"
+                        :key="testimonial.id"
                         class="rounded-lg bg-gray-100 p-6 shadow-lg"
                     >
                         <div class="mb-4 flex items-center">
                             <img
-                                :src="testimonial.avatar"
+                                :src="testimonial.customer.image.url"
                                 alt="Avatar"
                                 class="h-16 w-16 rounded-full"
                             />
                             <div class="ml-4 text-left">
                                 <p class="text-lg font-bold text-gray-800">
-                                    {{ testimonial.name }}
+                                    {{ testimonial.title }}
                                 </p>
                             </div>
                         </div>
-                        <p class="text-gray-600">{{ testimonial.feedback }}</p>
+                        <p class="text-gray-600">{{ testimonial.review }}</p>
                     </div>
                 </div>
             </div>

@@ -22,7 +22,7 @@ const props = defineProps({
         type: Object as PropType<Review>,
         required: false,
     },
-    usersOptions: {
+    customersOptions: {
         type: Object as PropType<Options>,
         required: true,
     },
@@ -40,10 +40,10 @@ const url = props.review
 const form = useForm(method, url, {
     title: props.review?.title ?? '',
     review: props.review?.review ?? '',
-    rating: props.review?.rating ?? null,
+    rating: props.review?.rating ?? '',
     in_testimonial: props.review?.in_testimonial ?? false,
-    model_id: props.review?.model_id ?? '', // for order_id
-    author_id: props.review?.author_id ?? '', // for user_id
+    order_id: props.review?.order_id ?? '',
+    customer_id: props.review?.customer_id ?? '',
 });
 
 const submitForm = () => {
@@ -68,13 +68,12 @@ const submitForm = () => {
 
     <Card class="mx-auto mt-6 p-4 sm:p-6">
         <form @submit.prevent="submitForm">
-            <!-- Order ID (model_id) and User ID (author_id) -->
             <FieldRow :cols="2">
                 <FieldCol>
                     <InputSelect
                         label="Order ID"
-                        v-model="form.model_id"
-                        :error="form.errors.model_id"
+                        v-model="form.order_id"
+                        :error="form.errors.order_id"
                         :options="ordersOptions"
                     />
                 </FieldCol>
@@ -82,13 +81,13 @@ const submitForm = () => {
                 <FieldCol>
                     <InputSelect
                         label="User ID"
-                        v-model="form.author_id"
-                        :error="form.errors.author_id"
-                        :options="usersOptions"
+                        v-model="form.customer_id"
+                        :error="form.errors.customer_id"
+                        :options="customersOptions"
                     />
                 </FieldCol>
             </FieldRow>
-            <!-- Title Field -->
+
             <FieldRow :cols="1">
                 <FieldCol>
                     <InputText
@@ -99,7 +98,6 @@ const submitForm = () => {
                 </FieldCol>
             </FieldRow>
 
-            <!-- Review Content Field -->
             <FieldRow :cols="1">
                 <FieldCol>
                     <InputTextarea
@@ -110,7 +108,6 @@ const submitForm = () => {
                 </FieldCol>
             </FieldRow>
 
-            <!-- Rating Field -->
             <FieldRow :cols="2">
                 <FieldCol>
                     <InputRating

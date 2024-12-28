@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
 use App\Http\Resources\ReviewResource;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Review;
 use App\Models\User;
@@ -43,7 +44,7 @@ class ReviewController extends Controller
     public function create()
     {
         return Inertia::render('Review/ReviewForm', [
-            'usersOptions' => User::pluck('name', 'id')->all(),
+            'customersOptions' => Customer::pluck('name', 'id')->all(),
             'ordersOptions' => Order::pluck('order_display_id', 'id')->all(),
         ]);
     }
@@ -64,7 +65,9 @@ class ReviewController extends Controller
     public function edit(Review $review)
     {
         return Inertia::render('Review/ReviewForm', [
-            'review' => ReviewResource::make($review)->resolve()
+            'review' => ReviewResource::make($review)->resolve(),
+            'customersOptions' => Customer::pluck('name', 'id')->all(),
+            'ordersOptions' => Order::pluck('order_display_id', 'id')->all(),
         ]);
     }
 

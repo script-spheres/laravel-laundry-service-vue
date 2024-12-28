@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
             ServiceItemSeeder::class,
             UnitSeeder::class,
             ExpenseTypeSeeder::class,
+            OrderLabelSeeder::class,
+            TimeslotSeeder::class,
+            DeliveryScaleSeeder::class,
         ]);
     }
 }

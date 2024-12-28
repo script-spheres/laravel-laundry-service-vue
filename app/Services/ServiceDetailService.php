@@ -5,9 +5,9 @@ namespace App\Services;
 use App\Http\Requests\StoreServiceDetailRequest;
 use App\Http\Requests\UpdateServiceDetailRequest;
 use App\Models\ServiceDetail;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use RahulHaque\Filepond\Facades\Filepond;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ServiceDetailService
@@ -18,9 +18,35 @@ class ServiceDetailService
     public function getServiceDetails()
     {
         return QueryBuilder::for(ServiceDetail::class)
-            ->allowedFilters(['id', 'name'])
+            ->allowedFilters([
+                AllowedFilter::exact('category_id'),
+                AllowedFilter::exact('service_id'),
+                AllowedFilter::exact('service_item_id'),
+                AllowedFilter::exact('unit_id'),
+                AllowedFilter::partial('price'),
+                AllowedFilter::callback('category', function ($query, $value) {
+                    $query->whereHas('category', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('service', function ($query, $value) {
+                    $query->whereHas('service', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('serviceItem', function ($query, $value) {
+                    $query->whereHas('serviceItem', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('unit', function ($query, $value) {
+                    $query->whereHas('unit', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                }),
+            ])
+            ->allowedSorts(['created_at', 'price'])
             ->with(['serviceItem', 'service', 'category', 'unit'])
-            ->allowedSorts(['name', 'created_at'])
             ->paginate()
             ->appends(request()->query());
     }

@@ -7,16 +7,16 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
+import FieldCol from '@/Components/Form/FieldCol.vue';
+import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Pagination from '@/Components/Pagination/Pagination.vue';
 import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
-import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
-import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { PaginatedData, ServiceDetail } from '@/types';
 import { PropType } from 'vue';
 
@@ -27,6 +27,22 @@ const props = defineProps({
         type: Object as PropType<PaginatedData<ServiceDetail>>,
         required: true,
     },
+    categoryOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
+    serviceOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
+    serviceItemOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
+    unitOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
     filters: {
         type: Object as PropType<Filters>,
         required: false,
@@ -35,8 +51,11 @@ const props = defineProps({
 });
 
 const { filter, handleClearFilter } = useFilters('service-details.index', {
-    status: props.filters?.status ?? '',
-    name: props.filters?.name ?? '',
+    price: props.filters?.price ?? '',
+    category_id: props.filters?.category_id ?? '',
+    service_id: props.filters?.service_id ?? '',
+    service_item_id: props.filters?.service_item_id ?? '',
+    unit_id: props.filters?.unit_id ?? '',
 });
 </script>
 
@@ -54,28 +73,63 @@ const { filter, handleClearFilter } = useFilters('service-details.index', {
     </PageHeader>
 
     <Card class="mb-6 p-6">
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-4">
-            <div class="w-full md:mb-0 md:w-1/4">
+        <FieldRow :cols="6">
+            <!-- Price Filter -->
+            <FieldCol>
                 <InputText
-                    label="Name"
-                    v-model="filter.name"
-                    placeholder="Filter by Name"
+                    label="Price"
+                    v-model="filter.price"
+                    placeholder="Filter by price"
                 />
-            </div>
-            <div class="w-full md:mb-0 md:w-1/4">
+            </FieldCol>
+
+            <!-- Category Filter -->
+            <FieldCol>
                 <InputSelect
-                    label="Status"
-                    v-model="filter.status"
-                    :options="statusOptions"
-                    placeholder="Filter by Active Status"
+                    label="Category"
+                    v-model="filter.category_id"
+                    :options="categoryOptions"
+                    placeholder="Filter by Category"
                 />
-            </div>
-            <div class="flex-none gap-2 self-end">
+            </FieldCol>
+
+            <!-- Service Filter -->
+            <FieldCol>
+                <InputSelect
+                    label="Service"
+                    v-model="filter.service_id"
+                    :options="serviceOptions"
+                    placeholder="Filter by Service"
+                />
+            </FieldCol>
+
+            <!-- Service Item Filter -->
+            <FieldCol>
+                <InputSelect
+                    label="Service Item"
+                    v-model="filter.service_item_id"
+                    :options="serviceItemOptions"
+                    placeholder="Filter by Service Item"
+                />
+            </FieldCol>
+
+            <!-- Unit Filter -->
+            <FieldCol>
+                <InputSelect
+                    label="Unit"
+                    v-model="filter.unit_id"
+                    :options="unitOptions"
+                    placeholder="Filter by Unit"
+                />
+            </FieldCol>
+
+            <!-- Clear Filters Button -->
+            <FieldCol class="flex-none gap-2 self-end">
                 <PrimaryButton color="danger" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
-            </div>
-        </div>
+            </FieldCol>
+        </FieldRow>
     </Card>
 
     <DataTable class="mx-auto mt-6">

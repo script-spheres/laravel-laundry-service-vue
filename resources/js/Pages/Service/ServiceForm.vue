@@ -8,15 +8,14 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
+import FilepondInput from '@/Components/Form/InputFilepond.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
-import IconPicker from '@/Components/Icons/IconPicker.vue';
 import { statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Service } from '@/types';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
-import FilepondInput from '@/Components/Form/InputFilepond.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 

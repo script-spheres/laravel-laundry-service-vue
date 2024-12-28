@@ -17,8 +17,8 @@ class UserService
     {
         return QueryBuilder::for(User::class)
             ->allowedFilters([
-                'name',
-                'email',
+                AllowedFilter::exact('name'),
+                AllowedFilter::partial('email'),
                 AllowedFilter::callback('role', function ($query, $value) {
                     $query->whereHas('roles', function ($query) use ($value) {
                         $query->where('name', 'like', "%{$value}%");

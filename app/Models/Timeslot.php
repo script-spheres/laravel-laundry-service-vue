@@ -14,11 +14,8 @@ class Timeslot extends Model
 
     protected $fillable = [
         'day',
-        'timeslots',
+        'start_time',
+        'end_time',
         'status',
-    ];
-
-    protected $casts = [
-        'timeslots' => 'array',
     ];
 }

@@ -16,7 +16,15 @@ class ReviewResource extends JsonResource
     public function toArray($request): array
     {
         return [
-
+            'id' => $this->id,
+            'order_id' => $this->model_id,
+            'customer_id' => $this->author_id,
+            'title' => $this->title,
+            'review' => $this->review,
+            'rating' => $this->rating,
+            'in_testimonial' => $this->in_testimonial,
+            'order' => OrderResource::make($this->whenLoaded('model')),
+            'customer' => CustomerResource::make($this->whenLoaded('author')),
         ];
     }
 }

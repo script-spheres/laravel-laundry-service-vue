@@ -13,7 +13,8 @@ return new class extends Migration {
         Schema::create('timeslots', function (Blueprint $table) {
             $table->id();
             $table->enum('day', ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']);
-            $table->json('timeslots');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();

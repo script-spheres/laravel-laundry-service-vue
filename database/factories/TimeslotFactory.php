@@ -17,13 +17,12 @@ class TimeslotFactory extends Factory
      */
     public function definition(): array
     {
+        $start_time = $this->faker->time('H:i:s');
+        $end_time = $this->faker->time('H:i:s', '23:59:59');
         return [
             'day' => $this->faker->randomElement(['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']),
-            'timeslots' => json_encode([
-                ['start' => '09:00', 'end' => '11:00'],
-                ['start' => '13:00', 'end' => '15:00'],
-                ['start' => '17:00', 'end' => '19:00'],
-            ]),
+            'start_time' => $start_time,
+            'end_time' => $end_time,
             'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }

@@ -19,7 +19,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteButton from '@/Shared/DeleteButton.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
-import { PaginatedData, OrderLabel } from '@/types';
+import { OrderLabel, PaginatedData } from '@/types';
 import { PropType } from 'vue';
 
 defineOptions({ layout: AuthenticatedLayout });

@@ -2,8 +2,6 @@
 
 namespace Database\Factories;
 
-use Alirezasedghi\LaravelImageFaker\ImageFaker;
-use Alirezasedghi\LaravelImageFaker\Services\Picsum;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,29 +17,38 @@ class CategoryFactory extends Factory
      */
     function definition(): array
     {
-        $imageFaker = new ImageFaker(new Picsum());
+        return [
+            'name' => $this->faker->word,
+            'description' => $this->faker->paragraph,
+            'image' => $this->generateImage(),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
+        ];
+    }
 
-        $storagePath = storage_path('app/public/categories');
 
-        // Ensure the categories directory exists in the storage folder
+
+    /**
+     * Generate image details.
+     */
+    private function generateImage(): array
+    {
+        $dirname = 'categories';
+        $storagePath = storage_path("app/public/$dirname");
+
+        // Ensure the directory exists
         if (!is_dir($storagePath)) {
             mkdir($storagePath, 0777, true);
         }
 
-        // Generate image in the correct directory
-        $filename = $imageFaker->image($storagePath, 800, 600, false);
+        // Generate the image file
+        $filename = $this->faker->image($storagePath, 800, 600);
 
         return [
-            'name' => $this->faker->word,
-            'description' => $this->faker->paragraph,
-            'image' => [
-                'dirname' => 'categories',
-                'basename' => $filename,
-                'extension' => 'jpg',
-                'location' => 'categories/' . $filename,
-                'url' => url('storage/categories/' . $filename),
-            ],
-            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'dirname' => $dirname,
+            'basename' => $filename,
+            'extension' => 'png',
+            'location' => "$dirname/$filename",
+            'url' => url("storage/$dirname/$filename"),
         ];
     }
 }

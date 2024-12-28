@@ -133,7 +133,7 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
                 </TableCell>
                 <TableCell class="text-right">
                     <Badge>
-                        {{ order.order_status }}
+                        {{ order.order_label.name }}
                     </Badge>
                 </TableCell>
                 <TableCell class="p-2">

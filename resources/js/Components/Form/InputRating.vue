@@ -4,7 +4,7 @@ import InputLabel from '@/Components/Form/InputLabel.vue';
 import { useId } from 'vue';
 
 // Define the model and its validation rules
-const model = defineModel<number | null>({ required: true });
+const model = defineModel<number | string>({ required: true });
 
 const props = defineProps({
     label: { type: String, required: false },
@@ -42,7 +42,7 @@ const handleStarClick = (rating: number) => {
                 :key="star"
                 :class="[
                     'cursor-pointer',
-                    star <= model ? 'text-yellow-500' : 'text-gray-300',
+                    star <= Number(model) ? 'text-yellow-500' : 'text-gray-300',
                 ]"
                 @click="handleStarClick(star)"
                 :aria-label="'Star ' + star"

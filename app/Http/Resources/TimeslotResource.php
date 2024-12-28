@@ -18,28 +18,9 @@ class TimeslotResource extends JsonResource
         return [
             'id' => $this->id,
             'day' => $this->day,
-            'timeslots' => $this->getFormattedTimeslots(),
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
             'status' => $this->status,
         ];
-    }
-
-
-
-    /**
-     * Format the timeslots to a specific structure.
-     *
-     * @return array
-     */
-    private function getFormattedTimeslots(): array
-    {
-        $timeslots = json_decode($this->timeslots, true);
-
-        // Format timeslots as needed (e.g., converting them to a more readable format)
-        return array_map(function ($timeslot) {
-            return [
-                'start_time' => $timeslot['start_time'],
-                'end_time' => $timeslot['end_time'],
-            ];
-        }, $timeslots);
     }
 }

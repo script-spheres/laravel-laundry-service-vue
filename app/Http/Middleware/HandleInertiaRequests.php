@@ -90,7 +90,7 @@ class HandleInertiaRequests extends Middleware
             })
             ->add('User Management', route('users.index'), fn($s) => $s->attributes(['icon' => 'BxSolidCoupon']))
             ->add('Role Management', route('roles.index'), fn($s) => $s->attributes(['icon' => 'BxSolidCoupon']))
-            ->add('Settings', '', function (Section $section) {
+            ->add('Master Sections', '', function (Section $section) {
                 $section
                     ->attributes(['icon' => 'BySettings'])
                     ->add('Timeslots', route('timeslots.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
@@ -100,9 +100,9 @@ class HandleInertiaRequests extends Middleware
                     ->add('Delivery Scales', route('delivery-scales.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Financial Year', route('financial-years.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Faqs', route('faqs.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Reviews', route('reviews.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Settings', route('settings.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
+                    ->add('Reviews', route('reviews.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
+            ->add('Settings', route('settings.index'), fn($s) => $s->attributes(['icon' => 'BySettings']))
             ->tree();
     }
 }

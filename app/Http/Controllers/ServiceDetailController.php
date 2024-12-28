@@ -27,6 +27,10 @@ class ServiceDetailController extends Controller
 
         return Inertia::render('ServiceDetail/ServiceDetailIndex', [
             'serviceDetails' => ServiceDetailResource::collection($serviceDetails),
+            'categoryOptions' => Category::all()->pluck('name', 'id'),
+            'serviceOptions' => Service::all()->pluck('name', 'id'),
+            'serviceItemOptions' => ServiceItem::all()->pluck('name', 'id'),
+            'unitOptions' => Unit::all()->pluck('actual_name', 'id'),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -70,7 +74,7 @@ class ServiceDetailController extends Controller
     public function edit(ServiceDetail $serviceDetail): Response
     {
         return Inertia::render('ServiceDetail/ServiceDetailForm', [
-            'serviceDetail' => ServiceDetailResource::make($serviceDetail->load(['serviceItem','service','category','unit']))->resolve(),
+            'serviceDetail' => ServiceDetailResource::make($serviceDetail->load(['serviceItem', 'service', 'category', 'unit']))->resolve(),
             'serviceOptions' => Service::pluck('name', 'id'),
             'serviceItemOptions' => ServiceItem::pluck('name', 'id'),
             'categoryOptions' => Category::pluck('name', 'id'),
