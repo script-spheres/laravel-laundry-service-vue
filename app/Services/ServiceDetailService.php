@@ -19,7 +19,7 @@ class ServiceDetailService
     {
         return QueryBuilder::for(ServiceDetail::class)
             ->allowedFilters(['id', 'name'])
-            ->with('serviceDetails')
+            ->with(['serviceItem', 'service', 'category', 'unit'])
             ->allowedSorts(['name', 'created_at'])
             ->paginate()
             ->appends(request()->query());
@@ -30,31 +30,22 @@ class ServiceDetailService
      */
     public function create(StoreServiceDetailRequest $request): ServiceDetail
     {
-        return DB::transaction(function () use ($request) {
-            $attributes = $request->validated();
-            $servicePrices = $attributes['service_prices'] ?? [];
+        // Create the ServiceDetail
+        $serviceDetail = ServiceDetail::create($request->all());
 
-            // Create the ServiceDetail
-            $serviceDetail = ServiceDetail::create($attributes);
 
-            // Attach associated service prices if provided
-            if (!empty($servicePrices)) {
-                $serviceDetail->servicePrices()->createMany($servicePrices);
+        // Handle the file upload with FilePond
+        if ($request->has('image')) {
+            $fileInfo = Filepond::field($request->image)->moveTo('service-details/' . Str::random(10));
+
+            if ($fileInfo) {
+                $serviceDetail->update([
+                    'image' => $this->extractFileData($fileInfo),
+                ]);
             }
+        }
 
-            // Handle the file upload with FilePond
-            if ($request->has('image')) {
-                $fileInfo = Filepond::field($request->image)->moveTo('service-details/' . Str::random(10));
-
-                if ($fileInfo) {
-                    $serviceDetail->update([
-                        'image' => $this->extractFileData($fileInfo),
-                    ]);
-                }
-            }
-
-            return $serviceDetail;
-        });
+        return $serviceDetail;
     }
 
     /**
@@ -62,40 +53,22 @@ class ServiceDetailService
      */
     public function update(ServiceDetail $serviceDetail, UpdateServiceDetailRequest $request): ServiceDetail
     {
-        return DB::transaction(function () use ($serviceDetail, $request) {
-            $attributes = $request->validated();
-            $servicePrices = $attributes['service_prices'] ?? [];
 
-            // Update the ServiceDetail
-            $serviceDetail->update($attributes);
+        // Update the ServiceDetail
+        $serviceDetail->update($request->all());
 
-            // Sync service prices (delete old and add new)
-            if (!empty($servicePrices)) {
-                $serviceDetail->servicePrices()->delete();
-                $serviceDetail->servicePrices()->createMany($servicePrices);
+        // Handle the file upload with FilePond
+        if ($request->has('new_image')) {
+            $fileInfo = Filepond::field($request->new_image)->moveTo('service-details/' . Str::random(10));
+
+            if ($fileInfo) {
+                $serviceDetail->update([
+                    'image' => $this->extractFileData($fileInfo),
+                ]);
             }
+        }
 
-            // Handle the file upload with FilePond
-            if ($request->has('new_image')) {
-                $fileInfo = Filepond::field($request->new_image)->moveTo('service-details/' . Str::random(10));
-
-                if ($fileInfo) {
-                    $serviceDetail->update([
-                        'image' => $this->extractFileData($fileInfo),
-                    ]);
-                }
-            }
-
-            return $serviceDetail;
-        });
-    }
-
-    /**
-     * Delete a service detail.
-     */
-    public function delete(ServiceDetail $serviceDetail): void
-    {
-        $serviceDetail->delete();
+        return $serviceDetail;
     }
 
     /**
@@ -113,5 +86,13 @@ class ServiceDetailService
             'location' => $fileInfo['location'],
             'url' => $fileInfo['url']
         ];
+    }
+
+    /**
+     * Delete a service detail.
+     */
+    public function delete(ServiceDetail $serviceDetail): void
+    {
+        $serviceDetail->delete();
     }
 }

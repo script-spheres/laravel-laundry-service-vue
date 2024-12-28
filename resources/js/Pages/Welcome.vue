@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import PublicLayout from '@/Layouts/PublicLayout.vue';
-import { Banner, Service } from '@/types';
+import { About, Banner, Faq, HeroSection, Review, Service } from '@/types';
+import { Head, Link } from '@inertiajs/vue3';
 import 'swiper/swiper-bundle.css';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { PropType } from 'vue';
@@ -9,11 +10,27 @@ defineOptions({ layout: PublicLayout });
 
 defineProps({
     banners: {
-        type: Object as PropType<Banner[]>,
+        type: Array as PropType<Banner[]>,
         required: true,
     },
     services: {
-        type: Object as PropType<Service[]>,
+        type: Array as PropType<Service[]>,
+        required: true,
+    },
+    faqItems: {
+        type: Array as PropType<Faq[]>,
+        required: true,
+    },
+    testimonials: {
+        type: Array as PropType<Review[]>,
+        required: true,
+    },
+    heroSection: {
+        type: Object as PropType<HeroSection>,
+        required: true,
+    },
+    about: {
+        type: Object as PropType<About>,
         required: true,
     },
 });
@@ -52,13 +69,12 @@ const categoryConfig = {
     <div
         class="bg-gradient-to-br from-blue-50 to-gray-50 dark:from-gray-800 dark:to-gray-900"
     >
+        <!-- Banner Section -->
         <section>
             <div
                 class="container mx-auto flex flex-col items-center gap-12 px-6 md:flex-row"
             >
-                <!-- Carousel Section -->
                 <div class="mb-8 md:order-2 md:mb-0 md:w-1/3">
-                    <!-- Swiper for Banners -->
                     <Swiper
                         :space-between="50"
                         :loop="true"
@@ -82,19 +98,16 @@ const categoryConfig = {
                     </Swiper>
                 </div>
 
-                <!-- Text and Service Types Section -->
                 <div class="flex flex-col items-center text-center md:w-2/3">
                     <h1
                         class="animate-fadeIn text-4xl font-bold text-gray-800 dark:text-white md:text-5xl lg:text-6xl"
                     >
-                        SparkleClean Laundry Services
+                        {{ heroSection.title }}
                     </h1>
                     <p
                         class="animate-slideUp mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-300 md:mt-6 md:text-xl"
                     >
-                        Professional, fast, and reliable laundry services to
-                        make your life easier. Your clothes deserve the best
-                        care!
+                        {{ heroSection.description }}
                     </p>
 
                     <!-- Service Types Carousel -->
@@ -138,134 +151,143 @@ const categoryConfig = {
                 </div>
             </div>
         </section>
-    </div>
 
-    <!-- Hero Section -->
-    <section class="bg-blue-600 py-20 text-white">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-5xl font-extrabold">
-                Professional Laundry Services
-            </h1>
-            <p class="mt-6 text-xl">
-                Clean clothes, hassle-free service. Experience the best laundry
-                care today!
-            </p>
-            <a
-                href="#services"
-                class="mt-10 inline-block rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 hover:bg-gray-200"
-                >View Services</a
+        <!-- Hero Section -->
+        <section class="bg-blue-600 py-20 text-white">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-5xl font-extrabold">{{ heroSection.title }}</h1>
+                <p class="mt-6 text-xl">{{ heroSection.description }}</p>
+                <Link
+                    :href="route('services')"
+                    class="mt-10 inline-block rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 hover:bg-gray-200"
+                    >View Services</Link
+                >
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section class="bg-gray-100 py-20">
+            <div
+                class="container mx-auto flex flex-col items-center px-4 md:flex-row"
             >
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="bg-gray-50 py-20">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold text-gray-800">Our Services</h2>
-            <p class="mt-4 text-gray-600">
-                We offer a variety of services tailored to your laundry needs.
-            </p>
-
-            <div class="mt-12 grid grid-cols-1 gap-12 md:grid-cols-3">
-                <div class="rounded-lg bg-white p-8 shadow-lg">
-                    <h3 class="text-2xl font-semibold text-blue-600">
-                        Wash & Fold
-                    </h3>
-                    <p class="mt-4 text-gray-600">
-                        Convenient and efficient service for everyday laundry
-                        needs.
-                    </p>
+                <div class="md:w-1/2">
+                    <h2 class="text-4xl font-bold text-gray-800">
+                        {{ about.title }}
+                    </h2>
+                    <p class="mt-6 text-gray-600">{{ about.description }}</p>
+                    <ul class="mt-6 space-y-4">
+                        <li
+                            v-for="(feature, index) in about.features"
+                            :key="index"
+                            class="flex items-center"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="mr-3 h-6 w-6 text-blue-600"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.293-6.293a1 1 0 011.414 0L13 12.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-2-2-1.293 1.293a1 1 0 01-1.414-1.414l2-2z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                            {{ feature }}
+                        </li>
+                    </ul>
                 </div>
-
-                <div class="rounded-lg bg-white p-8 shadow-lg">
-                    <h3 class="text-2xl font-semibold text-blue-600">
-                        Dry Cleaning
-                    </h3>
-                    <p class="mt-4 text-gray-600">
-                        Professional care for your delicate garments.
-                    </p>
-                </div>
-
-                <div class="rounded-lg bg-white p-8 shadow-lg">
-                    <h3 class="text-2xl font-semibold text-blue-600">
-                        Pickup & Delivery
-                    </h3>
-                    <p class="mt-4 text-gray-600">
-                        Laundry care at your doorstep for maximum convenience.
-                    </p>
+                <div class="mt-10 md:mt-0 md:w-1/2">
+                    <img
+                        src="https://via.placeholder.com/400x300"
+                        alt="Laundry Service"
+                        class="rounded-lg shadow-lg"
+                    />
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- About Us Section -->
-    <section class="bg-gray-100 py-20">
-        <div
-            class="container mx-auto flex flex-col items-center px-4 md:flex-row"
-        >
-            <div class="md:w-1/2">
-                <h2 class="text-4xl font-bold text-gray-800">Why Choose Us?</h2>
-                <p class="mt-6 text-gray-600">
-                    With years of experience, our team provides the best laundry
-                    services with a focus on quality and customer satisfaction.
-                    Your clothes are in safe hands!
+        <!-- Services Section -->
+        <section id="services" class="bg-gray-50 py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold text-gray-800">Our Services</h2>
+                <p class="mt-4 text-gray-600">
+                    We offer a variety of services tailored to your laundry
+                    needs.
                 </p>
-                <ul class="mt-6 space-y-4">
-                    <li class="flex items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="mr-3 h-6 w-6 text-blue-600"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.293-6.293a1 1 0 011.414 0L13 12.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-2-2-1.293 1.293a1 1 0 01-1.414-1.414l2-2z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                        Affordable Pricing
-                    </li>
-                    <li class="flex items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="mr-3 h-6 w-6 text-blue-600"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.293-6.293a1 1 0 011.414 0L13 12.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-2-2-1.293 1.293a1 1 0 01-1.414-1.414l2-2z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                        Reliable Service
-                    </li>
-                    <li class="flex items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="mr-3 h-6 w-6 text-blue-600"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.293-6.293a1 1 0 011.414 0L13 12.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-2-2-1.293 1.293a1 1 0 01-1.414-1.414l2-2z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                        Eco-Friendly Practices
-                    </li>
-                </ul>
+                <div class="mt-12 grid grid-cols-1 gap-12 md:grid-cols-3">
+                    <div
+                        v-for="service in services"
+                        :key="service.id"
+                        class="rounded-lg bg-white p-8 shadow-lg"
+                    >
+                        <h3 class="text-2xl font-semibold text-blue-600">
+                            {{ service.name }}
+                        </h3>
+                        <p class="mt-4 text-gray-600">
+                            {{ service.description }}
+                        </p>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="mt-10 md:mt-0 md:w-1/2">
-                <img
-                    src="https://via.placeholder.com/400x300"
-                    alt="Laundry Service"
-                    class="rounded-lg shadow-lg"
-                />
+        <!-- Testimonials Section -->
+        <section class="bg-white py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold text-gray-800">
+                    What Our Customers Say
+                </h2>
+                <p class="mt-4 text-gray-600">
+                    Don't just take our word for it. Here's what our customers
+                    think!
+                </p>
+                <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+                    <div
+                        v-for="testimonial in testimonials"
+                        :key="testimonial.name"
+                        class="rounded-lg bg-gray-100 p-6 shadow-lg"
+                    >
+                        <div class="mb-4 flex items-center">
+                            <img
+                                :src="testimonial.avatar"
+                                alt="Avatar"
+                                class="h-16 w-16 rounded-full"
+                            />
+                            <div class="ml-4 text-left">
+                                <p class="text-lg font-bold text-gray-800">
+                                    {{ testimonial.name }}
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">{{ testimonial.feedback }}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="bg-gray-50 py-20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-center text-4xl font-bold text-gray-800">
+                    Frequently Asked Questions
+                </h2>
+                <p class="mt-4 text-center text-gray-600">
+                    Have questions? We've got answers.
+                </p>
+                <div class="mx-auto mt-12 max-w-3xl space-y-8">
+                    <div
+                        v-for="(item, index) in faqItems"
+                        :key="index"
+                        class="rounded-lg bg-white p-4 shadow-md"
+                    >
+                        <h3 class="text-xl font-bold text-blue-600">
+                            {{ item.question }}
+                        </h3>
+                        <p class="mt-2 text-gray-600">{{ item.answer }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </template>

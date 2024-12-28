@@ -23,13 +23,12 @@ class UpdateServiceDetailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
-            'service_prices' => 'nullable|array',
-            'service_prices.*.service_type_id' => 'required|exists:service_types,id',
-            'service_prices.*.price' => 'required|numeric',
-            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'service_id' => ['required', 'exists:\App\Models\Service,id'],
+            'category_id' => ['required', 'exists:\App\Models\Category,id'],
+            'service_item_id' => ['required', 'exists:\App\Models\ServiceItem,id'],
+            'unit_id' => ['required', 'exists:units,id'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'quantity' => ['required', 'numeric', 'min:1'],
         ];
     }
 }

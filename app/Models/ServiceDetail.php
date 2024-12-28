@@ -40,19 +40,19 @@ class ServiceDetail extends Model
      */
     public function serviceItem(): BelongsTo
     {
-        return $this->belongsTo(Service::class, 'service_item_id');
+        return $this->belongsTo(ServiceItem::class, 'service_item_id');
     }
 
     /**
      * Get the related service prices for this service item.
      */
-    public function category(): HasMany
+    public function category(): BelongsTo
     {
-        return $this->hasMany(ServiceDetail::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function unit()
+    public function unit(): BelongsTo
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class,'unit_id');
     }
 }

@@ -3,6 +3,7 @@ import LinkButton from '@/Components/Buttons/LinkButton.vue';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
+import FilepondInput from '@/Components/Form/InputFilepond.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import InputTextarea from '@/Components/Form/InputTextarea.vue';
 import Card from '@/Components/Panel/Card.vue';
@@ -15,14 +16,12 @@ import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AuthenticatedLayout });
 
-const props = defineProps({
+const { customer } = defineProps({
     customer: {
         type: Object as PropType<Customer>,
         required: false,
     },
 });
-
-const { customer } = props;
 
 const method = customer ? 'put' : 'post';
 const url = customer
@@ -35,7 +34,25 @@ const form = useForm(method, url, {
     email: customer?.email || '',
     phone_number: customer?.phone_number || '',
     communication_pref: customer?.communication_pref || '',
+    image: customer?.image || {},
+    new_image: null as string | null,
 });
+
+const handleFileProcess = (error: any, file: any) => {
+    if (customer) {
+        form.new_image = file.serverId;
+    } else {
+        form.image = file.serverId;
+    }
+};
+
+const handleFileRemoved = () => {
+    if (customer) {
+        form.new_image = null;
+    } else {
+        form.image = {};
+    }
+};
 
 const submitForm = () => {
     form.submit({
@@ -82,6 +99,17 @@ const submitForm = () => {
                         label="Phone Number"
                         v-model="form.phone_number"
                         :error="form.errors.phone_number"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
+                    <FilepondInput
+                        label="Image"
+                        :files="customer?.image"
+                        @processfile="handleFileProcess"
+                        @removefile="handleFileRemoved"
+                        :error="form.errors.image"
                     />
                 </FieldCol>
             </FieldRow>

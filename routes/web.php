@@ -19,6 +19,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryScaleController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FinancialYearController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderInvoiceController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceDetailController;
@@ -37,8 +39,6 @@ use App\Http\Controllers\TimeslotController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-
 
 Route::get('/', [PageController::class, 'index'])->name('welcome');
 Route::get('/service', [PageController::class, 'services'])->name('services');
@@ -91,6 +91,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('addon-services', AddonServiceController::class);
     Route::resource('coupons', CouponController::class);
     Route::resource('timeslots', TimeslotController::class);
+    Route::resource('faqs', FaqController::class);
+    Route::resource('reviews', ReviewController::class);
 
     Route::resource('orders', OrderController::class);
     Route::get('orders/{order}/invoice', [OrderInvoiceController::class, 'index'])->name('orders.invoice');

@@ -23,8 +23,9 @@ class StoreServiceDetailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'service_id' => ['required', 'exists:services,id'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'service_id' => ['required', 'exists:\App\Models\Service,id'],
+            'category_id' => ['required', 'exists:\App\Models\Category,id'],
+            'service_item_id' => ['required', 'exists:\App\Models\ServiceItem,id'],
             'unit_id' => ['required', 'exists:units,id'],
             'price' => ['required', 'numeric', 'min:0'],
             'quantity' => ['required', 'numeric', 'min:1'],

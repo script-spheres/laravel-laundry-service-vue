@@ -6,6 +6,8 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\City;
+use App\Models\Faq;
+use App\Models\Review;
 use App\Models\Service;
 use App\Models\ServiceItem;
 use App\Models\Store;
@@ -29,6 +31,10 @@ class PageController extends Controller
         return Inertia::render('Welcome', [
             'banners' => Banner::all(),
             'services' => ServiceItem::all(),
+            'faqItems' => Faq::all(),
+            'testimonials' => Review::all(),
+            'heroSection' => ServiceItem::all(),
+            'about' => ServiceItem::all(),
         ]);
     }
 

@@ -24,6 +24,10 @@ const props = defineProps({
         type: Object as PropType<Options>,
         required: true,
     },
+    serviceItemOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
     categoryOptions: {
         type: Object as PropType<Options>,
         required: true,
@@ -42,6 +46,7 @@ const url = props.serviceDetail
 const form = useForm(method, url, {
     service_id: props.serviceDetail?.service_id || '',
     category_id: props.serviceDetail?.category_id || '',
+    service_item_id: props.serviceDetail?.service_item_id || '',
     unit_id: props.serviceDetail?.unit_id || '',
     price: props.serviceDetail?.price || '',
     quantity: props.serviceDetail?.quantity || '',
@@ -73,7 +78,7 @@ const submitForm = () => {
 
     <Card class="mx-auto mt-6 p-4">
         <form @submit.prevent="submitForm">
-            <FieldRow class="grid-cols-2">
+            <FieldRow :cols="{ sm: 3 }">
                 <FieldCol>
                     <InputSelect
                         label="Service"
@@ -92,8 +97,17 @@ const submitForm = () => {
                         placeholder="Select Category"
                     />
                 </FieldCol>
+                <FieldCol>
+                    <InputSelect
+                        label="Service Item"
+                        v-model="form.service_item_id"
+                        :options="serviceItemOptions"
+                        :error="form.errors.service_item_id"
+                        placeholder="Select Service Item"
+                    />
+                </FieldCol>
             </FieldRow>
-            <FieldRow>
+            <FieldRow :cols="{ sm: 3 }">
                 <FieldCol>
                     <InputText
                         label="Price"
@@ -112,8 +126,6 @@ const submitForm = () => {
                         placeholder="Enter quantity"
                     />
                 </FieldCol>
-            </FieldRow>
-            <FieldRow>
                 <FieldCol>
                     <InputSelect
                         label="Unit"

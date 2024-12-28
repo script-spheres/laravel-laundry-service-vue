@@ -99,6 +99,8 @@ class HandleInertiaRequests extends Middleware
                     ->add('Units', route('units.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Delivery Scales', route('delivery-scales.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Financial Year', route('financial-years.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+                    ->add('Faqs', route('faqs.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+                    ->add('Reviews', route('reviews.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Settings', route('settings.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
             ->tree();

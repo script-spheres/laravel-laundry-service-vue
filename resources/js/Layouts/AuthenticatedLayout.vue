@@ -2,10 +2,10 @@
 import DarkModeButton from '@/Components/Buttons/DarkModeButton.vue';
 import Dropdown from '@/Components/Dropdown/Dropdown.vue';
 import DropdownLink from '@/Components/Dropdown/DropdownLink.vue';
-import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import SidebarLogo from '@/Components/Sidebar/SidebarLogo.vue';
 import { useMenu } from '@/Composables/useMenu';
 
+import Sidebar from '@/Components/Sidebar/Sidebar.vue';
 import {
     FaAngleDown,
     FaBarsStaggered,
@@ -38,18 +38,14 @@ const { isMenuOpen, toggleMenu } = useMenu(true);
             class="h-[calc(100vh-65px)] flex-auto overflow-y-auto p-4 scrollbar-thin"
         >
             <ul class="space-y-1">
-                <SidebarItem
-                    v-for="(item, index) in $page.props.navigations"
-                    :key="index"
-                    :item="item"
-                />
+                <Sidebar :navigations="$page.props.navigations || []" />
             </ul>
         </nav>
     </aside>
 
     <!-- Main Content -->
     <main
-        class="flex min-h-screen grow flex-col transition-[margin-left] duration-300"
+        class="flex min-h-screen grow flex-col transition-[margin-left] duration-300 dark:bg-gray-900"
         :class="{
             'lg:ml-72': isMenuOpen,
             'lg:ml-0': !isMenuOpen,
@@ -127,7 +123,7 @@ const { isMenuOpen, toggleMenu } = useMenu(true);
 
         <!-- Content Area -->
         <section
-            class="relative w-full text-black dark:bg-gray-900 dark:text-white"
+            class="relative w-full text-black dark:text-white"
             :class="{
                 'px-4 py-8 lg:px-10':
                     !$page.component.startsWith('Order/OrderForm'),

@@ -8,6 +8,7 @@ use App\Http\Resources\ServiceDetailResource;
 use App\Models\Category;
 use App\Models\Service;
 use App\Models\ServiceDetail;
+use App\Models\ServiceItem;
 use App\Models\Unit;
 use App\Services\ServiceDetailService;
 use Illuminate\Http\RedirectResponse;
@@ -47,6 +48,7 @@ class ServiceDetailController extends Controller
     {
         return Inertia::render('ServiceDetail/ServiceDetailForm', [
             'serviceOptions' => Service::pluck('name', 'id'),
+            'serviceItemOptions' => ServiceItem::pluck('name', 'id'),
             'categoryOptions' => Category::pluck('name', 'id'),
             'unitOptions' => Unit::pluck('short_name', 'id'),
         ]);
@@ -68,8 +70,9 @@ class ServiceDetailController extends Controller
     public function edit(ServiceDetail $serviceDetail): Response
     {
         return Inertia::render('ServiceDetail/ServiceDetailForm', [
-            'serviceDetail' => ServiceDetailResource::make($serviceDetail->load('serviceDetails'))->resolve(),
+            'serviceDetail' => ServiceDetailResource::make($serviceDetail->load(['serviceItem','service','category','unit']))->resolve(),
             'serviceOptions' => Service::pluck('name', 'id'),
+            'serviceItemOptions' => ServiceItem::pluck('name', 'id'),
             'categoryOptions' => Category::pluck('name', 'id'),
             'unitOptions' => Unit::pluck('short_name', 'id'),
         ]);

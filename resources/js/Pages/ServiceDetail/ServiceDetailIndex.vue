@@ -42,7 +42,7 @@ const { filter, handleClearFilter } = useFilters('service-details.index', {
 
 <template>
     <PageHeader>
-        <template #title>Service Detail Management</template>
+        <template #title>Service Fare Management</template>
         <template #subtitle>
             Manage your service details with filters and actions.
         </template>
@@ -80,9 +80,12 @@ const { filter, handleClearFilter } = useFilters('service-details.index', {
 
     <DataTable class="mx-auto mt-6">
         <TableHead>
-            <TableHeadCell>Service Detail Name</TableHeadCell>
-            <TableHeadCell>Description</TableHeadCell>
-            <TableHeadCell class="text-right">Status</TableHeadCell>
+            <TableHeadCell>Service Name</TableHeadCell>
+            <TableHeadCell>Category</TableHeadCell>
+            <TableHeadCell>Unit</TableHeadCell>
+            <TableHeadCell>Service Item</TableHeadCell>
+            <TableHeadCell>Price</TableHeadCell>
+            <TableHeadCell>Quantity</TableHeadCell>
             <TableHeadCell class="text-right">Actions</TableHeadCell>
         </TableHead>
         <TableBody>
@@ -90,16 +93,12 @@ const { filter, handleClearFilter } = useFilters('service-details.index', {
                 v-for="serviceDetail in serviceDetails.data"
                 :key="serviceDetail.id"
             >
-                <TableCell>{{ serviceDetail.name }}</TableCell>
-                <TableCell>{{ serviceDetail.description }}</TableCell>
-                <TableCell class="text-right">
-                    <StatusToggleInput
-                        :action="
-                            route('service-details.update', serviceDetail.id)
-                        "
-                        :data="serviceDetail"
-                    />
-                </TableCell>
+                <TableCell>{{ serviceDetail.service.name }}</TableCell>
+                <TableCell>{{ serviceDetail?.category?.name }}</TableCell>
+                <TableCell>{{ serviceDetail?.unit?.actual_name }}</TableCell>
+                <TableCell>{{ serviceDetail?.service_item?.name }}</TableCell>
+                <TableCell>{{ serviceDetail.price }}</TableCell>
+                <TableCell>{{ serviceDetail.quantity }}</TableCell>
                 <TableCell class="flex justify-end gap-2">
                     <LinkButton
                         :href="route('service-details.edit', serviceDetail.id)"

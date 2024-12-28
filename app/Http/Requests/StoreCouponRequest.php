@@ -25,7 +25,7 @@ class StoreCouponRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'code' => 'required|string|unique:coupons,code,' . $this->coupon,
+            'code' => 'required|string|\App\Modals\Coupon,code,',
             'discount_type' => 'required|in:flat,percentage',
             'discount_amount' => [
                 'required_if:discount_type,flat',

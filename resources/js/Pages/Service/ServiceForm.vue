@@ -16,6 +16,7 @@ import PageHeader from '@/Shared/PageHeader.vue';
 import { Service } from '@/types';
 import { PropType } from 'vue';
 import { toast } from 'vue3-toastify';
+import FilepondInput from '@/Components/Form/InputFilepond.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
@@ -33,10 +34,27 @@ const url = service
 
 const form = useForm(method, url, {
     name: service?.name || '',
-    icon: service?.icon || '',
+    image: service?.image || {},
+    new_image: null as string | null,
     description: service?.description || '',
     status: service?.status || '',
 });
+
+const handleFileProcess = (error: any, file: any) => {
+    if (service) {
+        form.new_image = file.serverId;
+    } else {
+        form.image = file.serverId;
+    }
+};
+
+const handleFileRemoved = () => {
+    if (service) {
+        form.new_image = null;
+    } else {
+        form.image = {};
+    }
+};
 
 const submitForm = () => {
     form.submit({
@@ -71,18 +89,22 @@ const submitForm = () => {
                     />
                 </FieldCol>
                 <FieldCol>
-                    <IconPicker
-                        label="Select Icon"
-                        v-model="form.icon"
-                        :error="form.errors.icon"
-                    />
-                </FieldCol>
-                <FieldCol>
                     <InputSelect
                         label="Active Status"
                         v-model="form.status"
                         :options="statusOptions"
                         :error="form.errors.status"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow>
+                <FieldCol>
+                    <FilepondInput
+                        label="Image"
+                        :files="service?.image"
+                        @processfile="handleFileProcess"
+                        @removefile="handleFileRemoved"
+                        :error="form.errors.image"
                     />
                 </FieldCol>
             </FieldRow>

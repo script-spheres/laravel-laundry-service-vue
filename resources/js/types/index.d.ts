@@ -77,6 +77,13 @@ export type ExpenseType = {
     status: Status;
 };
 
+export type OrderLabel = {
+    id: number;
+    name: string;
+    description: string;
+    status: Status;
+};
+
 export type Coupon = {
     id: number;
     title: string;
@@ -160,6 +167,7 @@ export type Customer = {
     phone_number: string;
     address: string | null;
     communication_pref: string | null;
+    image: Image;
 };
 
 export type Service = {
@@ -299,6 +307,34 @@ export type CartAddonItem = {
     price: number;
     quantity: number;
     total: number;
+};
+
+export type Review = {
+    id: number;
+    title: string;
+    review: string;
+    in_testimonial: boolean;
+    rating: number;
+    model_id: number;
+    author_id: number;
+    author: User;
+};
+
+export type About = {
+    title: string;
+    description: string;
+    features: string[];
+};
+
+export type HeroSection = {
+    title: string;
+    description: string;
+};
+
+export type Faq = {
+    id: number;
+    question: string;
+    answer: string;
 };
 
 export type Status = 'active' | 'inactive';

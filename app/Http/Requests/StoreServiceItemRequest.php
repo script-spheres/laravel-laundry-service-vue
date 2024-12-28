@@ -29,7 +29,7 @@ class StoreServiceItemRequest extends FormRequest
             'service_prices' => 'nullable|array',
             'service_prices.*.service_type_id' => 'required|exists:service_types,id',
             'service_prices.*.price' => 'required|numeric',
-            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable',
         ];
     }
 }
