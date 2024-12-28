@@ -15,6 +15,7 @@ import { useFilters } from '@/Composables/useFilters';
 import { daysOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
+import StatusToggleInput from '@/Shared/StatusToggleInput.vue';
 import { PaginatedData, Timeslot } from '@/types';
 import { PropType } from 'vue';
 
@@ -35,6 +36,8 @@ const props = defineProps({
 // Initialize reactive filters with default values or passed props
 const { filter, handleClearFilter } = useFilters('timeslots.index', {
     day: props.filters?.day ?? '',
+    start_time: props.filters?.start_time ?? '',
+    end_time: props.filters?.end_time ?? '',
 });
 </script>
 
@@ -70,12 +73,21 @@ const { filter, handleClearFilter } = useFilters('timeslots.index', {
             <TableHead>
                 <TableHeadCell>Day</TableHeadCell>
                 <TableHeadCell>Timeslots</TableHeadCell>
+                <TableHeadCell class="text-right">Status</TableHeadCell>
                 <TableHeadCell class="text-right">Actions</TableHeadCell>
             </TableHead>
             <TableBody>
                 <TableRow v-for="timeslot in timeslots.data" :key="timeslot.id">
                     <TableCell>{{ timeslot.day }}</TableCell>
-                    <TableCell>{{ timeslot.timeslots }}</TableCell>
+                    <TableCell>
+                        {{ timeslot.start_time }} to {{ timeslot.end_time }}
+                    </TableCell>
+                    <TableCell class="text-right">
+                        <StatusToggleInput
+                            :data="timeslot"
+                            :action="route('timeslots.update', timeslot.id)"
+                        />
+                    </TableCell>
                     <TableCell class="flex justify-end gap-2">
                         <LinkButton
                             :href="route('timeslots.edit', timeslot.id)"

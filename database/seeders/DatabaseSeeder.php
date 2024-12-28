@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             OrderLabelSeeder::class,
             TimeslotSeeder::class,
             DeliveryScaleSeeder::class,
+            BannerSeeder::class,
         ]);
     }
 }

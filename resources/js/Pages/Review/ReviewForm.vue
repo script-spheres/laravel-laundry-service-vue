@@ -80,7 +80,7 @@ const submitForm = () => {
 
                 <FieldCol>
                     <InputSelect
-                        label="User ID"
+                        label="Customer ID"
                         v-model="form.customer_id"
                         :error="form.errors.customer_id"
                         :options="customersOptions"

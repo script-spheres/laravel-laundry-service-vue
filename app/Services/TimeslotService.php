@@ -15,7 +15,7 @@ class TimeslotService
     public function getTimeslots()
     {
         return QueryBuilder::for(Timeslot::class)
-            ->allowedFilters(['id', 'start_time', 'end_time'])
+            ->allowedFilters(['day', 'start_time', 'end_time'])
             ->allowedSorts(['start_time', 'created_at'])
             ->paginate()
             ->appends(request()->query());

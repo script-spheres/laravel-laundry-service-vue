@@ -213,13 +213,9 @@ export type AddonService = {
 export type Timeslot = {
     id: number;
     day: string | null;
-    timeslots: Times;
-    status: Status;
-};
-
-export type Times = {
     start_time: string;
     end_time: string;
+    status: Status;
 };
 
 export type Order = {

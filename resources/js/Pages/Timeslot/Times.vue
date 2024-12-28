@@ -30,20 +30,7 @@ const removeTimeslot = (index: number) => {
                 :key="index"
                 class="flex w-full items-center space-x-2"
             >
-                <FromField>
-                    <InputText
-                        type="time"
-                        v-model="timeslot.start_time"
-                        :placeholder="'Enter start time ' + (index + 1)"
-                    />
-                </FromField>
-                <FromField>
-                    <InputText
-                        type="time"
-                        v-model="timeslot.end_time"
-                        :placeholder="'Enter end time ' + (index + 1)"
-                    />
-                </FromField>
+
                 <PrimaryButton
                     v-if="model.length > 1"
                     @click.prevent="removeTimeslot(index)"

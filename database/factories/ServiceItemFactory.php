@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\ServiceItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Intervention\Image\Laravel\Facades\Image;
 
 /**
  * @extends Factory<ServiceItem>
@@ -39,8 +40,14 @@ class ServiceItemFactory extends Factory
             mkdir($storagePath, 0777, true);
         }
 
-        // Generate the image file
-        $filename = $this->faker->image($storagePath, 800, 600);
+        // Define a unique filename for the image
+        $filename = $this->faker->uuid . '.png';
+
+        // Create a blank image with Intervention Image
+        $img = Image::create(400, 400)->fill('#cccccc');
+
+        // Save the image to the storage path
+        $img->save($storagePath . DIRECTORY_SEPARATOR . $filename);
 
         return [
             'dirname' => $dirname,

@@ -4,8 +4,9 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
-import { daysOptions } from '@/Constants/options';
+import { daysOptions, statusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Timeslot } from '@/types';
@@ -31,7 +32,9 @@ const url = timeslot
 
 const form = useForm(method, url, {
     day: timeslot?.day || '',
-    timeslots: timeslot?.timeslots || [{ start_time: '', end_time: '' }],
+    start_time: timeslot?.start_time || '',
+    end_time: timeslot?.end_time || '',
+    status: timeslot?.end_time || '',
 });
 
 const submitForm = () => {
@@ -58,7 +61,7 @@ const submitForm = () => {
 
     <Card class="mx-auto mt-6 p-4">
         <form @submit.prevent="submitForm">
-            <FieldRow>
+            <FieldRow :cols="3">
                 <FieldCol>
                     <InputSelect
                         label="Day"
@@ -67,9 +70,31 @@ const submitForm = () => {
                         :options="daysOptions"
                     />
                 </FieldCol>
+                <FieldCol>
+                    <InputText
+                        type="time"
+                        label="Start Time"
+                        v-model="form.start_time"
+                        placeholder="Enter start time"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <InputText
+                        type="time"
+                        label="End Time"
+                        v-model="form.end_time"
+                        placeholder="Enter end time"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <InputSelect
+                        label="Status"
+                        v-model="form.status"
+                        :options="statusOptions"
+                        :error="form.errors.status"
+                    />
+                </FieldCol>
             </FieldRow>
-
-            <!--            <Times v-model="form.timeslots" />-->
 
             <div class="flex gap-2">
                 <PrimaryButton
