@@ -38,7 +38,7 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
             <PrimaryButton
                 size="sm"
                 @click="posStore.clearItemCartByType('service')"
-                color="danger"
+                color="red"
             >
                 <AkTrashCan class="h-4 w-4" />
             </PrimaryButton>
@@ -87,7 +87,7 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
                     <AkPlus class="h-4 w-4" />
                 </PrimaryButton>
                 <PrimaryButton
-                    color="danger"
+                    color="red"
                     @click="posStore.removeItem(item.id)"
                 >
                     <AkTrashCan class="h-4 w-4" />

@@ -12,6 +12,34 @@ export const usePosStore = defineStore(
         const discountRate = ref(0);
         const coupon = ref<string | null>(null);
 
+        // Setter functions to set state values directly
+        const setItems = (newItems: CartItem[]) => {
+            items.value = newItems;
+            totalItems.value = newItems.reduce((acc, item) => acc + item.quantity, 0);
+            subTotalCost.value = newItems.reduce((acc, item) => acc + item.total, 0);
+        };
+
+        const setTotalItems = (newTotalItems: number) => {
+            totalItems.value = newTotalItems;
+        };
+
+        const setSubTotalCost = (newSubTotalCost: number) => {
+            subTotalCost.value = newSubTotalCost;
+        };
+
+        const setTaxPercentage = (newTaxPercentage: number) => {
+            taxPercentage.value = newTaxPercentage;
+        };
+
+        const setDiscountRate = (newDiscountRate: number) => {
+            discountRate.value = newDiscountRate;
+        };
+
+        const setCoupon = (newCoupon: string | null) => {
+            coupon.value = newCoupon;
+        };
+
+        // Existing methods
         const totalCost = computed(() =>
             parseFloat(
                 (
@@ -30,10 +58,12 @@ export const usePosStore = defineStore(
             parseFloat((0 - totalCost.value).toFixed(2)),
         );
 
-        // Add an item to the cart
         const addItem = (item: CartItem) => {
             const existingItem = items.value.find(
-                (cartItem) => cartItem.id === item.id,
+                (cartItem) =>
+                    cartItem.id === item.id &&
+                    cartItem.serviceable_type === item.serviceable_type &&
+                    cartItem.serviceable_id === item.serviceable_id,
             );
 
             if (existingItem) {
@@ -55,26 +85,18 @@ export const usePosStore = defineStore(
             );
         };
 
-        // Remove an item from the cart
-        const removeItem = (id: number) => {
-            const index = items.value.findIndex(
-                (cartItem) => cartItem.id === id,
+        const updateItem = (
+            id: number,
+            serviceableType: 'service' | 'addon-service',
+            serviceableId: string | number,
+            newQuantity: number,
+        ) => {
+            const existingItem = items.value.find(
+                (item) =>
+                    item.id === id &&
+                    item.serviceable_type === serviceableType &&
+                    item.serviceable_id === serviceableId,
             );
-
-            if (index !== -1) {
-                const item = items.value[index];
-                totalItems.value -= item.quantity;
-                subTotalCost.value = parseFloat(
-                    (subTotalCost.value - item.total).toFixed(2),
-                );
-
-                items.value.splice(index, 1);
-            }
-        };
-
-        // Update an item in the cart
-        const updateItem = (id: number, newQuantity: number) => {
-            const existingItem = items.value.find((item) => item.id === id);
 
             if (existingItem && newQuantity > 0) {
                 const quantityDifference = newQuantity - existingItem.quantity;
@@ -92,7 +114,22 @@ export const usePosStore = defineStore(
             }
         };
 
-        // Apply a coupon
+        const removeItem = (id: number) => {
+            const index = items.value.findIndex(
+                (cartItem) => cartItem.id === id,
+            );
+
+            if (index !== -1) {
+                const item = items.value[index];
+                totalItems.value -= item.quantity;
+                subTotalCost.value = parseFloat(
+                    (subTotalCost.value - item.total).toFixed(2),
+                );
+
+                items.value.splice(index, 1);
+            }
+        };
+
         const applyCoupon = (couponCode: string, discount: number) => {
             coupon.value = couponCode;
             discountRate.value = discount;
@@ -101,20 +138,17 @@ export const usePosStore = defineStore(
             );
         };
 
-        // Remove the coupon
         const removeCoupon = () => {
             coupon.value = null;
             discountRate.value = 0.1;
             console.log('Coupon removed');
         };
 
-        // Clear the cart based on serviceable_type (service or addon-service)
         const clearItemCartByType = (type: 'service' | 'addon-service') => {
             items.value = items.value.filter(
                 (item) => item.serviceable_type !== type,
             );
 
-            // Recalculate total items and subtotal cost
             totalItems.value = items.value.reduce(
                 (acc, item) => acc + item.quantity,
                 0,
@@ -125,28 +159,24 @@ export const usePosStore = defineStore(
             );
         };
 
-        // Clear all items from the cart
         const clearItemCart = () => {
             items.value.splice(0, items.value.length);
             totalItems.value = 0;
             subTotalCost.value = 0;
         };
 
-        // Total items for a specific serviceable_type
         const totalItemsByType = (type: 'service' | 'addon-service') => {
             return items.value
                 .filter((item) => item.serviceable_type === type)
                 .reduce((acc, item) => acc + item.quantity, 0);
         };
 
-        // Total cost for a specific serviceable_type
         const totalCostByType = (type: 'service' | 'addon-service') => {
             return items.value
                 .filter((item) => item.serviceable_type === type)
                 .reduce((acc, item) => acc + item.total, 0);
         };
 
-        // Get items by serviceable_type
         const getItemsByType = (type: 'service' | 'addon-service') => {
             return items.value.filter((item) => item.serviceable_type === type);
         };
@@ -160,6 +190,12 @@ export const usePosStore = defineStore(
             taxAmount,
             change,
             coupon,
+            setItems,
+            setTotalItems,
+            setSubTotalCost,
+            setTaxPercentage,
+            setDiscountRate,
+            setCoupon,
             addItem,
             removeItem,
             updateItem,

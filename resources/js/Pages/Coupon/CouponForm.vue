@@ -162,7 +162,7 @@ const submitForm = () => {
                 >
                     {{ coupon ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('coupons.index')" color="danger">
+                <LinkButton :href="route('coupons.index')" color="red">
                     Cancel
                 </LinkButton>
             </div>

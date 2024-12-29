@@ -13,8 +13,16 @@ class OrderLabelSeeder extends Seeder
      */
     public function run(): void
     {
-        $storeNames = collect(['pending', 'in-progress', 'ready-to-deliver', 'delivered']);
+        $storeNames = collect([
+            ['name' => 'pending', 'description' => 'Order is waiting to be processed'],
+            ['name' => 'in-progress', 'description' => 'Order is being processed'],
+            ['name' => 'ready-to-deliver', 'description' => 'Order is ready for delivery'],
+            ['name' => 'delivered', 'description' => 'Order has been delivered'],
+        ]);
 
-        $storeNames->each(fn($name) => OrderLabel::factory()->create(['name' => $name]));
+        $storeNames->each(fn($store) => OrderLabel::factory()->create([
+            'name' => $store['name'],
+            'description' => $store['description'],
+        ]));
     }
 }

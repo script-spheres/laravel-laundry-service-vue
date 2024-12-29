@@ -72,7 +72,7 @@ const { filter, handleClearFilter } = useFilters('order-labels.index', {
                 />
             </FieldCol>
             <FieldCol class="flex-none gap-2 self-end">
-                <PrimaryButton color="danger" @click="handleClearFilter">
+                <PrimaryButton color="red" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </FieldCol>

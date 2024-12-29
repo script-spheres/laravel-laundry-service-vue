@@ -86,7 +86,7 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
 
             <!-- Clear Filters Button -->
             <FieldCol class="flex-none gap-2 self-end">
-                <PrimaryButton @click="handleClearFilter" color="danger">
+                <PrimaryButton @click="handleClearFilter" color="red">
                     Clear Filter
                 </PrimaryButton>
             </FieldCol>
@@ -149,14 +149,14 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
                 <TableCell class="flex h-20 items-center justify-end gap-2">
                     <LinkButton
                         :href="route('orders.show', order.id)"
-                        color="secondary"
+                        color="green"
                     >
                         View
                     </LinkButton>
 
                     <LinkButton
                         :href="route('orders.edit', order.id)"
-                        color="primary"
+                        color="gray"
                     >
                         Edit
                     </LinkButton>

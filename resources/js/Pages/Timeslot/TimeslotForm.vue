@@ -104,7 +104,7 @@ const submitForm = () => {
                 >
                     {{ timeslot ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('timeslots.index')" color="danger">
+                <LinkButton :href="route('timeslots.index')" color="red">
                     Cancel
                 </LinkButton>
             </div>

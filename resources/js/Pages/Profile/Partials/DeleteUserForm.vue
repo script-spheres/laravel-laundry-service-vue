@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import InputText from '@/Components/Form/InputText.vue';
@@ -93,9 +92,9 @@ const closeModal = () => {
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal">
+                    <PrimaryButton @click="closeModal" color="red">
                         Cancel
-                    </SecondaryButton>
+                    </PrimaryButton>
 
                     <PrimaryButton
                         class="ms-3"

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -40,11 +41,21 @@ class UserService
      */
     public function create(StoreUserRequest $request): User
     {
+
+        // Get validated data from the request
         $attributes = $request->validated();
+
+        // If the request contains a password, hash it
+        if (isset($attributes['password'])) {
+            $attributes['password'] = Hash::make($attributes['password']);
+        }
+
+        // Create the user with the attributes
         $user = User::create($attributes);
 
-        if ($request->has('roles')) {
-            $user->syncRoles($request->input('roles'));
+        // If roles are provided, sync them with the user
+        if ($request->has('role')) {
+            $user->syncRoles($request->role);
         }
 
         return $user;
@@ -56,10 +67,11 @@ class UserService
     public function update(User $user, UpdateUserRequest $request): User
     {
         $attributes = $request->validated();
+
         $user->update($attributes);
 
-        if ($request->has('roles')) {
-            $user->syncRoles($request->input('roles'));
+        if ($request->has('role')) {
+            $user->syncRoles($request->role);
         }
 
         return $user;

@@ -23,7 +23,13 @@ import {
     Service,
     ServiceDetail,
 } from '@/types';
-import { AkEdit, AkPlus, BxPackage, MdDiscount,AkTrashCan } from '@kalimahapps/vue-icons';
+import {
+    AkEdit,
+    AkPlus,
+    AkTrashCan,
+    BxPackage,
+    MdDiscount,
+} from '@kalimahapps/vue-icons';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType, provide, ref } from 'vue';
 import { toast } from 'vue3-toastify';
@@ -81,18 +87,15 @@ const url = props.order
     : route('orders.store');
 
 const form = useForm(method, url, {
-    store_id: '',
-    customer_id: '',
-    delivery_date: '',
-    details: posStore.items,
-    sub_total: posStore.subTotalCost,
-    tax_percentage: posStore.taxPercentage,
-    tax_amount: posStore.taxAmount,
-    payment_status: 'paid',
-    order_status: 'placed',
-    total_amount: posStore.totalCost,
-    payment_mode: 'offline',
-    special_notes: '',
+    store_id: props.order?.store_id ?? '',
+    customer_id: props.order?.customer_id ?? '',
+    delivery_date: props.order?.delivery_date ?? '',
+    details: props.order?.order_details ?? posStore.items,
+    sub_total: props.order?.sub_total ?? posStore.subTotalCost,
+    tax_percentage: props.order?.tax_percentage ?? posStore.taxPercentage,
+    tax_amount: props.order?.tax_amount ?? posStore.taxAmount,
+    total_amount: props.order?.total_amount ?? posStore.totalCost,
+    special_notes: props.order?.special_notes ?? '',
 });
 
 const { filter, handleClearFilter } = useFilters('orders.create', {
@@ -134,8 +137,8 @@ provide('showPaymentModal', showPaymentModal);
                     v-model="filter.name"
                     placeholder="Search items ..."
                 />
-                <PrimaryButton color="danger" @click="handleClearFilter">
-                    Clear Filters
+                <PrimaryButton color="red" @click="handleClearFilter">
+                    Clear
                 </PrimaryButton>
             </div>
 
@@ -240,13 +243,17 @@ provide('showPaymentModal', showPaymentModal);
                         {{ form.special_notes }}
                     </p>
                     <div class="flex gap-2">
-                        <PrimaryButton color="success" size="sm"
+                        <PrimaryButton
+                            color="gray"
+                            size="sm"
                             @click="showNoteModal = true"
                         >
                             <AkEdit />
                         </PrimaryButton>
-                        <PrimaryButton color="danger" size="sm"
-                            @click="showNoteModal = true"
+                        <PrimaryButton
+                            color="red"
+                            size="sm"
+                            @click="form.special_notes = ''"
                         >
                             <AkTrashCan />
                         </PrimaryButton>

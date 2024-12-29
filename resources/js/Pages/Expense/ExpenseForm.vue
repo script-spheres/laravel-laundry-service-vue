@@ -126,7 +126,7 @@ const submitForm = () => {
                 >
                     {{ expense ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('expenses.index')" color="danger">
+                <LinkButton :href="route('expenses.index')" color="red">
                     Cancel
                 </LinkButton>
             </div>

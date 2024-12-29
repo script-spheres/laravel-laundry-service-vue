@@ -125,7 +125,7 @@ const { filter, handleClearFilter } = useFilters('service-details.index', {
 
             <!-- Clear Filters Button -->
             <FieldCol class="flex-none gap-2 self-end">
-                <PrimaryButton color="danger" @click="handleClearFilter">
+                <PrimaryButton color="red" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </FieldCol>

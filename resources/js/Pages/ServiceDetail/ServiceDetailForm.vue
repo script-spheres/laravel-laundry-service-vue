@@ -147,7 +147,7 @@ const submitForm = () => {
                 </PrimaryButton>
                 <LinkButton
                     :href="route('service-details.index')"
-                    color="danger"
+                    color="red"
                 >
                     Cancel
                 </LinkButton>

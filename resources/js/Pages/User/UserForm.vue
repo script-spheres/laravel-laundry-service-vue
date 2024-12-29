@@ -4,6 +4,7 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import FieldCol from '@/Components/Form/FieldCol.vue';
 import FieldRow from '@/Components/Form/FieldRow.vue';
 import FilepondInput from '@/Components/Form/InputFilepond.vue';
+import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -15,27 +16,45 @@ import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AuthenticatedLayout });
 
-const props = defineProps({
+const { user } = defineProps({
     user: {
         type: Object as PropType<User>,
         required: false,
     },
-    rolesOptions: {
+    roleOptions: {
         type: Object as PropType<Options>,
         required: true,
     },
 });
 
-const method = props.user ? 'put' : 'post';
-const url = props.user
-    ? route('users.update', props.user.id)
-    : route('users.store');
+const method = user ? 'put' : 'post';
+const url = user ? route('users.update', user.id) : route('users.store');
 
+// Initialize form data, exclude password if user exists (for editing)
 const form = useForm(method, url, {
-    name: props.user?.name ?? '',
-    email: props.user?.email ?? '',
-    image: props.user?.image ?? '',
+    name: user?.name ?? '',
+    email: user?.email ?? '',
+    image: user?.image || {},
+    new_image: null as string | null,
+    role: user?.roles[0] ?? '',
+    ...(user ? {} : { password: '' }),
 });
+
+const handleFileProcess = (error: any, file: any) => {
+    if (user) {
+        form.new_image = file.serverId;
+    } else {
+        form.image = file.serverId;
+    }
+};
+
+const handleFileRemoved = () => {
+    if (user) {
+        form.new_image = null;
+    } else {
+        form.image = {};
+    }
+};
 
 const submitForm = () => {
     form.submit({
@@ -58,52 +77,66 @@ const submitForm = () => {
 
     <Card class="mx-auto mt-6 p-4 sm:p-6">
         <form @submit.prevent="submitForm">
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-8">
-                <!-- Image Upload for Medium and Larger Screens -->
-                <div class="flex justify-center md:col-span-2">
+            <FieldRow :cols="2">
+                <FieldCol>
+                    <InputText
+                        label="Name"
+                        v-model="form.name"
+                        :error="form.errors.name"
+                    />
+                </FieldCol>
+                <FieldCol>
+                    <InputText
+                        label="Email"
+                        type="email"
+                        v-model="form.email"
+                        :error="form.errors.email"
+                        :disabled="!!user"
+                    />
+                </FieldCol>
+            </FieldRow>
+            <FieldRow :cols="2">
+                <FieldCol>
+                    <InputSelect
+                        label="Role"
+                        v-model="form.role"
+                        :options="roleOptions"
+                        :error="form.errors.role"
+                    />
+                </FieldCol>
+                <FieldCol v-if="!user">
+                    <InputText
+                        label="Password"
+                        v-model="form.password"
+                        :error="form.errors.password"
+                    />
+                </FieldCol>
+            </FieldRow>
+
+            <FieldRow :cols="1">
+                <FieldCol>
                     <FilepondInput
-                        stylePanelLayout="circle"
                         label="Image"
+                        :files="user?.image"
+                        @processfile="handleFileProcess"
+                        @removefile="handleFileRemoved"
                         :error="form.errors.image"
                     />
-                </div>
+                </FieldCol>
+            </FieldRow>
 
-                <!-- Form Fields -->
-                <div class="md:col-span-6">
-                    <FieldRow :cols="1" class="md:grid-cols-2">
-                        <FieldCol>
-                            <InputText
-                                label="Name"
-                                v-model="form.name"
-                                :error="form.errors.name"
-                            />
-                        </FieldCol>
-                    </FieldRow>
-
-                    <FieldRow :cols="1" class="md:grid-cols-3">
-                        <FieldCol>
-                            <InputText
-                                label="Email"
-                                v-model="form.email"
-                                :error="form.errors.email"
-                            />
-                        </FieldCol>
-                    </FieldRow>
-
-                    <!-- Action Buttons -->
-                    <div class="mt-6 flex flex-col gap-2 md:flex-row">
-                        <PrimaryButton
-                            :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing"
-                            type="submit"
-                        >
-                            {{ user ? 'Update' : 'Submit' }}
-                        </PrimaryButton>
-                        <LinkButton :href="route('users.index')" color="danger">
-                            Cancel
-                        </LinkButton>
-                    </div>
-                </div>
+            <!-- Action Buttons -->
+            <div class="flex gap-2">
+                <PrimaryButton
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                    type="submit"
+                >
+                    {{ user ? 'Update' : 'Submit' }}
+                </PrimaryButton>
+                <LinkButton :href="route('users.index')" color="red">
+                    Cancel
+                </LinkButton>
             </div>
         </form>
     </Card>

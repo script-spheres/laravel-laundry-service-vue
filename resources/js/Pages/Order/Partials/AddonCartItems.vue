@@ -35,7 +35,7 @@ const totalAddonItems = computed(() =>
             <PrimaryButton
                 @click="posStore.clearItemCartByType('addon-service')"
                 size="sm"
-                color="danger"
+                color="red"
             >
                 <AkTrashCan class="h-4 w-4" />
             </PrimaryButton>
@@ -54,7 +54,7 @@ const totalAddonItems = computed(() =>
             </div>
             <div class="ml-2 flex items-center gap-2">
                 <PrimaryButton
-                    color="danger"
+                    color="red"
                     @click="posStore.removeItem(addon.id)"
                 >
                     <AkTrashCan class="h-4 w-4" />

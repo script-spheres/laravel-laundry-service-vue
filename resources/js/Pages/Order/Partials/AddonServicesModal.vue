@@ -74,8 +74,8 @@ const toggleCartItem = (item: AddonService) => {
                             <PrimaryButton
                                 :color="
                                     isInCart(addonService.id)
-                                        ? 'danger'
-                                        : 'primary'
+                                        ? 'red'
+                                        : 'gray'
                                 "
                                 @click="toggleCartItem(addonService)"
                             >

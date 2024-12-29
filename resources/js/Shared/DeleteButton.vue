@@ -27,7 +27,7 @@ const deleteData = async () => {
     <PrimaryButton
         type="button"
         @click="deleteData"
-        color="danger"
+        color="red"
         :data-test-id="`delete-link-button`"
     >
         <slot />

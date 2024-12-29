@@ -129,7 +129,7 @@ const submitForm = () => {
                 >
                     {{ role ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('roles.index')" color="danger">
+                <LinkButton :href="route('roles.index')" color="red">
                     Cancel
                 </LinkButton>
             </div>

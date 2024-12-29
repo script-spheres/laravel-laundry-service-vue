@@ -64,7 +64,7 @@ const isInCart = (id: number) => {
             </div>
             <div>
                 <PrimaryButton
-                    :color="isInCart(item.id) ? 'danger' : 'primary'"
+                    :color="isInCart(item.id) ? 'red' : 'gray'"
                     @click="toggleCartItem(item)"
                 >
                     {{ isInCart(item.id) ? 'Del' : 'Add' }}

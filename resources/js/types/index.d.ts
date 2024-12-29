@@ -61,6 +61,7 @@ export type User = {
     email: string;
     email_verified_at?: string;
     roles: string[];
+    password?: string;
 };
 
 export type Permission = {

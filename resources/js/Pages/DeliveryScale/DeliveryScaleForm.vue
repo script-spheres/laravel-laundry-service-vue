@@ -113,7 +113,7 @@ const submitForm = () => {
                 </PrimaryButton>
                 <LinkButton
                     :href="route('delivery-scales.index')"
-                    color="danger"
+                    color="red"
                 >
                     Cancel
                 </LinkButton>

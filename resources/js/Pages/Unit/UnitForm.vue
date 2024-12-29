@@ -99,7 +99,7 @@ const submitForm = () => {
                 >
                     {{ unit ? 'Update' : 'Submit' }}
                 </PrimaryButton>
-                <LinkButton :href="route('units.index')" color="danger">
+                <LinkButton :href="route('units.index')" color="red">
                     Cancel
                 </LinkButton>
             </div>

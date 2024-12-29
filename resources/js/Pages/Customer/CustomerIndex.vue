@@ -75,7 +75,7 @@ const { filter, handleClearFilter } = useFilters('customers.index', {
                 />
             </div>
             <div class="flex-none gap-2 self-end">
-                <PrimaryButton color="danger" @click="handleClearFilter">
+                <PrimaryButton color="red" @click="handleClearFilter">
                     Clear Filters
                 </PrimaryButton>
             </div>

@@ -128,7 +128,7 @@ const cloneDog = (order: Order) => {
             </FieldCol>
 
             <FieldCol class="flex-none gap-2 self-end">
-                <PrimaryButton @click="handleClearFilter" color="danger">
+                <PrimaryButton @click="handleClearFilter" color="red">
                     Clear Filters
                 </PrimaryButton>
             </FieldCol>

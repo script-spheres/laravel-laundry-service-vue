@@ -114,7 +114,7 @@ const submitForm = () => {
                 </PrimaryButton>
                 <LinkButton
                     :href="route('financial-years.index')"
-                    color="danger"
+                    color="red"
                 >
                     Cancel
                 </LinkButton>
