@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone_number')->unique();
             $table->text('address')->nullable();
             $table->json('communication_pref')->nullable();
-            $table->string('referral_code')->index()->unique();
+            $table->string('referral_code')->nullable()->unique();
             $table->integer('referral_count')->default(0);
             $table->foreignId('referred_by')->nullable()->constrained('customers')->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();

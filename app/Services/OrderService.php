@@ -2,9 +2,14 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\AddonServiceController;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\AddonService;
 use App\Models\Order;
+use App\Models\OrderLabel;
+use App\Models\ServiceDetail;
+use Illuminate\Support\Str;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderService
@@ -15,20 +20,75 @@ class OrderService
     public function getOrders()
     {
         return QueryBuilder::for(Order::class)
-            ->with(['customer', 'store'])
+            ->with(['customer', 'store', 'orderLabel'])
             ->allowedFilters(['id', 'customer_id', 'status'])
             ->allowedSorts(['created_at', 'status'])
             ->paginate()
             ->appends(request()->query());
     }
-
     /**
      * Store a new order.
      */
     public function create(StoreOrderRequest $request): Order
     {
         $attributes = $request->validated();
-        return Order::create($attributes);
+
+        // Generate a unique UUID for the order
+        $attributes['order_uuid'] = Str::uuid()->toString();
+        $attributes['order_display_id'] = $this->generateOrderDisplayId();
+        $attributes['order_label_id'] = $this->generateOrderLabelId();
+
+        // Create the order in the database
+        $order = Order::create($attributes);
+
+        // Add the associated order details (items, etc.)
+        if ($request->has('details') && is_array($request->details)) {
+            foreach ($request->details as $detail) {
+                // Validate the detail (you can add validation here if needed)
+                if (!isset($detail['serviceable_type'])) {
+                    continue; // Skip if no serviceable_type is present
+                }
+
+                // Handle serviceable_type mapping correctly
+                if ($detail['serviceable_type'] === 'service') {
+                    $detail['serviceable_type'] = ServiceDetail::class;
+                }
+                if ($detail['serviceable_type'] === 'addon-service') {
+                    $detail['serviceable_type'] = AddonService::class;
+                }
+
+                // Ensure the necessary fields are in the $detail array
+                $order->orderDetails()->create($detail);
+            }
+        }
+
+        return $order;
+    }
+
+
+    /**
+     * Generate a unique order display ID.
+     * This method can be customized as per your needs.
+     */
+    private function generateOrderDisplayId(): string
+    {
+        // Example: Generate a display ID based on the latest order ID or a sequence
+        $latestOrder = Order::latest()->first();
+        $latestId = $latestOrder ? $latestOrder->id : 0;
+
+        // Increment the latest order ID to generate the next display ID
+        return 'ORD-' . str_pad($latestId + 1, 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Generate a unique order label ID.
+     * This method can be customized as per your needs.
+     */
+    private function generateOrderLabelId(): string
+    {
+        $orderLabel = OrderLabel::where('name', 'pending')->first();
+
+        return $orderLabel->id;
     }
 
     /**

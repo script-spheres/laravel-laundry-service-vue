@@ -8,8 +8,8 @@ const { size = 'md', color = 'primary' } = defineProps<{
 
 // Size class mappings
 const sizeClasses = {
-    sm: 'h-7 px-3 text-xs',
-    md: 'h-9 px-4 text-sm',
+    sm: 'h-7 px-1 text-xs',
+    md: 'h-9 px-2 text-sm',
     lg: 'h-11 px-5 text-base',
 };
 
@@ -30,7 +30,7 @@ const colorClasses = {
         v-bind="{ ...$attrs }"
         :class="
             classNames(
-                'items-center rounded-md border border-transparent px-4 py-2 font-semibold tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800',
+                'items-center rounded-md border border-transparent font-semibold tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800',
                 colorClasses[color],
                 sizeClasses[size],
             )

@@ -53,7 +53,7 @@
         "laravel-precognition-vue-inertia": "^0.5.14",
         "lodash": "^4.17.21",
         "pinia": "^2.2.6",
-        "pinia-plugin-persistedstate": "^4.1.2",
+        "pinia-plugin-persistedstate": "^4.2.0",
         "swiper": "^11.1.15",
         "tailwind-merge": "^2.5.4",
         "tailwind-scrollbar": "^3.1.0",

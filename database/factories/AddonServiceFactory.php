@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Alirezasedghi\LaravelImageFaker\ImageFaker;
-use Alirezasedghi\LaravelImageFaker\Services\Picsum;
 use App\Models\AddonService;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Intervention\Image\Laravel\Facades\Image;
 
 /**
  * @extends Factory<AddonService>
@@ -19,30 +18,44 @@ class AddonServiceFactory extends Factory
      */
     public function definition(): array
     {
-        $imageFaker = new ImageFaker(new Picsum());
+        return [
+            'name' => $this->faker->word,
+            'description' => $this->faker->sentence,
+            'image' => $this->generateImage(),
+            'price' => $this->faker->randomFloat(2, 5, 100),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
+        ];
+    }
 
-        $storagePath = storage_path('app/public/addon-services');
+    /**
+     * Generate image details.
+     */
+    private function generateImage(): array
+    {
+        $dirname = 'addon-services';
 
-        // Ensure the banners directory exists in the storage folder
+        $storagePath = storage_path("app/public/$dirname");
+
+        // Ensure the directory exists
         if (!is_dir($storagePath)) {
             mkdir($storagePath, 0777, true);
         }
 
-        // Generate image in the correct directory
-        $filename = $imageFaker->image( $storagePath, 800, 600, false);
+        // Define a unique filename for the image
+        $filename = $this->faker->uuid . '.png';
+
+        // Create a blank image with Intervention Image
+        $img = Image::create(400, 400)->fill('#cccccc');
+
+        // Save the image to the storage path
+        $img->save($storagePath . DIRECTORY_SEPARATOR . $filename);
 
         return [
-            'name' => $this->faker->word,
-            'description' => $this->faker->sentence,
-            'image' => [
-                'dirname' => 'addon-services',
-                'basename' => $filename,
-                'extension' => 'jpg',
-                'location' => 'addon-services/' . $filename,
-                'url' => url('storage/addon-services/' . $filename),
-            ],
-            'price' => $this->faker->randomFloat(2, 5, 100),
-            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'dirname' => $dirname,
+            'basename' => $filename,
+            'extension' => 'png',
+            'location' => "$dirname/$filename",
+            'url' => url("storage/$dirname/$filename"),
         ];
     }
 }

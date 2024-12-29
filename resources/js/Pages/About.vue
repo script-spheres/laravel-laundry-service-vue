@@ -6,5 +6,5 @@ defineOptions({ layout: PublicLayout });
 </script>
 
 <template>
-    <Head title="Welcome" />
+    <Head title="About Us" />
 </template>

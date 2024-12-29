@@ -4,7 +4,6 @@ import InputText from '@/Components/Form/InputText.vue';
 import Modal from '@/Components/Modal/Modal.vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { inject, Ref } from 'vue';
-import { toast } from 'vue3-toastify';
 
 const showCustomerModal = inject('showCustomerModal') as Ref<boolean>;
 
@@ -12,24 +11,24 @@ const handleClose = () => {
     showCustomerModal.value = false;
 };
 
-const form = useForm('post', route('service-items.store'), {
+const form = useForm('post', route('customers.store'), {
     name: '',
     mobile: '',
     email: '',
     status: '',
 });
 
-const submitForm = () => {
+const submitCustomerForm = () => {
     form.submit({
         preserveScroll: true,
-        onSuccess: (page) => toast.success(page?.props?.flash?.message),
+        onSuccess: () => handleClose(),
     });
 };
 </script>
 
 <template>
     <Modal :show="showCustomerModal" @close="handleClose">
-        <form class="w-full" @submit.prevent="submitForm">
+        <form class="w-full" @submit.prevent="submitCustomerForm">
             <div class="p-6">
                 <div class="flex justify-between">
                     <h2

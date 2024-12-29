@@ -291,15 +291,10 @@ export type Expense = {
 export type CartItem = {
     id: number;
     name: string;
-    image: Image;
-    price: number;
-    quantity: number;
-    total: number;
-};
-
-export type CartAddonItem = {
-    id: number;
-    name: string;
+    serviceable_type: 'service' | 'addon-service';
+    serviceable_id: string | number;
+    image?: Image;
+    color: string;
     price: number;
     quantity: number;
     total: number;

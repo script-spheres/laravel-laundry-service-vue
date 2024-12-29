@@ -13,6 +13,7 @@ use App\Models\Order;
 use App\Models\Service;
 use App\Models\ServiceDetail;
 use App\Models\ServiceItem;
+use App\Models\Store;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -28,23 +29,7 @@ class OrderController extends Controller
 
         return Inertia::render('Order/OrderIndex', [
             'orders' => OrderResource::collection($orders),
-            'services' => Service::pluck('name','id'),
-            'filters' => $request->get('filter'),
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-        return Inertia::render('Order/OrderForm',[
-            'services' => Service::where('status','active')->get(),
-            'customerOptions' => Customer::pluck('name','id'),
-            'addonServices' => AddonService::get(),
-            'coupons' => Coupon::get(),
-            'categories' => Category::get(),
-            'serviceDetails' => ServiceDetail::with(['serviceItem','service'])->get(),
+            'services' => Service::pluck('name', 'id'),
             'filters' => $request->get('filter'),
         ]);
     }
@@ -60,32 +45,78 @@ class OrderController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Request $request)
+    {
+        $serviceDetailsQuery = ServiceDetail::with(['serviceItem', 'service', 'category', 'unit']);
+
+        $serviceDetailsQuery->when($request->input('filter.category_id'), function ($query, $categoryId) {
+            $query->whereHas('category', function ($query) use ($categoryId) {
+                $query->where('id', $categoryId);
+            });
+        });
+
+        $serviceDetailsQuery->when($request->input('filter.service_id'), function ($query, $serviceId) {
+            $query->whereHas('service', function ($query) use ($serviceId) {
+                $query->where('id', $serviceId);
+            });
+        });
+
+        return Inertia::render('Order/OrderForm', [
+            'services' => Service::where('status', 'active')->get(),
+            'storeOptions' => Store::pluck('name', 'id'),
+            'customerOptions' => Customer::pluck('name', 'id'),
+            'addonServices' => AddonService::get(),
+            'coupons' => Coupon::get(),
+            'categories' => Category::get(),
+            'serviceDetails' => $serviceDetailsQuery->get(),
+            'filters' => $request->get('filter'),
+        ]);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Order $order)
     {
         return Inertia::render('Order/OrderShow', [
-            'order' => OrderResource::make($order->load(['orderDetails','customer','payments'])),
+            'order' => OrderResource::make($order->load(['orderDetails', 'customer', 'payments', 'orderLabel'])),
             'services' => Service::get(),
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
-//            'serviceItems' => ServiceItem::with(['serviceDetails','serviceDetails.serviceType'])->get(),
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request,Order $order)
+    public function edit(Request $request, Order $order)
     {
+        $serviceDetailsQuery = ServiceDetail::with(['serviceItem', 'service', 'category', 'unit']);
+
+        $serviceDetailsQuery->when($request->input('filter.category_id'), function ($query, $categoryId) {
+            $query->whereHas('category', function ($query) use ($categoryId) {
+                $query->where('id', $categoryId);
+            });
+        });
+
+        $serviceDetailsQuery->when($request->input('filter.service_id'), function ($query, $serviceId) {
+            $query->whereHas('service', function ($query) use ($serviceId) {
+                $query->where('id', $serviceId);
+            });
+        });
+
         return Inertia::render('Order/OrderForm', [
             'order' => OrderResource::make($order)->resolve(),
-            'services' => Service::get(),
-            'customerOptions' => Customer::get(),
+            'services' => Service::where('status', 'active')->get(),
+            'storeOptions' => Store::pluck('name', 'id'),
+            'customerOptions' => Customer::pluck('name', 'id'),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
-            'serviceDetails' => ServiceDetail::with(['serviceItem','service'])->get(),
+            'categories' => Category::get(),
+            'serviceDetails' => $serviceDetailsQuery->get(),
             'filters' => $request->get('filter'),
         ]);
     }

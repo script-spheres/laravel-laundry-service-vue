@@ -2,48 +2,49 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { AkCart, AkTrashCan, BxPackage } from '@kalimahapps/vue-icons';
-import { inject, Ref } from 'vue';
+import { computed, inject, Ref } from 'vue';
 
 const posStore = usePosStore();
 const showAddonServiceModal = inject('showAddonServiceModal') as Ref<boolean>;
+
+// Using computed to reactively access addon items and total count
+const addonItems = computed(() => posStore.getItemsByType('addon-service'));
+const totalAddonItems = computed(() =>
+    posStore.totalItemsByType('addon-service'),
+);
 </script>
 
 <template>
-    <div class="flex justify-between p-4">
+    <div class="flex justify-between rounded-lg bg-gray-200 p-2">
         <div class="flex gap-4">
             <p class="text-xl font-bold">Addon Items</p>
             <div class="relative text-left text-lg">
                 <AkCart class="h-6 w-6" />
                 <div
-                    v-if="posStore.totalAddonItems > 0"
+                    v-if="totalAddonItems > 0"
                     class="absolute -right-2 top-3 h-5 w-5 rounded-full bg-cyan-500 p-0 text-center text-xs leading-5 text-white"
                 >
-                    {{ posStore.totalAddonItems }}
+                    {{ totalAddonItems }}
                 </div>
             </div>
         </div>
-        <div class="text-right">
-            <PrimaryButton
-                @click="showAddonServiceModal = true"
-                class="rounded-md bg-blue-500 text-white shadow hover:bg-blue-600"
-            >
-                <BxPackage />
+        <div class="flex gap-2">
+            <PrimaryButton @click="showAddonServiceModal = true" size="sm">
+                <BxPackage class="h-4 w-4" />
             </PrimaryButton>
             <PrimaryButton
-                class="hover:text-pink-500 focus:outline-none"
-                @click="posStore.clearAddonCart()"
+                @click="posStore.clearItemCartByType('addon-service')"
+                size="sm"
+                color="danger"
             >
-                <AkTrashCan class="inline-block h-6 w-6" />
+                <AkTrashCan class="h-4 w-4" />
             </PrimaryButton>
         </div>
     </div>
 
-    <div
-        v-if="posStore.addonItems.length"
-        class="w-full flex-1 overflow-auto px-4"
-    >
+    <div v-if="addonItems.length" class="w-full flex-1 overflow-auto">
         <div
-            v-for="addon in posStore.addonItems"
+            v-for="addon in addonItems"
             :key="addon.id"
             class="mb-1 flex w-full items-center rounded-lg bg-white p-2 shadow"
         >
@@ -53,8 +54,8 @@ const showAddonServiceModal = inject('showAddonServiceModal') as Ref<boolean>;
             </div>
             <div class="ml-2 flex items-center gap-2">
                 <PrimaryButton
-                    class="px-1 py-1 text-red-600"
-                    @click="posStore.removeAddonItem(addon.id)"
+                    color="danger"
+                    @click="posStore.removeItem(addon.id)"
                 >
                     <AkTrashCan class="h-4 w-4" />
                 </PrimaryButton>

@@ -67,7 +67,7 @@ const { filter, handleClearFilter } = useFilters('service-details.index', {
         </template>
         <template #actions>
             <LinkButton :href="route('service-details.create')">
-                Add Service Detail
+                Add Service Fare
             </LinkButton>
         </template>
     </PageHeader>

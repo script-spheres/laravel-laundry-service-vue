@@ -27,7 +27,7 @@ class Order extends Model
         'paid_amount',
         'delivery_date',
         'quick_note',
-        'order_status',
+        'order_label_id',
     ];
 
     protected $casts = [
@@ -46,11 +46,16 @@ class Order extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     public function store(): BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Store::class, 'store_id');
+    }
+
+    public function orderLabel(): BelongsTo
+    {
+        return $this->belongsTo(OrderLabel::class, 'order_label_id');
     }
 }

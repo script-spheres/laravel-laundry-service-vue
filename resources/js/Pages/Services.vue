@@ -53,7 +53,7 @@ const handleServiceClick = (serviceId: any) => {
 </script>
 
 <template>
-    <Head title="Laundry Services" />
+    <Head title="Services" />
 
     <!-- Main Section -->
     <section class="container mx-auto px-4 py-6 md:px-0">

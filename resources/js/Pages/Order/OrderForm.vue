@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+import InputRadioBox from '@/Components/Form/InputRadioBox.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import { useFilters } from '@/Composables/useFilters';
@@ -9,6 +10,9 @@ import AddonServicesModal from '@/Pages/Order/Partials/AddonServicesModal.vue';
 import CartItems from '@/Pages/Order/Partials/CartItems.vue';
 import CouponModal from '@/Pages/Order/Partials/CouponModal.vue';
 import CustomerModal from '@/Pages/Order/Partials/CustomerModal.vue';
+import NoteModal from '@/Pages/Order/Partials/NoteModal.vue';
+import PaymentModal from '@/Pages/Order/Partials/PaymentModal.vue';
+import ServiceItemsList from '@/Pages/Order/Partials/ServiceItemsList.vue';
 import NoData from '@/Shared/NoData.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import {
@@ -19,7 +23,7 @@ import {
     Service,
     ServiceDetail,
 } from '@/types';
-import { AkEdit, AkPlus, MdDiscount } from '@kalimahapps/vue-icons';
+import { AkEdit, AkPlus, BxPackage, MdDiscount,AkTrashCan } from '@kalimahapps/vue-icons';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType, provide, ref } from 'vue';
 import { toast } from 'vue3-toastify';
@@ -53,6 +57,10 @@ const props = defineProps({
         type: Object as PropType<Order>,
         required: false,
     },
+    storeOptions: {
+        type: Object as PropType<Options>,
+        required: true,
+    },
     customerOptions: {
         type: Object as PropType<Options>,
         required: true,
@@ -60,16 +68,11 @@ const props = defineProps({
     filters: Object as PropType<Filters>,
 });
 
-// Filters
-const { filter } = useFilters('orders.create', {
-    name: props.filters?.name ?? '',
-    service_id: props.filters?.service_id ?? '',
-});
-
 const showDiscountModal = ref(false);
 const showCouponModal = ref(false);
 const showCustomerModal = ref(false);
 const showNoteModal = ref(false);
+const showPaymentModal = ref(false);
 const showAddonServiceModal = ref(false);
 
 const method = props.order ? 'put' : 'post';
@@ -78,12 +81,13 @@ const url = props.order
     : route('orders.store');
 
 const form = useForm(method, url, {
+    store_id: '',
     customer_id: '',
     delivery_date: '',
     details: posStore.items,
     sub_total: posStore.subTotalCost,
-    tax_percentage: 0,
-    tax_amount: 0,
+    tax_percentage: posStore.taxPercentage,
+    tax_amount: posStore.taxAmount,
     payment_status: 'paid',
     order_status: 'placed',
     total_amount: posStore.totalCost,
@@ -91,10 +95,25 @@ const form = useForm(method, url, {
     special_notes: '',
 });
 
+const { filter, handleClearFilter } = useFilters('orders.create', {
+    name: props.filters?.name ?? '',
+    service_id: props.filters?.service_id ?? '',
+    category_id: props.filters?.category_id ?? '',
+});
+
 const posSubmit = async () => {
     form.submit({
         preserveScroll: true,
         onSuccess: (page) => toast.success(page.props?.flash?.message),
+        onError: (page) => {
+            if (page && typeof page === 'object') {
+                Object.values(page).forEach((errorMessage) => {
+                    toast.error(errorMessage);
+                });
+            } else {
+                console.error('Expected an object of errors, but got:', page);
+            }
+        },
     });
 };
 
@@ -103,87 +122,64 @@ provide('showDiscountModal', showDiscountModal);
 provide('showCouponModal', showCouponModal);
 provide('showCustomerModal', showCustomerModal);
 provide('showNoteModal', showNoteModal);
+provide('showPaymentModal', showPaymentModal);
 </script>
 
 <template>
-    <div class="grid h-[calc(100vh-65px)] grid-cols-3">
+    <div class="grid h-[calc(100vh-65px)] grid-cols-8">
         <!-- Left Sidebar -->
-        <div class="col-span-2">
+        <div class="col-span-5">
             <div class="flex items-center gap-6 p-4">
                 <InputText
                     v-model="filter.name"
                     placeholder="Search items ..."
                 />
+                <PrimaryButton color="danger" @click="handleClearFilter">
+                    Clear Filters
+                </PrimaryButton>
             </div>
 
-            <div class="flex h-[calc(100vh-135px)] space-x-2">
-                <div
-                    class="w-1/4 overflow-y-auto scrollbar-thin dark:text-white"
-                >
+            <div class="flex h-[calc(100vh-135px)] divide-x">
+                <!-- Services List -->
+                <div class="w-1/4 overflow-y-auto">
                     <p
-                        class="sticky top-0 z-10 flex h-14 items-center justify-center border-b bg-gray-100 text-center dark:border-gray-600 dark:bg-gray-700"
+                        class="sticky top-0 z-10 border-b bg-gray-100 py-3 text-center"
                     >
                         Services List :
                     </p>
                     <ul class="space-y-2 p-2">
-                        <li
-                            v-for="service in services"
-                            :key="service.id"
-                            class="w-full"
-                        >
-                            <button
-                                class="w-full rounded-lg border px-4 py-2 text-left font-medium transition-all duration-300"
-                            >
-                                {{ service.name }}
-                            </button>
+                        <li v-for="service in services" :key="service.id">
+                            <InputRadioBox
+                                name="inline-service-group"
+                                :label="service.name"
+                                :value="service.id"
+                                v-model="filter.service_id"
+                            />
                         </li>
                     </ul>
                 </div>
 
                 <!-- Items List -->
-                <div class="flex-1 overflow-y-auto scrollbar-thin">
-                    <!-- Categories List (Sticky Header) -->
-                    <div
-                        class="sticky top-0 z-10 border-b bg-gray-100 dark:border-gray-600 dark:bg-gray-700"
-                    >
-                        <ul class="flex space-x-2 p-2">
-                            <li v-for="item in categories" :key="item.id">
-                                <button
-                                    class="transform rounded-full border bg-gray-200 p-2 font-semibold text-gray-800 transition-all duration-300 hover:bg-gray-400 hover:text-white dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 dark:hover:text-white"
-                                >
-                                    {{ item.name }}
-                                </button>
+                <div class="flex-1 overflow-y-auto">
+                    <div class="sticky top-0 z-10 border-b bg-gray-100">
+                        <ul class="flex space-x-2 p-1">
+                            <li
+                                v-for="category in categories"
+                                :key="category.id"
+                            >
+                                <InputRadioBox
+                                    name="inline-category-group"
+                                    :label="category.name"
+                                    :value="category.id"
+                                    v-model="filter.category_id"
+                                />
                             </li>
                         </ul>
                     </div>
 
                     <!-- Service Items List -->
-                    <div v-if="serviceDetails.length" class="w-full">
-                        <ul class="space-y-2">
-                            <li
-                                v-for="item in serviceDetails"
-                                :key="item.id"
-                                class="flex items-center space-x-2 rounded-lg bg-white p-2 shadow transition-all duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-                            >
-                                <img
-                                    :alt="item?.service_item?.image?.basename"
-                                    :src="item?.service_item?.image?.url"
-                                    class="h-12 w-12 rounded-lg object-cover"
-                                />
-                                <div>
-                                    <p
-                                        class="text-sm font-semibold text-gray-800 dark:text-gray-200"
-                                    >
-                                        {{ item?.service_item?.name }}
-                                    </p>
-                                    <p
-                                        class="text-xs text-gray-600 dark:text-gray-400"
-                                    >
-                                        {{ item?.service_item?.description }}
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
+                    <div v-if="serviceDetails.length" class="w-full p-2">
+                        <ServiceItemsList :serviceDetails="serviceDetails" />
                     </div>
 
                     <!-- No Items Available Message -->
@@ -193,113 +189,141 @@ provide('showNoteModal', showNoteModal);
         </div>
 
         <!-- Right Sidebar -->
-        <div class="col-span-1 border-l">
-            <div class="flex flex-col rounded-xl dark:bg-gray-800">
-                <div class="p-2">
-                    <div class="grid gap-2 md:grid-cols-2">
-                        <div class="mt-0">
-                            <InputText
-                                type="date"
-                                v-model="form.delivery_date"
-                                label="Delivery Date"
-                                :error="form.errors.delivery_date"
-                            />
-                        </div>
-                        <div class="mt-0 flex w-full justify-between gap-1">
-                            <div class="flex-grow">
-                                <InputSelect
-                                    v-model="form.customer_id"
-                                    :options="customerOptions"
-                                    label="Customer"
-                                />
+        <div
+            class="col-span-3 flex flex-col justify-between border-l dark:bg-gray-800"
+        >
+            <div class="p-4">
+                <div class="mb-2 grid grid-cols-2 gap-4">
+                    <div>
+                        <InputSelect
+                            v-model="form.store_id"
+                            label="Store"
+                            :options="storeOptions"
+                        />
+                    </div>
+                    <div>
+                        <InputText
+                            type="date"
+                            v-model="form.delivery_date"
+                            label="Delivery Date"
+                        />
+                    </div>
+                </div>
+
+                <div class="mb-2 flex gap-1">
+                    <div class="flex-grow">
+                        <InputSelect
+                            v-model="form.customer_id"
+                            :options="customerOptions"
+                            label="Customer"
+                        />
+                    </div>
+                    <PrimaryButton
+                        class="flex-none self-end px-3"
+                        @click="showCustomerModal = true"
+                    >
+                        <AkPlus class="h-4 w-4" />
+                    </PrimaryButton>
+                </div>
+
+                <div class="space-y-2">
+                    <CartItems />
+                    <AddonCartItems />
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="bg-gray-200 p-4 text-sm">
+                <div class="flex items-center justify-between">
+                    <p>
+                        <span class="font-medium"> Notes: </span>
+                        {{ form.special_notes }}
+                    </p>
+                    <div class="flex gap-2">
+                        <PrimaryButton color="success" size="sm"
+                            @click="showNoteModal = true"
+                        >
+                            <AkEdit />
+                        </PrimaryButton>
+                        <PrimaryButton color="danger" size="sm"
+                            @click="showNoteModal = true"
+                        >
+                            <AkTrashCan />
+                        </PrimaryButton>
+                    </div>
+                </div>
+                <div class="flex justify-between text-base font-bold">
+                    <div class="space-y-2">
+                        <!-- Addon and Discount Section -->
+                        <div class="flex justify-between">
+                            <span class="font-medium">Addon:</span>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    @click="showAddonServiceModal = true"
+                                    class="rounded-md bg-gray-500 p-1.5 text-white shadow hover:bg-gray-600"
+                                >
+                                    <BxPackage />
+                                </button>
+                                <span class="font-bold text-gray-700"
+                                    >RP 0.00</span
+                                >
                             </div>
-                            <PrimaryButton
-                                class="flex-none self-end px-3"
-                                @click="showCustomerModal = true"
-                            >
-                                <AkPlus class="h-4 w-4" />
-                            </PrimaryButton>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Discount:</span>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    @click="showDiscountModal = true"
+                                    class="rounded-md bg-orange-500 p-1.5 text-white shadow hover:bg-orange-600"
+                                >
+                                    <MdDiscount />
+                                </button>
+                                <span class="font-bold text-gray-700"
+                                    >RP 0.00</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subtotal and Tax Section -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Sub Total:</span>
+                            <span class="font-bold text-gray-700">RP 0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Tax (11%):</span>
+                            <span class="font-bold text-gray-700">RP 0.00</span>
+                        </div>
+                        <div
+                            class="flex justify-between text-base font-bold text-gray-800"
+                        >
+                            <span>TOTAL:</span>
+                            <span>{{ posStore.totalCost }}</span>
                         </div>
                     </div>
                 </div>
-                <CartItems />
-                <AddonCartItems />
-                <div class="rounded-lg bg-gray-50 p-4 text-sm">
-                    <div class="flex items-center justify-between">
-                        <span class="font-medium">Notes:</span>
-                        <button
-                            @click="showNoteModal = true"
-                            class="rounded-md bg-green-500 p-1.5 text-white shadow hover:bg-green-600"
-                        >
-                            <AkEdit />
-                        </button>
-                    </div>
-                    <div
-                        class="flex items-center justify-between border-t border-dashed border-gray-300 pt-1"
-                    >
-                        <!-- Addon, Notes, and Discount Section -->
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="font-medium">Addon:</span>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold text-gray-700"
-                                        >RP 0.00</span
-                                    >
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="font-medium">Discount:</span>
-                                <div class="flex items-center gap-2">
-                                    <button
-                                        @click="showDiscountModal = true"
-                                        class="rounded-md bg-orange-500 p-1.5 text-white shadow hover:bg-orange-600"
-                                    >
-                                        <MdDiscount />
-                                    </button>
-                                    <span class="font-bold text-gray-700"
-                                        >RP 0.00</span
-                                    >
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Subtotal and Tax Section -->
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-600">Sub Total:</span>
-                                <span class="font-bold text-gray-700"
-                                    >RP 0.00</span
-                                >
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-600">Tax (11%):</span>
-                                <span class="font-bold text-gray-700"
-                                    >RP 0.00</span
-                                >
-                            </div>
-                            <div
-                                class="mb-2 flex justify-between text-base font-bold text-gray-800"
-                            >
-                                <span>TOTAL:</span>
-                                <span>{{ posStore.totalCost }}</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="flex items-center justify-between">
+                    <PrimaryButton @click="showPaymentModal = true">
+                        Payment
+                    </PrimaryButton>
                     <!-- Submit Button -->
                     <PrimaryButton
                         @click="posSubmit"
                         :disabled="form.processing"
-                        :class="[{ 'opacity-50': form.processing }, 'w-full']"
+                        :class="[{ 'opacity-50': form.processing }]"
                     >
                         SUBMIT
                     </PrimaryButton>
                 </div>
             </div>
-            <!-- Modals -->
         </div>
     </div>
 
+    <!-- Modals -->
     <CustomerModal />
+    <PaymentModal />
+    <NoteModal v-model="form.special_notes" />
     <AddonServicesModal :addonServices="addonServices" />
     <CouponModal :coupons="coupons" />
 </template>

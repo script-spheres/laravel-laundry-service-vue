@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import DataTable from '@/Components/DataTable/DataTable.vue';
 import TableBody from '@/Components/DataTable/TableBody.vue';
 import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
-import RadioInput from '@/Components/Form/InputRadio.vue';
 import Modal from '@/Components/Modal/Modal.vue';
 import { usePosStore } from '@/Stores/PosStore';
 import { Coupon } from '@/types';
@@ -55,9 +55,9 @@ const applyCoupon = (coupon: Coupon) => {
                         <TableCell>{{ coupon.discount_amount }}</TableCell>
                         <TableCell>{{ coupon.discount_percentage }}%</TableCell>
                         <TableCell class="flex justify-end gap-2">
-                            <RadioInput @click="applyCoupon(coupon)">
+                            <PrimaryButton @click="applyCoupon(coupon)">
                                 Apply
-                            </RadioInput>
+                            </PrimaryButton>
                         </TableCell>
                     </TableRow>
                 </TableBody>

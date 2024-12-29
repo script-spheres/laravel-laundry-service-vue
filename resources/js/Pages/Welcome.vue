@@ -64,7 +64,7 @@ const categoryConfig = {
 </script>
 
 <template>
-    <Head title="Welcome to SparkleClean Laundry" />
+    <Head title="Welcome" />
 
     <div
         class="bg-gradient-to-br from-blue-50 to-gray-50 dark:from-gray-800 dark:to-gray-900"

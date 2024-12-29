@@ -11,9 +11,6 @@ const handleClose = () => {
     showAddonServiceModal.value = false;
 };
 
-const isInCart = (id: number) => {
-    return posStore.addonItems.some((item) => item.id === id);
-};
 </script>
 
 <template>

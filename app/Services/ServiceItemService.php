@@ -8,6 +8,7 @@ use App\Models\ServiceItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use RahulHaque\Filepond\Facades\Filepond;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ServiceItemService
@@ -18,8 +19,21 @@ class ServiceItemService
     public function getServiceItems()
     {
         return QueryBuilder::for(ServiceItem::class)
-            ->allowedFilters(['id', 'name'])
-            ->with('serviceDetails')
+            ->allowedFilters([
+                AllowedFilter::exact('id'),
+                AllowedFilter::exact('name'),
+//                AllowedFilter::callback('category_id', function ($query, $value) {
+//                    $query->whereHas('serviceDetails.category', function ($query) use ($value) {
+//                        $query->where('id', $value);
+//                    });
+//                }),
+//                AllowedFilter::callback('service_id', function ($query, $value) {
+//                    $query->whereHas('service', function ($query) use ($value) {
+//                        $query->where('id', $value);
+//                    });
+//                }),
+            ])
+//            ->with(['serviceDetails','service'])
             ->allowedSorts(['name', 'created_at'])
             ->paginate()
             ->appends(request()->query());

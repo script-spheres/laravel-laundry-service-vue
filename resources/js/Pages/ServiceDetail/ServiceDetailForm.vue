@@ -63,7 +63,7 @@ const submitForm = () => {
 <template>
     <PageHeader>
         <template #title>
-            {{ serviceDetail ? 'Edit ' : 'Create New' }} Service Detail
+            {{ serviceDetail ? 'Edit ' : 'Create New' }} Service Fare
         </template>
         <template #subtitle>
             Fill in the details for your

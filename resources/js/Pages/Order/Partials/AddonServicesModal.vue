@@ -17,26 +17,35 @@ const posStore = usePosStore();
 
 defineProps({
     addonServices: {
-        type: Object as PropType<AddonService[]>,
+        type: Array as PropType<AddonService[]>,
         required: true,
     },
 });
+
 const handleClose = () => {
     showAddonServiceModal.value = false;
 };
 
 const isInCart = (id: number) => {
-    return posStore.addonItems.some((item) => item.id === id);
+    return posStore
+        .getItemsByType('addon-service')
+        .some((item) => item.id === id);
 };
 
 const toggleCartItem = (item: AddonService) => {
     if (isInCart(item.id)) {
-        posStore.removeAddonItem(item.id);
+        posStore.removeItem(item.id);
     } else {
-        posStore.addAddonItem({
+        posStore.addItem({
             id: item.id,
             name: item.name,
+            image: item.image,
+            serviceable_type: 'addon-service',
+            serviceable_id: item.id,
+            color: '',
             price: item.price,
+            quantity: 1,
+            total: item.price,
         });
     }
 };
@@ -62,20 +71,16 @@ const toggleCartItem = (item: AddonService) => {
                         <TableCell>{{ addonService.name }}</TableCell>
                         <TableCell>{{ addonService.price }}</TableCell>
                         <TableCell class="flex justify-end gap-2">
-                            <template v-if="isInCart(addonService.id)">
-                                <PrimaryButton
-                                    @click="toggleCartItem(addonService)"
-                                >
-                                    Del
-                                </PrimaryButton>
-                            </template>
-                            <template v-else>
-                                <PrimaryButton
-                                    @click="toggleCartItem(addonService)"
-                                >
-                                    Add
-                                </PrimaryButton>
-                            </template>
+                            <PrimaryButton
+                                :color="
+                                    isInCart(addonService.id)
+                                        ? 'danger'
+                                        : 'primary'
+                                "
+                                @click="toggleCartItem(addonService)"
+                            >
+                                {{ isInCart(addonService.id) ? 'Del' : 'Add' }}
+                            </PrimaryButton>
                         </TableCell>
                     </TableRow>
                 </TableBody>
