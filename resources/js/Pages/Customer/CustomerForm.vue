@@ -96,6 +96,7 @@ const submitForm = () => {
                 </FieldCol>
                 <FieldCol>
                     <InputText
+                        type="number"
                         label="Phone Number"
                         v-model="form.phone_number"
                         :error="form.errors.phone_number"

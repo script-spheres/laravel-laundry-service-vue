@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             TimeslotSeeder::class,
             DeliveryScaleSeeder::class,
             BannerSeeder::class,
+            FinancialYearSeeder::class,
+            CustomerSeeder::class,
         ]);
     }
 }

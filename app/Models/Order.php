@@ -28,6 +28,7 @@ class Order extends Model
         'delivery_date',
         'quick_note',
         'order_label_id',
+        'order_status',
     ];
 
     protected $casts = [

@@ -18,7 +18,7 @@ class OrderStatusController extends Controller
     public function index(Request $request)
     {
         // Fetch all orders
-        $orders = Order::query()->get();
+        $orders = Order::with(['orderDetails', 'customer', 'payments', 'orderLabel'])->get();
 
         // Filter orders based on order status
         $pendingOrders = $orders->where('order_status', 'pending');
@@ -38,12 +38,15 @@ class OrderStatusController extends Controller
         ]);
     }
 
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderRequest $request, Order $order, OrderService $orderService)
+    public function update(UpdateOrderRequest $request, Order $order)
     {
-        $orderService->update($order, $request);
+        $order->update([
+            'order_status' => $request->order_status,
+        ]);
 
         return redirect()->route('orders-status.index')->with(['message' => 'Updated successfully']);
     }

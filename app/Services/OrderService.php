@@ -9,7 +9,9 @@ use App\Models\AddonService;
 use App\Models\Order;
 use App\Models\OrderLabel;
 use App\Models\ServiceDetail;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderService
@@ -20,12 +22,33 @@ class OrderService
     public function getOrders()
     {
         return QueryBuilder::for(Order::class)
-            ->with(['customer', 'store', 'orderLabel'])
-            ->allowedFilters(['id', 'customer_id', 'status'])
+            ->allowedFilters([
+                AllowedFilter::exact('order_display_id'),
+                AllowedFilter::exact('customer_name'),
+                AllowedFilter::exact('order_status'),
+                AllowedFilter::exact('payment_status'),
+                AllowedFilter::callback('customer', function ($query, $value) {
+                    $query->whereHas('customer', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('store', function ($query, $value) {
+                    $query->whereHas('store', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('orderLabel', function ($query, $value) {
+                    $query->whereHas('orderLabel', function ($query) use ($value) {
+                        $query->where('label', 'like', "%{$value}%");
+                    });
+                }),
+            ])
             ->allowedSorts(['created_at', 'status'])
+            ->with(['customer', 'store', 'orderLabel'])
             ->paginate()
             ->appends(request()->query());
     }
+
     /**
      * Store a new order.
      */
@@ -37,6 +60,7 @@ class OrderService
         $attributes['order_uuid'] = Str::uuid()->toString();
         $attributes['order_display_id'] = $this->generateOrderDisplayId();
         $attributes['order_label_id'] = $this->generateOrderLabelId();
+        $attributes['delivery_date'] = $attributes['delivery_date'] ?? Carbon::now()->addDays(5);
 
         // Create the order in the database
         $order = Order::create($attributes);

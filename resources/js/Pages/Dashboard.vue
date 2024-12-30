@@ -5,15 +5,21 @@ import Card from '@/Components/Panel/Card.vue';
 import { useFilters } from '@/Composables/useFilters';
 import { orderStatusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Order } from '@/types';
+import { Order, PaginatedData } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { PropType } from 'vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
-    orders: Array as PropType<Order[]>,
-    filters: Object as PropType<Filters>,
+    orders: {
+        type: Object as PropType<PaginatedData<Order>>,
+        required: true,
+    },
+    filters: {
+        type: Object as PropType<Filters>,
+        default: () => ({}),
+    },
 });
 
 const { filter } = useFilters(
@@ -93,20 +99,26 @@ const chartSeries = [513, 223, 486, 159];
                 class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
             >
                 <div
-                    v-for="order in orders"
+                    v-for="order in orders.data"
                     :key="order.order_uuid"
                     class="rounded bg-gray-50 p-4 shadow"
                 >
-                    <p class="font-bold">{{ order.order_uuid }}</p>
-                    <p class="text-gray-500">Customer: Walk In Customer</p>
-                    <p class="text-gray-500"><span>02/12/2024</span></p>
+                    <p class="font-bold">{{ order.order_display_id }}</p>
+                    <p class="text-gray-500">
+                        <span class="font-bold">Customer: </span>
+                        {{ order?.customer?.name }}
+                    </p>
+                    <p class="text-gray-500">
+                        <span class="font-bold">Order Date:</span>
+                        {{ order.created_at }}
+                    </p>
                 </div>
             </div>
         </Card>
 
         <Card class="p-4">
             <div>
-                <h6 class="mb-4 text-lg font-bold">Order Overview:</h6>
+                <h6 class="mb-4 text-lg font-bold">Today Order Overview:</h6>
                 <apexchart :options="chartOptions" :series="chartSeries" />
             </div>
         </Card>

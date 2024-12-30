@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\FinancialYear;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class FinancialYearSeeder extends Seeder
 {
@@ -13,24 +14,28 @@ class FinancialYearSeeder extends Seeder
      */
     public function run(): void
     {
+        // Get the current year and the next year
+        $currentYear = Carbon::now()->year;
+        $nextYear = $currentYear + 1;
+
         $financialYears = collect([
             [
-                'name' => '2023-2024 Financial Year',
-                'start_date' => '2023-04-01',
-                'end_date' => '2024-03-31',
+                'name' => "{$currentYear}-{$nextYear} Financial Year",
+                'start_date' => "{$currentYear}-04-01",
+                'end_date' => "{$nextYear}-03-31",
             ],
             [
-                'name' => '2024-2025 Financial Year',
-                'start_date' => '2024-04-01',
-                'end_date' => '2025-03-31',
+                'name' => "{$nextYear}-" . ($nextYear + 1) . " Financial Year",
+                'start_date' => "{$nextYear}-04-01",
+                'end_date' => ($nextYear + 1) . "-03-31",
             ],
             [
-                'name' => '2025-2026 Financial Year',
-                'start_date' => '2025-04-01',
-                'end_date' => '2026-03-31',
+                'name' => ($nextYear + 1) . '-' . ($nextYear + 2) . ' Financial Year',
+                'start_date' => ($nextYear + 1) . '-04-01',
+                'end_date' => ($nextYear + 2) . '-03-31',
             ],
         ]);
 
-        $financialYears->each(fn($data) => FinancialYear::factory()->create($data));
+        $financialYears->each(fn($data) => FinancialYear::create($data));
     }
 }

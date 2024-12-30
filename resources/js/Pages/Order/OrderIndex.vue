@@ -32,7 +32,7 @@ const props = defineProps({
 });
 
 const { filter, handleClearFilter } = useFilters('orders.index', {
-    order_uuid: props.filters?.order_uuid || '',
+    order_display_id: props.filters?.order_display_id || '',
     customer_name: props.filters?.customer_name || '',
     order_status: props.filters?.order_status || '',
     payment_status: props.filters?.payment_status || '',
@@ -53,7 +53,7 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
             <FieldCol>
                 <InputText
                     label="Order No."
-                    v-model="filter.order_uuid"
+                    v-model="filter.order_display_id"
                     placeholder="Search by Order No."
                 />
             </FieldCol>
@@ -106,7 +106,7 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
                 <TableCell class="p-2">
                     <p>
                         <strong>Order ID:</strong>
-                        {{ order.order_uuid }}
+                        {{ order.order_display_id }}
                     </p>
                     <p>
                         <strong>Order Date:</strong>
@@ -131,9 +131,9 @@ const { filter, handleClearFilter } = useFilters('orders.index', {
                         {{ order.customer?.phone_number }}
                     </p>
                 </TableCell>
-                <TableCell class="text-right">
+                <TableCell>
                     <Badge>
-                        {{ order.order_label?.name }}
+                        {{ order.order_status }}
                     </Badge>
                 </TableCell>
                 <TableCell class="p-2">

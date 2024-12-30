@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Inertia\Inertia;
 
@@ -12,8 +13,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $orders = Order::with(['orderDetails', 'customer', 'payments', 'orderLabel'])->get();
+
         return Inertia::render('Dashboard', [
-            'orders' => Order::get(),
+            'orders' => OrderResource::collection($orders),
         ]);
     }
 }

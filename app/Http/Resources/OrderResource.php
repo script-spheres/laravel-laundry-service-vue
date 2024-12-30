@@ -36,6 +36,7 @@ class OrderResource extends JsonResource
             'customer' => CustomerResource::make($this->whenLoaded('customer')),
             'order_details' => OrderDetailResource::collection($this->whenLoaded('orderDetails')),
             'order_label' => OrderLabelResource::make($this->whenLoaded('orderLabel')),
+            'created_at' => $this->created_at->format('Y-m-d'),
         ];
     }
 }

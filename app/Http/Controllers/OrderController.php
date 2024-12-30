@@ -41,7 +41,7 @@ class OrderController extends Controller
     {
         $orderService->create($request);
 
-        return redirect()->route('orders.index')->with(['message' => 'Created successfully']);
+        return redirect()->route('orders.create')->with(['message' => 'Created successfully']);
     }
 
     /**

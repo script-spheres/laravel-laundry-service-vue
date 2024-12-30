@@ -32,7 +32,7 @@ class OrderFactory extends Factory
             'tax_amount' => $this->faker->randomFloat(2, 5, 50),
             'discount_amount' => $this->faker->randomFloat(2, 0, 20),
             'paid_amount' => $this->faker->randomFloat(2, 0, 500),
-            'delivery_date' => now()->addDays(5)->toDateString(),  // Adds 5 days to today's date
+            'delivery_date' => now()->addDays(5)->toDateString(),
             'quick_note' => $this->faker->sentence(),
             'order_status' => $this->faker->randomElement(['pending', 'in-progress', 'ready-to-deliver', 'delivered']),
         ];

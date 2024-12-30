@@ -1,4 +1,4 @@
-import { CartItem } from '@/types';
+import { CartItem, OrderDetail } from '@/types';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -13,10 +13,20 @@ export const usePosStore = defineStore(
         const coupon = ref<string | null>(null);
 
         // Setter functions to set state values directly
-        const setItems = (newItems: CartItem[]) => {
-            items.value = newItems;
-            totalItems.value = newItems.reduce((acc, item) => acc + item.quantity, 0);
-            subTotalCost.value = newItems.reduce((acc, item) => acc + item.total, 0);
+        const setItems = (newItems: OrderDetail[]) => {
+            newItems?.forEach((item) => {
+                items.value.push({
+                    id: item.id,
+                    name: item.serviceable_type, // Adjust this if necessary to get the actual name
+                    serviceable_type: item.serviceable_type as 'service' | 'addon-service',
+                    serviceable_id: item.serviceable_id,
+                    color: item.color,
+                    price: item.price,
+                    quantity: item.quantity,
+                    total: item.price * item.quantity, // Assuming total is price * quantity
+                    image: item.serviceable?.image, // Assuming image is part of the serviceable object
+                });
+            });
         };
 
         const setTotalItems = (newTotalItems: number) => {

@@ -90,14 +90,17 @@ const form = useForm(method, url, {
     store_id: props.order?.store_id ?? '',
     customer_id: props.order?.customer_id ?? '',
     delivery_date: props.order?.delivery_date ?? '',
-    details: props.order?.order_details ?? posStore.items,
-    sub_total: props.order?.sub_total ?? posStore.subTotalCost,
-    tax_percentage: props.order?.tax_percentage ?? posStore.taxPercentage,
-    tax_amount: props.order?.tax_amount ?? posStore.taxAmount,
-    total_amount: props.order?.total_amount ?? posStore.totalCost,
-    special_notes: props.order?.special_notes ?? '',
+    details: posStore.items,
+    sub_total: posStore.subTotalCost,
+    tax_amount: posStore.taxAmount,
+    total_amount: posStore.totalCost,
+    quick_note: props.order?.quick_note ?? '',
+    payments: props.order?.payments ?? [],
 });
 
+if (props.order){
+    posStore.setItems(props.order.order_details);
+}
 const { filter, handleClearFilter } = useFilters('orders.create', {
     name: props.filters?.name ?? '',
     service_id: props.filters?.service_id ?? '',
@@ -107,7 +110,10 @@ const { filter, handleClearFilter } = useFilters('orders.create', {
 const posSubmit = async () => {
     form.submit({
         preserveScroll: true,
-        onSuccess: (page) => toast.success(page.props?.flash?.message),
+        onSuccess: () => {
+            form.reset();
+            posStore.clearItemCart();
+        },
         onError: (page) => {
             if (page && typeof page === 'object') {
                 Object.values(page).forEach((errorMessage) => {
@@ -329,8 +335,8 @@ provide('showPaymentModal', showPaymentModal);
 
     <!-- Modals -->
     <CustomerModal />
-    <PaymentModal />
-    <NoteModal v-model="form.special_notes" />
+    <PaymentModal v-model="form.payments" :payments="form.payments" />
+    <NoteModal v-model="form.quick_note" />
     <AddonServicesModal :addonServices="addonServices" />
     <CouponModal :coupons="coupons" />
 </template>

@@ -60,7 +60,7 @@ const columns = reactive([
 const { filter, handleClearFilter } = useFilters('orders-status.index', {
     order_date: props.filters?.order_date || '',
     payment_status: props.filters?.payment_status || '',
-    order_uuid: props.filters?.order_uuid || '',
+    order_display_id: props.filters?.order_display_id || '',
 });
 
 let targetColumn = '';
@@ -104,7 +104,7 @@ const cloneDog = (order: Order) => {
             <FieldCol>
                 <InputText
                     label="Order No."
-                    v-model="filter.order_uuid"
+                    v-model="filter.order_display_id"
                     placeholder="Search by Order No."
                 />
             </FieldCol>
@@ -164,7 +164,7 @@ const cloneDog = (order: Order) => {
                     >
                         <div class="flex flex-col space-y-2">
                             <h3 class="text-md font-bold text-gray-700">
-                                {{ element.order_uuid }}
+                                {{ element.order_display_id }}
                             </h3>
                             <p class="text-sm text-gray-500">
                                 <strong>Delivery Date:</strong>
@@ -172,7 +172,7 @@ const cloneDog = (order: Order) => {
                             </p>
                             <p class="text-sm text-gray-500">
                                 <strong>Customer:</strong>
-                                {{ element.customer?.name }}
+                                {{ element.customer?.data.name }}
                             </p>
                         </div>
                     </div>

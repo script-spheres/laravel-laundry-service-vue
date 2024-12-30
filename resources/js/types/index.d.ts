@@ -238,6 +238,7 @@ export type Order = {
     store: Store;
     customer: Customer;
     order_details: OrderDetail[];
+    order_status: string;
     created_at: string;
 };
 
