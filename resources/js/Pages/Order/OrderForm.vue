@@ -108,7 +108,7 @@ const posSubmit = async () => {
     form.submit({
         preserveScroll: true,
         onSuccess: () => {
-            posStore.clearItemCart();
+            posStore.clear();
             form.reset();
         },
         onError: (page) => {

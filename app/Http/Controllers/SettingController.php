@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreExpenseRequest;
 use App\Services\ExpenseService;
+use App\Settings\BusinessSettings;
 use App\Settings\FinanceSettings;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\RedirectResponse;
@@ -15,19 +16,17 @@ class SettingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(GeneralSettings $settings): Response
+    public function index(): Response
     {
-        return Inertia::render('Settings/GeneralSetting', [
-            'settings' => $settings,
-        ]);
-    }
-    /**
-     * Display a listing of the resource.
-     */
-    public function general(GeneralSettings $settings): Response
-    {
-        return Inertia::render('Settings/GeneralSetting', [
-            'settings' => $settings,
+        $generalSettings = app(GeneralSettings::class);
+        $businessSettings = app(BusinessSettings::class);
+        $financeSettings = app(FinanceSettings::class);
+
+        // Pass the settings to the Inertia view
+        return Inertia::render('Settings/SettingIndex', [
+            'generalSettings' => $generalSettings,
+            'businessSettings' => $businessSettings,
+            'financeSettings' => $financeSettings,
         ]);
     }
 
@@ -44,7 +43,7 @@ class SettingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function finance(FinanceSettings $settings): Response
+    public function finance(): Response
     {
         return Inertia::render('Settings/FinanceSetting', [
             'settings' => $settings,

@@ -297,7 +297,7 @@ export type Expense = {
 export type CartItem = {
     id: number;
     name: string;
-    serviceable_type: 'service' | 'addon-service';
+    serviceable_type: string;
     serviceable_id: string | number;
     image?: Image;
     color: string;
@@ -333,6 +333,48 @@ export type Faq = {
     id: number;
     question: string;
     answer: string;
+};
+
+export type GeneralSettings = {
+    site_name: string;
+    slogan: string;
+    logo: string;
+    favicon: string;
+};
+
+export type FinanceSettings = {
+    tax_rate: number;
+    currency: string;
+    currency_symbol: string;
+    discount_rate: number;
+    payment_terms: number;
+    minimum_order_value: number;
+    transaction_fee: number;
+    rounding: number;
+};
+
+export type BusinessSettings = {
+    name: string;
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    zip_code: string;
+    email: string;
+    tax_number: string;
+    country_code: string;
+};
+
+export type OtherSettings = {
+    name: string;
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    zip_code: string;
+    email: string;
+    tax_number: string;
+    country_code: string;
 };
 
 export type Status = 'active' | 'inactive';
