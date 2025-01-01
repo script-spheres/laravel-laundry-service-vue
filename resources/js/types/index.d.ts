@@ -274,8 +274,12 @@ export type DeliveryScale = {
 
 export type Payment = {
     id: number;
+    payment_date: string;
+    payment_method: string;
+    payment_status: string;
     amount: number;
-    status: string;
+    order: Order;
+    created_at: string;
 };
 
 export type Expense = {

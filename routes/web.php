@@ -26,6 +26,7 @@ use App\Http\Controllers\OrderInvoiceController;
 use App\Http\Controllers\OrderLabelController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
@@ -93,6 +94,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('timeslots', TimeslotController::class);
     Route::resource('faqs', FaqController::class);
     Route::resource('reviews', ReviewController::class);
+    Route::resource('payments', PaymentController::class);
 
     Route::resource('orders', OrderController::class);
     Route::get('orders/{order}/invoice', [OrderInvoiceController::class, 'index'])->name('orders.invoice');

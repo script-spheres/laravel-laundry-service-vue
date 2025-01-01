@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderDetailResource;
 use App\Http\Resources\OrderResource;
 use App\Models\AddonService;
 use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\Service;
 use App\Models\ServiceDetail;
-use App\Models\ServiceItem;
 use App\Models\Store;
 use App\Services\OrderService;
+use App\Services\ServiceDetailService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -94,29 +96,18 @@ class OrderController extends Controller
      */
     public function edit(Request $request, Order $order)
     {
-        $serviceDetailsQuery = ServiceDetail::with(['serviceItem', 'service', 'category', 'unit']);
-
-        $serviceDetailsQuery->when($request->input('filter.category_id'), function ($query, $categoryId) {
-            $query->whereHas('category', function ($query) use ($categoryId) {
-                $query->where('id', $categoryId);
-            });
-        });
-
-        $serviceDetailsQuery->when($request->input('filter.service_id'), function ($query, $serviceId) {
-            $query->whereHas('service', function ($query) use ($serviceId) {
-                $query->where('id', $serviceId);
-            });
-        });
+        $orderDetails = OrderDetails::where(['order_id',$order->id])->get();
 
         return Inertia::render('Order/OrderForm', [
             'order' => OrderResource::make($order)->resolve(),
+            'orderDetails' => OrderDetailResource::collection($orderDetails)->resolve(),
             'services' => Service::where('status', 'active')->get(),
             'storeOptions' => Store::pluck('name', 'id'),
             'customerOptions' => Customer::pluck('name', 'id'),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
             'categories' => Category::get(),
-            'serviceDetails' => $serviceDetailsQuery->get(),
+            'serviceDetails' => (new ServiceDetailService())->getServiceDetails(),
             'filters' => $request->get('filter'),
         ]);
     }

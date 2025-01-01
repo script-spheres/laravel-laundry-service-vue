@@ -233,7 +233,7 @@ const categoryConfig = {
         </section>
 
         <!-- Testimonials Section -->
-        <section class="bg-white py-20">
+        <section class="bg-white py-20" v-if="testimonials.length > 0">
             <div class="container mx-auto px-4 text-center">
                 <h2 class="text-4xl font-bold text-gray-800">
                     What Our Customers Say
@@ -267,7 +267,7 @@ const categoryConfig = {
         </section>
 
         <!-- FAQ Section -->
-        <section class="bg-gray-50 py-20">
+        <section class="bg-gray-50 py-20" v-if="faqItems.length > 0">
             <div class="container mx-auto px-4">
                 <h2 class="text-center text-4xl font-bold text-gray-800">
                     Frequently Asked Questions

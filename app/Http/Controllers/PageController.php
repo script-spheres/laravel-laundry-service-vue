@@ -30,7 +30,7 @@ class PageController extends Controller
     {
         return Inertia::render('Welcome', [
             'banners' => Banner::all(),
-            'services' => ServiceItem::all(),
+            'services' => Service::all(),
             'faqItems' => Faq::all(),
             'testimonials' => Review::all(),
             'heroSection' => ServiceItem::all(),

@@ -49,11 +49,10 @@ export const orderStatusOptions: Record<string, string> = {
 };
 
 export const paymentModeOptions: Record<string, string> = {
-    credit_card: 'Credit Card',
-    debit_card: 'Debit Card',
-    paypal: 'PayPal',
+    card: 'Card',
     cash: 'Cash',
-    bank_transfer: 'Bank Transfer',
+    bank: 'Bank Transfer',
+    upi: 'Upi Transfer',
 };
 
 export const paymentStatusOptions: Record<string, string> = {

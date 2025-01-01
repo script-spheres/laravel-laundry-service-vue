@@ -8,14 +8,6 @@ import { computed } from 'vue';
 const posStore = usePosStore();
 const cartItems = computed(() => posStore.getItemsByType('service'));
 const totalCartItems = computed(() => posStore.totalItemsByType('service'));
-
-const updateItemQuantity = (id: number, currentQuantity: number) => {
-    if (currentQuantity > 1) {
-        posStore.updateItem(id, currentQuantity);
-    } else {
-        posStore.removeItem(id);
-    }
-};
 </script>
 
 <template>
@@ -46,10 +38,7 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
     </div>
 
     <!-- Cart Items -->
-    <div
-        class="w-full space-y-1 overflow-auto"
-        v-if="cartItems.length > 0"
-    >
+    <div class="w-full space-y-1 overflow-auto" v-if="cartItems.length > 0">
         <div
             v-for="item in cartItems"
             :key="item.id"
@@ -70,7 +59,7 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
                 <InputColor v-model="item.color" />
                 <PrimaryButton
                     class="bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
-                    @click="updateItemQuantity(item.id, item.quantity + 1)"
+                    @click="posStore.addItem(item)"
                 >
                     <AkMinus class="h-4 w-4" />
                 </PrimaryButton>
@@ -82,7 +71,7 @@ const updateItemQuantity = (id: number, currentQuantity: number) => {
                 />
                 <PrimaryButton
                     class="bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
-                    @click="updateItemQuantity(item.id, item.quantity - 1)"
+                    @click="posStore.addItem(item)"
                 >
                     <AkPlus class="h-4 w-4" />
                 </PrimaryButton>

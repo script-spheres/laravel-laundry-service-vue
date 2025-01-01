@@ -7,28 +7,50 @@ import TableCell from '@/Components/DataTable/TableCell.vue';
 import TableHead from '@/Components/DataTable/TableHead.vue';
 import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
 import TableRow from '@/Components/DataTable/TableRow.vue';
+import InputRadioBox from '@/Components/Form/InputRadioBox.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
+import InputText from '@/Components/Form/InputText.vue';
+import Modal from '@/Components/Modal/Modal.vue';
 import Card from '@/Components/Panel/Card.vue';
-import { orderStatusOptions } from '@/Constants/options';
+import { orderStatusOptions, paymentModeOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
 import { Order } from '@/types';
-import { PropType } from 'vue';
+import { useForm } from 'laravel-precognition-vue-inertia';
+import { PropType, ref } from 'vue';
+import { toast } from 'vue3-toastify';
 
 defineOptions({ layout: AuthenticatedLayout });
 
-defineProps({
+const props = defineProps({
     order: {
         type: Object as PropType<Order>,
         required: true,
     },
 });
 
-// Payment logic placeholders
+const showAddPaymentModal = ref(false);
+
+const form = useForm('post', route('payments.store'), {
+    order_id: props?.order.id,
+    payment_method: '',
+    amount: 0,
+});
+
 const addPayment = () => {
-    console.log('Add Payment clicked');
+    form.submit({
+        preserveScroll: true,
+        onSuccess: (page) => {
+            form.reset();
+            toast.success(page?.props?.flash?.message);
+            showAddPaymentModal.value = false;
+        },
+    });
 };
 
+const closeModal = () => {
+    showAddPaymentModal.value = false;
+};
 const printInvoice = () => {};
 </script>
 
@@ -95,85 +117,69 @@ const printInvoice = () => {};
                 </div>
 
                 <!-- Order Items Table -->
-                <div class="mt-6">
-                    <DataTable>
-                        <TableHead>
-                            <TableHeadCell>#</TableHeadCell>
-                            <TableHeadCell>Service Name</TableHeadCell>
-                            <TableHeadCell>Color</TableHeadCell>
-                            <TableHeadCell>Rate</TableHeadCell>
-                            <TableHeadCell>QTY</TableHeadCell>
-                            <TableHeadCell>Total</TableHeadCell>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow
-                                v-for="(
-                                    orderDetail, index
-                                ) in order.order_details"
-                                :key="orderDetail.id"
-                            >
-                                <TableCell>{{ index + 1 }}</TableCell>
-                                <TableCell>
-                                    <div class="flex items-center gap-4">
-                                        <!-- Display serviceable image and name -->
-                                        <img
+                <DataTable class="mt-6">
+                    <TableHead>
+                        <TableHeadCell>#</TableHeadCell>
+                        <TableHeadCell>Service Name</TableHeadCell>
+                        <TableHeadCell>Color</TableHeadCell>
+                        <TableHeadCell>Rate</TableHeadCell>
+                        <TableHeadCell>QTY</TableHeadCell>
+                        <TableHeadCell>Total</TableHeadCell>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow
+                            v-for="(orderDetail, index) in order.order_details"
+                            :key="orderDetail.id"
+                        >
+                            <TableCell>{{ index + 1 }}</TableCell>
+                            <TableCell>
+                                <div class="flex items-center gap-4">
+                                    <!-- Display serviceable image and name -->
+                                    <img
+                                        v-if="
+                                            orderDetail.serviceable &&
+                                            orderDetail.serviceable.icon_url
+                                        "
+                                        :src="orderDetail.serviceable.icon_url"
+                                        alt="Service Icon"
+                                        class="h-10 w-10 object-contain"
+                                    />
+                                    <div>
+                                        <p class="font-medium text-gray-800">
+                                            {{
+                                                orderDetail.serviceable
+                                                    ? orderDetail.serviceable
+                                                          .name
+                                                    : 'Unknown Service'
+                                            }}
+                                        </p>
+                                        <p
                                             v-if="
-                                                orderDetail.serviceable &&
-                                                orderDetail.serviceable.icon_url
+                                                orderDetail.serviceable
+                                                    ?.description
                                             "
-                                            :src="
-                                                orderDetail.serviceable.icon_url
-                                            "
-                                            alt="Service Icon"
-                                            class="h-10 w-10 object-contain"
-                                        />
-                                        <div>
-                                            <p
-                                                class="font-medium text-gray-800"
-                                            >
-                                                {{
-                                                    orderDetail.serviceable
-                                                        ? orderDetail
-                                                              .serviceable.name
-                                                        : 'Unknown Service'
-                                                }}
-                                            </p>
-                                            <p
-                                                v-if="
-                                                    orderDetail.serviceable
-                                                        ?.description
-                                                "
-                                                class="text-sm text-gray-500"
-                                            >
-                                                {{
-                                                    orderDetail.serviceable
-                                                        .description
-                                                }}
-                                            </p>
-                                        </div>
+                                            class="text-sm text-gray-500"
+                                        >
+                                            {{
+                                                orderDetail.serviceable
+                                                    .description
+                                            }}
+                                        </p>
                                     </div>
-                                </TableCell>
-                                <TableCell
-                                    >{{
-                                        orderDetail.serviceable?.color || 'N/A'
-                                    }}
-                                </TableCell>
-                                <TableCell
-                                    >RP {{ orderDetail.price }}
-                                </TableCell>
-                                <TableCell
-                                    >{{ orderDetail.quantity }}
-                                </TableCell>
-                                <TableCell
-                                    >RP
-                                    {{
-                                        orderDetail.price * orderDetail.quantity
-                                    }}
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </DataTable>
-                </div>
+                                </div>
+                            </TableCell>
+                            <TableCell
+                                >{{ orderDetail.serviceable?.color || 'N/A' }}
+                            </TableCell>
+                            <TableCell>RP {{ orderDetail.price }} </TableCell>
+                            <TableCell>{{ orderDetail.quantity }} </TableCell>
+                            <TableCell
+                                >RP
+                                {{ orderDetail.price * orderDetail.quantity }}
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </DataTable>
 
                 <!-- Summary -->
                 <div
@@ -228,63 +234,117 @@ const printInvoice = () => {};
         </Card>
 
         <!-- Payments and Actions -->
-        <Card class="rounded-lg bg-white shadow-md dark:bg-gray-800">
+        <Card class="rounded-lg bg-white shadow-lg dark:bg-gray-800">
             <div class="space-y-6 p-6">
                 <h3
                     class="text-2xl font-semibold text-gray-800 dark:text-white"
                 >
                     Payments
                 </h3>
-                <div class="space-y-4">
-                    <div
-                        class="flex items-center justify-between border-b pb-2"
-                    >
-                        <span
-                            class="text-base font-medium text-gray-600 dark:text-gray-300"
+
+                <DataTable>
+                    <TableHead>
+                        <TableHeadCell>Date</TableHeadCell>
+                        <TableHeadCell>Payment Mode</TableHeadCell>
+                        <TableHeadCell>Amount</TableHeadCell>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow
+                            v-for="payment in order.payments"
+                            :key="payment.id"
                         >
-                            Order Amount:
-                        </span>
+                            <TableCell>{{ payment.payment_date }}</TableCell>
+                            <TableCell>{{ payment.payment_method }}</TableCell>
+                            <TableCell>{{ payment.amount }}</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </DataTable>
+
+                <!-- Summary Section -->
+                <div class="space-y-4 border-t pt-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-base font-medium">Order Amount:</span>
                         <span class="text-primary text-lg font-semibold">
                             RP {{ order.total_amount }}
                         </span>
                     </div>
-                    <div
-                        class="flex items-center justify-between border-b pb-2"
-                    >
-                        <span
-                            class="text-base font-medium text-gray-600 dark:text-gray-300"
-                        >
-                            Paid Amount:
-                        </span>
+                    <div class="flex items-center justify-between">
+                        <span class="text-base font-medium">Paid Amount:</span>
                         <span class="text-lg font-semibold text-green-500">
                             RP {{ order.paid_amount }}
                         </span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span
-                            class="text-base font-medium text-gray-600 dark:text-gray-300"
-                        >
-                            Due Balance:
-                        </span>
+                        <span class="text-base font-medium">Due Balance:</span>
                         <span class="text-lg font-semibold text-red-500">
-                            RP
-                            {{ order.total_amount - order.paid_amount }}
+                            RP {{ order.total_amount - order.paid_amount }}
                         </span>
                     </div>
                 </div>
-                <div class="flex flex-col space-y-4">
-                    <PrimaryButton class="w-full" @click="addPayment">
+
+                <!-- Action Buttons -->
+                <div class="mt-4 flex flex-col gap-4">
+                    <PrimaryButton
+                        class="w-full"
+                        @click="showAddPaymentModal = true"
+                    >
                         Add Payment
                     </PrimaryButton>
-                    <PrimaryButton
-                        theme="warning"
-                        class="w-full"
-                        @click="printInvoice"
-                    >
+                    <PrimaryButton class="w-full" @click="printInvoice">
                         Print Invoice
                     </PrimaryButton>
                 </div>
             </div>
         </Card>
+
+        <!-- Add Payment Modal -->
+        <Modal :show="showAddPaymentModal" @close="closeModal">
+            <div class="space-y-6 p-6">
+                <!-- Payment Mode Section -->
+                <div>
+                    <div class="mb-4 font-medium text-gray-700">
+                        Payment Mode:
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <div
+                            v-for="(value, key) in paymentModeOptions"
+                            :key="key"
+                            class="flex items-center"
+                        >
+                            <InputRadioBox
+                                name="payment_method"
+                                :label="value"
+                                :value="key"
+                                v-model="form.payment_method"
+                                class="text-lg"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amount Section -->
+                <div
+                    class="rounded-lg border border-gray-200 bg-gray-50 p-4 shadow-sm"
+                >
+                    <div class="flex items-center gap-4">
+                        <span class="font-medium text-gray-600">Amount:</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-gray-600">RP</span>
+                            <InputText
+                                v-model="form.amount"
+                                type="number"
+                                placeholder="Enter amount"
+                                class="w-36"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Payment Button -->
+                <PrimaryButton @click="addPayment" class="mt-4 w-full">
+                    Add Payment
+                </PrimaryButton>
+            </div>
+        </Modal>
     </div>
 </template>

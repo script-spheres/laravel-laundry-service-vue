@@ -1,4 +1,4 @@
-import { CartItem, OrderDetail } from '@/types';
+import { CartItem } from '@/types';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -12,44 +12,6 @@ export const usePosStore = defineStore(
         const discountRate = ref(0);
         const coupon = ref<string | null>(null);
 
-        // Setter functions to set state values directly
-        const setItems = (newItems: OrderDetail[]) => {
-            newItems?.forEach((item) => {
-                items.value.push({
-                    id: item.id,
-                    name: item.serviceable_type, // Adjust this if necessary to get the actual name
-                    serviceable_type: item.serviceable_type as 'service' | 'addon-service',
-                    serviceable_id: item.serviceable_id,
-                    color: item.color,
-                    price: item.price,
-                    quantity: item.quantity,
-                    total: item.price * item.quantity, // Assuming total is price * quantity
-                    image: item.serviceable?.image, // Assuming image is part of the serviceable object
-                });
-            });
-        };
-
-        const setTotalItems = (newTotalItems: number) => {
-            totalItems.value = newTotalItems;
-        };
-
-        const setSubTotalCost = (newSubTotalCost: number) => {
-            subTotalCost.value = newSubTotalCost;
-        };
-
-        const setTaxPercentage = (newTaxPercentage: number) => {
-            taxPercentage.value = newTaxPercentage;
-        };
-
-        const setDiscountRate = (newDiscountRate: number) => {
-            discountRate.value = newDiscountRate;
-        };
-
-        const setCoupon = (newCoupon: string | null) => {
-            coupon.value = newCoupon;
-        };
-
-        // Existing methods
         const totalCost = computed(() =>
             parseFloat(
                 (
@@ -58,10 +20,6 @@ export const usePosStore = defineStore(
                     (1 - discountRate.value)
                 ).toFixed(2),
             ),
-        );
-
-        const change = computed(() =>
-            parseFloat((0 - totalCost.value).toFixed(2)),
         );
 
         const taxAmount = computed(() =>
@@ -95,35 +53,6 @@ export const usePosStore = defineStore(
             );
         };
 
-        const updateItem = (
-            id: number,
-            serviceableType: 'service' | 'addon-service',
-            serviceableId: string | number,
-            newQuantity: number,
-        ) => {
-            const existingItem = items.value.find(
-                (item) =>
-                    item.id === id &&
-                    item.serviceable_type === serviceableType &&
-                    item.serviceable_id === serviceableId,
-            );
-
-            if (existingItem && newQuantity > 0) {
-                const quantityDifference = newQuantity - existingItem.quantity;
-                existingItem.quantity = newQuantity;
-                existingItem.total = parseFloat(
-                    (existingItem.quantity * existingItem.price).toFixed(2),
-                );
-                totalItems.value += quantityDifference;
-                subTotalCost.value = parseFloat(
-                    (
-                        subTotalCost.value +
-                        existingItem.price * quantityDifference
-                    ).toFixed(2),
-                );
-            }
-        };
-
         const removeItem = (id: number) => {
             const index = items.value.findIndex(
                 (cartItem) => cartItem.id === id,
@@ -143,15 +72,11 @@ export const usePosStore = defineStore(
         const applyCoupon = (couponCode: string, discount: number) => {
             coupon.value = couponCode;
             discountRate.value = discount;
-            console.log(
-                `Coupon applied: ${couponCode} with discount ${discountRate.value * 100}%`,
-            );
         };
 
         const removeCoupon = () => {
             coupon.value = null;
             discountRate.value = 0.1;
-            console.log('Coupon removed');
         };
 
         const clearItemCartByType = (type: 'service' | 'addon-service') => {
@@ -163,13 +88,14 @@ export const usePosStore = defineStore(
                 (acc, item) => acc + item.quantity,
                 0,
             );
+
             subTotalCost.value = items.value.reduce(
                 (acc, item) => acc + item.total,
                 0,
             );
         };
 
-        const clearItemCart = () => {
+        const clear = () => {
             items.value.splice(0, items.value.length);
             totalItems.value = 0;
             subTotalCost.value = 0;
@@ -198,20 +124,12 @@ export const usePosStore = defineStore(
             totalCost,
             taxPercentage,
             taxAmount,
-            change,
             coupon,
-            setItems,
-            setTotalItems,
-            setSubTotalCost,
-            setTaxPercentage,
-            setDiscountRate,
-            setCoupon,
             addItem,
             removeItem,
-            updateItem,
             applyCoupon,
             removeCoupon,
-            clearItemCart,
+            clear,
             clearItemCartByType,
             totalItemsByType,
             totalCostByType,

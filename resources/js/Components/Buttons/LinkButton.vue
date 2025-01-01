@@ -44,16 +44,7 @@ const sizeClasses = {
 
 // Dynamic color class generation
 const colorClasses = (color: string) => {
-    return {
-        bg: `bg-${color}-600`,
-        hover: `hover:bg-${color}-500`,
-        focus: `focus:bg-${color}-500`,
-        active: `active:bg-${color}-700`,
-        darkBg: `dark:bg-${color}-500`,
-        darkHover: `dark:hover:bg-${color}-400`,
-        darkFocus: `dark:focus:bg-${color}-400`,
-        darkActive: `dark:active:bg-${color}-600`,
-    };
+    return `bg-${color}-600 dark:bg-${color}-500 hover:bg-${color}-500 dark:hover:bg-${color}-400 focus:bg-${color}-500 dark:focus:bg-${color}-400 active:bg-${color}-700 dark:active:bg-${color}-600`;
 };
 
 const id = useId();
@@ -66,14 +57,7 @@ const id = useId();
         :class="
             classNames(
                 'items-center rounded-md border border-transparent px-4 py-2 font-semibold tracking-widest text-white transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800',
-                colorClasses(color).bg,
-                colorClasses(color).hover,
-                colorClasses(color).focus,
-                colorClasses(color).active,
-                colorClasses(color).darkBg,
-                colorClasses(color).darkHover,
-                colorClasses(color).darkFocus,
-                colorClasses(color).darkActive,
+                colorClasses(color),
                 sizeClasses[size],
             )
         "

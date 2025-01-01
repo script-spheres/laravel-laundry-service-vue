@@ -16,10 +16,12 @@ class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'image' => $this->image,
-            'status' => $this->status,
+            'order_id' => $this->order_id,
+            'payment_method' => $this->payment_method,
+            'amount' => $this->amount,
+            'payment_status' => $this->payment_status,
+            'payment_date' => $this->payment_date,
+            'order' => OrderResource::make($this->whenLoaded('order')),
         ];
     }
 }

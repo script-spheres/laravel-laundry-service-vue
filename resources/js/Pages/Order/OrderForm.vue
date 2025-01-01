@@ -4,6 +4,7 @@ import InputRadioBox from '@/Components/Form/InputRadioBox.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
 import { useFilters } from '@/Composables/useFilters';
+import { paymentModeOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import AddonCartItems from '@/Pages/Order/Partials/AddonCartItems.vue';
 import AddonServicesModal from '@/Pages/Order/Partials/AddonServicesModal.vue';
@@ -11,7 +12,6 @@ import CartItems from '@/Pages/Order/Partials/CartItems.vue';
 import CouponModal from '@/Pages/Order/Partials/CouponModal.vue';
 import CustomerModal from '@/Pages/Order/Partials/CustomerModal.vue';
 import NoteModal from '@/Pages/Order/Partials/NoteModal.vue';
-import PaymentModal from '@/Pages/Order/Partials/PaymentModal.vue';
 import ServiceItemsList from '@/Pages/Order/Partials/ServiceItemsList.vue';
 import NoData from '@/Shared/NoData.vue';
 import { usePosStore } from '@/Stores/PosStore';
@@ -20,6 +20,7 @@ import {
     Category,
     Coupon,
     Order,
+    OrderDetail,
     Service,
     ServiceDetail,
 } from '@/types';
@@ -39,39 +40,19 @@ defineOptions({ layout: AuthenticatedLayout });
 const posStore = usePosStore();
 
 const props = defineProps({
-    services: {
-        type: Object as PropType<Service[]>,
-        required: true,
-    },
-    categories: {
-        type: Object as PropType<Category[]>,
-        required: true,
-    },
+    services: { type: Array as PropType<Service[]>, required: true },
+    categories: { type: Array as PropType<Category[]>, required: true },
     serviceDetails: {
-        type: Object as PropType<ServiceDetail[]>,
+        type: Array as PropType<ServiceDetail[]>,
         required: true,
     },
-    addonServices: {
-        type: Object as PropType<AddonService[]>,
-        required: true,
-    },
-    coupons: {
-        type: Object as PropType<Coupon[]>,
-        required: true,
-    },
-    order: {
-        type: Object as PropType<Order>,
-        required: false,
-    },
-    storeOptions: {
-        type: Object as PropType<Options>,
-        required: true,
-    },
-    customerOptions: {
-        type: Object as PropType<Options>,
-        required: true,
-    },
-    filters: Object as PropType<Filters>,
+    addonServices: { type: Array as PropType<AddonService[]>, required: true },
+    coupons: { type: Array as PropType<Coupon[]>, required: true },
+    order: { type: Object as PropType<Order>, required: false },
+    orderDerails: { type: Object as PropType<OrderDetail[]>, required: false },
+    storeOptions: { type: Object as PropType<Options>, required: true },
+    customerOptions: { type: Object as PropType<Options>, required: true },
+    filters: { type: Object as PropType<Filters> },
 });
 
 const showDiscountModal = ref(false);
@@ -95,12 +76,28 @@ const form = useForm(method, url, {
     tax_amount: posStore.taxAmount,
     total_amount: posStore.totalCost,
     quick_note: props.order?.quick_note ?? '',
-    payments: props.order?.payments ?? [],
+    payment: {
+        payment_method: '',
+        amount: 0,
+    },
 });
 
-if (props.order){
-    posStore.setItems(props.order.order_details);
+if (props.order) {
+    props.orderDerails?.map((item) => {
+        posStore.addItem({
+            id: item.id,
+            name: item?.serviceable?.name + '(' + item?.serviceable?.name + ')',
+            image: item?.serviceable?.image,
+            serviceable_type: item.serviceable_type,
+            serviceable_id: item.serviceable_id,
+            color: '',
+            price: item.price,
+            quantity: 1,
+            total: item.price,
+        });
+    });
 }
+
 const { filter, handleClearFilter } = useFilters('orders.create', {
     name: props.filters?.name ?? '',
     service_id: props.filters?.service_id ?? '',
@@ -111,8 +108,8 @@ const posSubmit = async () => {
     form.submit({
         preserveScroll: true,
         onSuccess: () => {
-            form.reset();
             posStore.clearItemCart();
+            form.reset();
         },
         onError: (page) => {
             if (page && typeof page === 'object') {
@@ -246,7 +243,7 @@ provide('showPaymentModal', showPaymentModal);
                 <div class="flex items-center justify-between">
                     <p>
                         <span class="font-medium"> Notes: </span>
-                        {{ form.special_notes }}
+                        {{ form.quick_note }}
                     </p>
                     <div class="flex gap-2">
                         <PrimaryButton
@@ -259,7 +256,7 @@ provide('showPaymentModal', showPaymentModal);
                         <PrimaryButton
                             color="red"
                             size="sm"
-                            @click="form.special_notes = ''"
+                            @click="form.quick_note = ''"
                         >
                             <AkTrashCan />
                         </PrimaryButton>
@@ -316,6 +313,45 @@ provide('showPaymentModal', showPaymentModal);
                         </div>
                     </div>
                 </div>
+                <div class="">
+                    <div class="mb-2 font-medium text-gray-700">
+                        Payment Mode:
+                    </div>
+                    <div class="flex gap-2">
+                        <div
+                            v-for="(index, key) in paymentModeOptions"
+                            :key="key"
+                        >
+                            <InputRadioBox
+                                name="inline-service-group"
+                                :label="index"
+                                :value="key"
+                                v-model="form.payment.payment_method"
+                                class="text-lg"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cash Payment Section -->
+                <div
+                    class="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4 shadow-sm"
+                >
+                    <div class="flex items-center gap-4">
+                        <span
+                            class="flex-grow text-left font-medium text-gray-600"
+                            >{{ form.payment.payment_method }}:</span
+                        >
+                        <div class="flex items-center">
+                            <span class="mr-2 text-gray-600">Rp</span>
+                            <InputText
+                                v-model="form.payment.amount"
+                                type="number"
+                                placeholder="Amount"
+                            />
+                        </div>
+                    </div>
+                </div>
                 <div class="flex items-center justify-between">
                     <PrimaryButton @click="showPaymentModal = true">
                         Payment
@@ -335,7 +371,6 @@ provide('showPaymentModal', showPaymentModal);
 
     <!-- Modals -->
     <CustomerModal />
-    <PaymentModal v-model="form.payments" :payments="form.payments" />
     <NoteModal v-model="form.quick_note" />
     <AddonServicesModal :addonServices="addonServices" />
     <CouponModal :coupons="coupons" />
