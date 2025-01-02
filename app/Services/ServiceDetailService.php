@@ -24,26 +24,6 @@ class ServiceDetailService
                 AllowedFilter::exact('service_item_id'),
                 AllowedFilter::exact('unit_id'),
                 AllowedFilter::partial('price'),
-                AllowedFilter::callback('category', function ($query, $value) {
-                    $query->whereHas('category', function ($query) use ($value) {
-                        $query->where('name', 'like', "%{$value}%");
-                    });
-                }),
-                AllowedFilter::callback('service', function ($query, $value) {
-                    $query->whereHas('service', function ($query) use ($value) {
-                        $query->where('name', 'like', "%{$value}%");
-                    });
-                }),
-                AllowedFilter::callback('serviceItem', function ($query, $value) {
-                    $query->whereHas('serviceItem', function ($query) use ($value) {
-                        $query->where('name', 'like', "%{$value}%");
-                    });
-                }),
-                AllowedFilter::callback('unit', function ($query, $value) {
-                    $query->whereHas('unit', function ($query) use ($value) {
-                        $query->where('name', 'like', "%{$value}%");
-                    });
-                }),
             ])
             ->allowedSorts(['created_at', 'price'])
             ->with(['serviceItem', 'service', 'category', 'unit'])

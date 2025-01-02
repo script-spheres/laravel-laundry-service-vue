@@ -15,7 +15,7 @@ const props = defineProps({
     },
 });
 
-const form = useForm('post', route('settings.submit'), {
+const form = useForm('post', route('settings.store.finance'), {
     tax_rate: props.settings?.tax_rate || '',
     currency: props.settings?.currency || '',
     currency_symbol: props.settings?.currency_symbol || '',
@@ -34,6 +34,7 @@ const submitForm = () => {
         <FieldRow :cols="2">
             <FieldCol>
                 <InputText
+                    type="number"
                     label="Tax Rate (%)"
                     v-model="form.tax_rate"
                     :error="form.errors.tax_rate"
@@ -56,7 +57,7 @@ const submitForm = () => {
                 />
             </FieldCol>
         </FieldRow>
-        <FieldRow>
+        <div>
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
@@ -64,6 +65,6 @@ const submitForm = () => {
             >
                 {{ props.settings ? 'Update' : 'Submit' }}
             </PrimaryButton>
-        </FieldRow>
+        </div>
     </form>
 </template>

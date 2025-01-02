@@ -15,21 +15,20 @@ const toggleCartItem = (item: ServiceDetail) => {
     } else {
         posStore.addItem({
             id: item.id,
-            name: item?.service_item?.name + '(' + item?.category?.name + ')',
-            image: item?.service_item?.image,
+            service_name: `${item?.service_item?.name} (${item?.service_item?.name})`,
+            service_image: item?.service_item?.image,
             serviceable_type: 'service',
             serviceable_id: item.id,
-            color: '',
+            color: '#000000',
             price: item.price,
             quantity: 1,
-            total: item.price,
         });
     }
 };
 
 // Check if the item is in the cart
 const isInCart = (id: number) => {
-    return posStore.getItemsByType('service').some((item) => item.id === id);
+    return posStore.itemIsCartByType(id, 'service');
 };
 </script>
 

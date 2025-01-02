@@ -250,15 +250,9 @@ export type OrderDetail = {
     color: string;
     price: number;
     quantity: number;
-    serviceable?: Serviceable;
+    service_name: string;
+    service_image: Image;
 };
-
-export interface Serviceable {
-    id: number;
-    name: string;
-
-    [key: string]: any;
-}
 
 export type DeliveryScale = {
     id: number;
@@ -296,10 +290,10 @@ export type Expense = {
 
 export type CartItem = {
     id: number;
-    name: string;
+    service_name: string;
     serviceable_type: string;
     serviceable_id: string | number;
-    image?: Image;
+    service_image?: Image;
     color: string;
     price: number;
     quantity: number;
@@ -338,8 +332,8 @@ export type Faq = {
 export type GeneralSettings = {
     site_name: string;
     slogan: string;
-    logo: string;
-    favicon: string;
+    logo: Image;
+    favicon: Image;
 };
 
 export type FinanceSettings = {

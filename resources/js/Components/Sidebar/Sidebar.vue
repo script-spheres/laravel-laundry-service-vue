@@ -2,7 +2,7 @@
 import SidebarDropdownItem from '@/Components/Sidebar/SidebarDropdownItem.vue';
 import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import { NavigationItem } from '@/types';
-import { defineEmits, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 defineProps<{ navigations: NavigationItem[] }>();
 

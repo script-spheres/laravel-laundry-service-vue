@@ -6,7 +6,7 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('finance.tax_rate', 0.0);
+        $this->migrator->add('finance.tax_rate', 10.0);
         $this->migrator->add('finance.currency', 'USD');
         $this->migrator->add('finance.currency_symbol', '$');
     }

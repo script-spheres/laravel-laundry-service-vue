@@ -15,7 +15,7 @@ import Card from '@/Components/Panel/Card.vue';
 import { orderStatusOptions, paymentModeOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
-import { Order } from '@/types';
+import { FinanceSettings, Order } from '@/types';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import { PropType, ref } from 'vue';
 import { toast } from 'vue3-toastify';
@@ -25,6 +25,10 @@ defineOptions({ layout: AuthenticatedLayout });
 const props = defineProps({
     order: {
         type: Object as PropType<Order>,
+        required: true,
+    },
+    financeSettings: {
+        type: Object as PropType<FinanceSettings>,
         required: true,
     },
 });
@@ -171,10 +175,10 @@ const printInvoice = () => {};
                             <TableCell
                                 >{{ orderDetail.serviceable?.color || 'N/A' }}
                             </TableCell>
-                            <TableCell>RP {{ orderDetail.price }} </TableCell>
+                            <TableCell>{{ financeSettings.currency_symbol }} {{ orderDetail.price }} </TableCell>
                             <TableCell>{{ orderDetail.quantity }} </TableCell>
                             <TableCell
-                                >RP
+                                >{{ financeSettings.currency_symbol }}
                                 {{ orderDetail.price * orderDetail.quantity }}
                             </TableCell>
                         </TableRow>
@@ -192,7 +196,7 @@ const printInvoice = () => {};
                         <p
                             class="font-semibold text-gray-700 dark:text-gray-200"
                         >
-                            RP {{ order.sub_total }}
+                            {{ financeSettings.currency_symbol }} {{ order.sub_total }}
                         </p>
                     </div>
                     <div
@@ -202,7 +206,7 @@ const printInvoice = () => {};
                         <p
                             class="font-semibold text-gray-700 dark:text-gray-200"
                         >
-                            RP {{ order.discount_amount }}
+                            {{ financeSettings.currency_symbol }} {{ order.discount_amount }}
                         </p>
                     </div>
                     <div
@@ -212,7 +216,7 @@ const printInvoice = () => {};
                         <p
                             class="font-semibold text-gray-700 dark:text-gray-200"
                         >
-                            RP {{ order.tax_amount }}
+                            {{ financeSettings.currency_symbol }} {{ order.tax_amount }}
                         </p>
                     </div>
                     <div
@@ -225,7 +229,7 @@ const printInvoice = () => {};
                                 Gross Total
                             </p>
                             <p class="text-primary">
-                                RP {{ order.total_amount }}
+                                {{ financeSettings.currency_symbol }} {{ order.total_amount }}
                             </p>
                         </div>
                     </div>
@@ -265,19 +269,19 @@ const printInvoice = () => {};
                     <div class="flex items-center justify-between">
                         <span class="text-base font-medium">Order Amount:</span>
                         <span class="text-primary text-lg font-semibold">
-                            RP {{ order.total_amount }}
+                            {{ financeSettings.currency_symbol }} {{ order.total_amount }}
                         </span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-base font-medium">Paid Amount:</span>
                         <span class="text-lg font-semibold text-green-500">
-                            RP {{ order.paid_amount }}
+                            {{ financeSettings.currency_symbol }} {{ order.paid_amount }}
                         </span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-base font-medium">Due Balance:</span>
                         <span class="text-lg font-semibold text-red-500">
-                            RP {{ order.total_amount - order.paid_amount }}
+                            {{ financeSettings.currency_symbol }} {{ order.total_amount - order.paid_amount }}
                         </span>
                     </div>
                 </div>
@@ -329,7 +333,7 @@ const printInvoice = () => {};
                     <div class="flex items-center gap-4">
                         <span class="font-medium text-gray-600">Amount:</span>
                         <div class="flex items-center space-x-2">
-                            <span class="text-gray-600">RP</span>
+                            <span class="text-gray-600">{{ financeSettings.currency_symbol }}</span>
                             <InputText
                                 v-model="form.amount"
                                 type="number"

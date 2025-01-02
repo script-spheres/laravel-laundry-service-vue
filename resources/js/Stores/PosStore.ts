@@ -1,15 +1,17 @@
 import { CartItem } from '@/types';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 export const usePosStore = defineStore(
     'pos-cart',
     () => {
         const items = ref<CartItem[]>([]);
+
         const totalItems = ref(0);
         const subTotalCost = ref(0);
         const taxPercentage = ref(0);
-        const discountRate = ref(0);
+        const discountAmount = ref(0);
+
         const coupon = ref<string | null>(null);
 
         const totalCost = computed(() =>
@@ -17,7 +19,7 @@ export const usePosStore = defineStore(
                 (
                     subTotalCost.value *
                     (1 + taxPercentage.value) *
-                    (1 - discountRate.value)
+                    (1 - discountAmount.value)
                 ).toFixed(2),
             ),
         );
@@ -26,10 +28,10 @@ export const usePosStore = defineStore(
             parseFloat((0 - totalCost.value).toFixed(2)),
         );
 
-        const addItem = (item: CartItem) => {
+        // Function to add an item to the cart
+        const addItem = (item: Omit<CartItem, 'total'>) => {
             const existingItem = items.value.find(
                 (cartItem) =>
-                    cartItem.id === item.id &&
                     cartItem.serviceable_type === item.serviceable_type &&
                     cartItem.serviceable_id === item.serviceable_id,
             );
@@ -43,14 +45,33 @@ export const usePosStore = defineStore(
                 items.value.push({
                     ...item,
                     quantity: 1,
-                    total: parseFloat(item.price.toFixed(2)),
+                    total: parseFloat((item.quantity * item.price).toFixed(2)),
                 });
             }
 
             totalItems.value += 1;
-            subTotalCost.value = parseFloat(
-                (subTotalCost.value + item.price).toFixed(2),
-            );
+        };
+
+        const updateItemQuantity = (id: number, newQuantity: number) => {
+            const item = items.value.find((cartItem) => cartItem.id === id);
+
+            if (item) {
+                // Update the quantity
+                totalItems.value -= item.quantity;
+                item.quantity = newQuantity;
+
+                // Recalculate the total for the item
+                item.total = parseFloat(
+                    (item.quantity * item.price).toFixed(2),
+                );
+
+                // Recalculate the total number of items in the cart and subtotal cost
+                totalItems.value += item.quantity;
+                subTotalCost.value = items.value.reduce(
+                    (acc, item) => acc + item.total,
+                    0,
+                );
+            }
         };
 
         const removeItem = (id: number) => {
@@ -71,12 +92,12 @@ export const usePosStore = defineStore(
 
         const applyCoupon = (couponCode: string, discount: number) => {
             coupon.value = couponCode;
-            discountRate.value = discount;
+            discountAmount.value = discount;
         };
 
         const removeCoupon = () => {
             coupon.value = null;
-            discountRate.value = 0.1;
+            discountAmount.value = 0.1;
         };
 
         const clearItemCartByType = (type: 'service' | 'addon-service') => {
@@ -117,15 +138,50 @@ export const usePosStore = defineStore(
             return items.value.filter((item) => item.serviceable_type === type);
         };
 
+        const itemIsCartByType = (
+            id: number,
+            type: 'service' | 'addon-service',
+        ): boolean => {
+            return items.value.some(
+                (item) =>
+                    item.serviceable_id === id &&
+                    item.serviceable_type === type,
+            );
+        };
+
+        watch(
+            items,
+            (newItems) => {
+                totalItems.value = newItems.reduce(
+                    (acc, item) => acc + item.quantity,
+                    0,
+                );
+                subTotalCost.value = newItems.reduce(
+                    (acc, item) => acc + item.total,
+                    0,
+                );
+            },
+            { immediate: true },
+        );
+
+        watch(
+            [taxPercentage, discountAmount],
+            () => {
+                totalCost.value;
+            },
+            { immediate: true },
+        );
+
         return {
             items,
             totalItems,
             subTotalCost,
             totalCost,
-            taxPercentage,
             taxAmount,
+            discountAmount,
             coupon,
             addItem,
+            updateItemQuantity,
             removeItem,
             applyCoupon,
             removeCoupon,
@@ -134,6 +190,7 @@ export const usePosStore = defineStore(
             totalItemsByType,
             totalCostByType,
             getItemsByType,
+            itemIsCartByType,
         };
     },
     {

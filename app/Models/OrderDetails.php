@@ -17,13 +17,19 @@ class OrderDetails extends Model
         'order_id',
         'serviceable_type',
         'serviceable_id',
+        'service_name',
+        'service_image',
+        'color',
         'price',
         'quantity',
+        'total',
     ];
 
     protected $casts = [
+        'service_image' => 'json',
         'price' => 'decimal:2',
         'quantity' => 'decimal:2',
+        'total' => 'decimal:2',
     ];
 
     /**

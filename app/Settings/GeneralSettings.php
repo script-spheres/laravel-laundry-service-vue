@@ -6,9 +6,9 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
-    public string $slogan;
-    public string $logo;
-    public string $favicon;
+    public ?string $slogan;
+    public ?array $logo;
+    public ?array $favicon;
 
     public static function group(): string
     {

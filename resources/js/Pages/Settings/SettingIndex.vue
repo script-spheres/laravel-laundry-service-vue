@@ -4,12 +4,7 @@ import BusinessSetting from '@/Pages/Settings/Partials/BusinessSetting.vue';
 import FinanceSetting from '@/Pages/Settings/Partials/FinanceSetting.vue';
 import GeneralSetting from '@/Pages/Settings/Partials/GeneralSetting.vue';
 import PageHeader from '@/Shared/PageHeader.vue';
-import {
-    BusinessSettings,
-    FinanceSettings,
-    GeneralSettings,
-    OtherSettings,
-} from '@/types';
+import { BusinessSettings, FinanceSettings, GeneralSettings } from '@/types';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue';
 import { markRaw, PropType, ref } from 'vue';
 
@@ -28,10 +23,6 @@ const props = defineProps({
         type: Object as PropType<FinanceSettings | null>,
         required: false,
     },
-    otherSettings: {
-        type: Object as PropType<OtherSettings | null>,
-        required: false,
-    },
 });
 
 // Define the type for the settings component structure
@@ -48,19 +39,19 @@ const settings: Record<string, SettingsComponent> = {
         component: markRaw(GeneralSetting),
         title: 'Application Settings',
         subtitle: 'Configure the general application settings here.',
-        props: { generalSetting: props.generalSettings },
+        props: { settings: props.generalSettings },
     },
     'Business Settings': {
         component: markRaw(BusinessSetting),
         title: 'Business Settings',
         subtitle: 'Manage business-related settings here.',
-        props: { businessSetting: props.businessSettings },
+        props: { settings: props.businessSettings },
     },
     'Finance Settings': {
         component: markRaw(FinanceSetting),
         title: 'Finance Settings',
         subtitle: 'Adjust financial settings like taxes and currency here.',
-        props: { financeSetting: props.financeSettings },
+        props: { settings: props.financeSettings },
     },
 };
 
@@ -109,10 +100,7 @@ function handleTabClick(setting: SettingsKey): void {
             <TabPanel
                 v-for="(setting, idx) in settings"
                 :key="idx"
-                :class="[
-                    'rounded-xl bg-white p-3 shadow',
-                    'ring-white/60 ring-offset-2 ring-offset-gray-400 focus:outline-none focus:ring-2',
-                ]"
+                class="rounded-xl bg-white p-3 shadow"
             >
                 <component :is="setting.component" v-bind="setting.props" />
             </TabPanel>

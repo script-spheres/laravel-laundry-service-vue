@@ -45,13 +45,13 @@ const totalCartItems = computed(() => posStore.totalItemsByType('service'));
             class="flex items-center rounded-lg bg-white p-1 shadow"
         >
             <img
-                :src="item?.image?.url"
-                :alt="item?.name"
+                :src="item?.service_image?.url"
+                :alt="item?.service_name"
                 class="mr-3 h-12 w-12 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
                 <h5 class="text-sm font-semibold">
-                    {{ item?.name }}
+                    {{ item?.service_name }}
                 </h5>
                 <p class="text-xs text-gray-500">Price: {{ item.price }}</p>
             </div>
@@ -59,7 +59,9 @@ const totalCartItems = computed(() => posStore.totalItemsByType('service'));
                 <InputColor v-model="item.color" />
                 <PrimaryButton
                     class="bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
-                    @click="posStore.addItem(item)"
+                    @click="
+                        posStore.updateItemQuantity(item.id, item.quantity - 1)
+                    "
                 >
                     <AkMinus class="h-4 w-4" />
                 </PrimaryButton>
@@ -71,7 +73,9 @@ const totalCartItems = computed(() => posStore.totalItemsByType('service'));
                 />
                 <PrimaryButton
                     class="bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
-                    @click="posStore.addItem(item)"
+                    @click="
+                        posStore.updateItemQuantity(item.id, item.quantity + 1)
+                    "
                 >
                     <AkPlus class="h-4 w-4" />
                 </PrimaryButton>

@@ -6,9 +6,9 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('general.slogan', 'Delivering Excellence');
-        $this->migrator->add('general.logo', 'logo.png');
-        $this->migrator->add('general.favicon', 'favicon.ico');
+        $this->migrator->add('general.slogan');
+        $this->migrator->add('general.logo');
+        $this->migrator->add('general.favicon');
     }
 
     public function down(): void

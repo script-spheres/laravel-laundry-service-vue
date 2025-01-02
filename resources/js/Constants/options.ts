@@ -51,8 +51,8 @@ export const orderStatusOptions: Record<string, string> = {
 export const paymentModeOptions: Record<string, string> = {
     card: 'Card',
     cash: 'Cash',
-    bank: 'Bank Transfer',
-    upi: 'Upi Transfer',
+    bank: 'Bank',
+    upi: 'Upi',
 };
 
 export const paymentStatusOptions: Record<string, string> = {

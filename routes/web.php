@@ -113,10 +113,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('redemptions', UserController::class);
 
 
-    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::post('settings', [SettingController::class, 'store'])->name('settings.submit');
-
-    Route::get('settings/finance', [SettingController::class, 'finance'])->name('settings.finance');
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings/general', [SettingController::class, 'storeGeneral'])->name('settings.store.general');
+    Route::post('/settings/business', [SettingController::class, 'storeBusiness'])->name('settings.store.business');
+    Route::post('/settings/finance', [SettingController::class, 'storeFinance'])->name('settings.store.finance');
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('financial', [ReportController::class, 'financial'])->name('financial');

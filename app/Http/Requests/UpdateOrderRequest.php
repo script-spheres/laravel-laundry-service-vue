@@ -25,6 +25,11 @@ class UpdateOrderRequest extends FormRequest
         return [
             'customer_id' => ['required', 'exists:App\Models\Customer,id'],
             'store_id' => ['nullable', 'exists:App\Models\Store,id'],
+            'details' => ['required', 'array'],
+            'details.*.service_name' => ['required', 'string', 'max:255'],
+            'details.*.service_image' => ['required'],
+            'details.*.price' => ['required', 'numeric'],
+            'details.*.quantity' => ['required', 'numeric', 'min:1'],
             'total_weight_kg' => ['nullable', 'numeric'],
             'sub_total' => ['required', 'numeric'],
             'total_amount' => ['required', 'numeric'],

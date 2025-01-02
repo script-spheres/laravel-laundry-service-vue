@@ -15,7 +15,7 @@ const props = defineProps({
     },
 });
 
-const form = useForm('post', route('settings.submit'), {
+const form = useForm('post', route('settings.store.business'), {
     name: props.settings?.name || '',
     address: props.settings?.address || '',
     city: props.settings?.city || '',

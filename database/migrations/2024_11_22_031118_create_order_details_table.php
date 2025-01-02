@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('order_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->morphs('serviceable');
             $table->string('service_name');
+            $table->json('service_image');
             $table->string('color')->nullable();
             $table->decimal('price', 10, 2);
             $table->decimal('quantity', 10, 2)->default(1);
