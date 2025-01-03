@@ -119,12 +119,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/settings/finance', [SettingController::class, 'storeFinance'])->name('settings.store.finance');
 
     Route::prefix('reports')->name('reports.')->group(function () {
-        Route::get('financial', [ReportController::class, 'financial'])->name('financial');
-        Route::get('orders', [ReportController::class, 'orders'])->name('orders');
-        Route::get('customers', [ReportController::class, 'customers'])->name('customers');
-        Route::get('inventory', [ReportController::class, 'inventory'])->name('inventory');
-        Route::get('expenses', [ReportController::class, 'expenses'])->name('expenses');
+        Route::get('daily', [ReportController::class, 'daily'])->name('daily');
         Route::get('sales', [ReportController::class, 'sales'])->name('sales');
-        Route::get('profits', [ReportController::class, 'profits'])->name('profits');
     });
 });

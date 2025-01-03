@@ -20,9 +20,11 @@ return new class extends Migration {
             $table->decimal('total_weight_kg', 5, 2)->default(0);
             $table->decimal('sub_total', 5, 2)->default(0);
             $table->decimal('total_amount', 5, 2)->default(0);
+            $table->decimal('tax_percentage', 5, 2)->default(0);
             $table->decimal('tax_amount', 5, 2)->default(0);
             $table->decimal('discount_amount', 5, 2)->default(0);
             $table->decimal('paid_amount', 5, 2)->default(0);
+            $table->decimal('due_amount', 5, 2)->default(0);
             $table->date('delivery_date')->nullable();
             $table->text('quick_note')->nullable();
             $table->enum('order_status', ['pending', 'in-progress', 'ready-to-deliver', 'delivered'])->default('pending');

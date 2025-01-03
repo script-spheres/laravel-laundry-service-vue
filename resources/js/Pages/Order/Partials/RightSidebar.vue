@@ -3,6 +3,7 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 import InputRadioBox from '@/Components/Form/InputRadioBox.vue';
 import InputSelect from '@/Components/Form/InputSelect.vue';
 import InputText from '@/Components/Form/InputText.vue';
+import { useCartCalculations } from '@/Composables/useCartCalculations';
 import { paymentModeOptions } from '@/Constants/options';
 import AddonCartItems from '@/Pages/Order/Partials/AddonCartItems.vue';
 import AddonServicesModal from '@/Pages/Order/Partials/AddonServicesModal.vue';
@@ -26,10 +27,9 @@ import {
     MdDiscount,
 } from '@kalimahapps/vue-icons';
 import { useForm } from 'laravel-precognition-vue-inertia';
-import { computed, onMounted, PropType, provide, ref, watch } from 'vue';
+import { onMounted, PropType, provide, ref, watch } from 'vue';
 import { toast } from 'vue3-toastify';
-
-const posStore = usePosStore();
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     storeOptions: { type: Object as PropType<Options>, required: true },
@@ -44,57 +44,56 @@ const props = defineProps({
     orderDetails: { type: Object as PropType<OrderDetail[]>, required: false },
 });
 
-// Set up form submission URL and method
+const posStore = usePosStore();
+const {
+    getSubTotalCost,
+    getTotalCost,
+    getTaxAmount,
+    getDiscountAmount,
+    setTaxRate,
+} = useCartCalculations();
+
 const method = props.order ? 'put' : 'post';
 const url = props.order
     ? route('orders.update', props.order.id)
     : route('orders.store');
 
-// Initialize form data
 const form = useForm(method, url, {
     store_id: props.order?.store_id ?? '',
     customer_id: props.order?.customer_id ?? '',
     delivery_date: props.order?.delivery_date ?? '',
     details: posStore.items,
-    sub_total: posStore.subTotalCost,
-    tax_amount: posStore.taxAmount,
-    total_amount: posStore.totalCost,
+    sub_total: getSubTotalCost(),
+    tax_amount: getTaxAmount(),
+    discount_amount: getDiscountAmount(),
+    total_amount: getTotalCost(),
     quick_note: props.order?.quick_note ?? '',
     payment: { payment_method: '', amount: 0 },
 });
 
-// Watch for changes in posStore and update form
-const details = computed(() => posStore.items);
-const subTotal = computed(() => posStore.subTotalCost);
-const taxAmount = computed(() => posStore.taxAmount);
-const totalAmount = computed(() => posStore.totalCost);
+watch(
+    () => posStore.items,
+    () => {
+        form.details = posStore.items;
+        form.sub_total = getSubTotalCost();
+        form.tax_amount = getTaxAmount();
+        form.discount_amount = getDiscountAmount();
+        form.total_amount = getTotalCost();
+    },
+    { immediate: true, deep: true },
+);
 
-const updateForm = () => {
-    form.details = details.value;
-    form.sub_total = subTotal.value;
-    form.tax_amount = taxAmount.value;
-    form.total_amount = totalAmount.value;
-};
-
-// Watch posStore for changes and update form values accordingly
-watch([details, subTotal, taxAmount, totalAmount], updateForm, {
-    immediate: true,
-});
-
-// Initialize order details if an order is provided
 onMounted(() => {
-
     posStore.clear();
+    setTaxRate(props.financeSettings?.tax_rate);
 
     if (props.order) {
         props.orderDetails?.forEach((item) => {
             posStore.addItem({
                 id: item.id,
-                service_name: item.service_name,
-                service_image: item?.service_image,
                 serviceable_type: item.serviceable_type,
                 serviceable_id: item.serviceable_id,
-                color: item.color,
+                info: item.info,
                 price: item.price,
                 quantity: item.quantity,
             });
@@ -102,7 +101,6 @@ onMounted(() => {
     }
 });
 
-// Define modal states
 const showDiscountModal = ref(false);
 const showCouponModal = ref(false);
 const showCustomerModal = ref(false);
@@ -132,7 +130,6 @@ const posSubmit = () => {
     });
 };
 
-// Provide modal visibility states
 provide('showAddonServiceModal', showAddonServiceModal);
 provide('showDiscountModal', showDiscountModal);
 provide('showCouponModal', showCouponModal);
@@ -237,7 +234,7 @@ provide('showPaymentModal', showPaymentModal);
                         </button>
                         <span class="font-bold text-gray-700"
                             >{{ financeSettings.currency_symbol }}
-                            {{ posStore.discountAmount }}</span
+                            {{ form.discount_amount }}</span
                         >
                     </div>
                 </div>
@@ -249,7 +246,7 @@ provide('showPaymentModal', showPaymentModal);
                     <span class="text-gray-600">Sub Total:</span>
                     <span class="font-bold text-gray-700"
                         >{{ financeSettings.currency_symbol }}
-                        {{ posStore.subTotalCost }}</span
+                        {{ form.sub_total }}</span
                     >
                 </div>
                 <div class="flex justify-between">
@@ -258,14 +255,14 @@ provide('showPaymentModal', showPaymentModal);
                     >
                     <span class="font-bold text-gray-700"
                         >{{ financeSettings.currency_symbol }}
-                        {{ posStore.taxAmount }}</span
+                        {{ form.tax_amount }}</span
                     >
                 </div>
                 <div
                     class="flex justify-between text-base font-bold text-gray-800"
                 >
                     <span>TOTAL:</span>
-                    <span>{{ posStore.totalCost }}</span>
+                    <span>{{ form.total_amount }}</span>
                 </div>
             </div>
         </div>

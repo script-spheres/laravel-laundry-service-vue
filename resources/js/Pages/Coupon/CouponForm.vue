@@ -36,10 +36,9 @@ const form = useForm(method, url, {
     description: coupon?.description || '',
     code: coupon?.code || '',
     discount_type: coupon?.discount_type || 'flat',
-    discount_amount: coupon?.discount_amount || '',
+    max_discount_amount: coupon?.max_discount_amount || '',
     discount_percentage: coupon?.discount_percentage || '',
-    min_amount: coupon?.min_amount || '',
-    max_amount: coupon?.max_amount || '',
+    min_order_amount: coupon?.min_order_amount || '',
     status: coupon?.status || '',
 });
 
@@ -110,10 +109,10 @@ const submitForm = () => {
                 <FieldCol v-if="isDiscountAmountVisible">
                     <InputText
                         label="Discount Amount"
-                        v-model="form.discount_amount"
+                        v-model="form.max_discount_amount"
                         type="number"
                         step="0.01"
-                        :error="form.errors.discount_amount"
+                        :error="form.errors.max_discount_amount"
                     />
                 </FieldCol>
                 <FieldCol v-if="isDiscountPercentageVisible">
@@ -129,20 +128,11 @@ const submitForm = () => {
             <FieldRow class="grid-cols-3">
                 <FieldCol>
                     <InputText
-                        label="Minimum Amount"
-                        v-model="form.min_amount"
+                        label="Minimum Order Amount"
+                        v-model="form.min_order_amount"
                         type="number"
                         step="0.01"
-                        :error="form.errors.min_amount"
-                    />
-                </FieldCol>
-                <FieldCol>
-                    <InputText
-                        label="Maximum Amount"
-                        v-model="form.max_amount"
-                        type="number"
-                        step="0.01"
-                        :error="form.errors.max_amount"
+                        :error="form.errors.min_order_amount"
                     />
                 </FieldCol>
                 <FieldCol>

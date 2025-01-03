@@ -18,14 +18,10 @@ class OrderDetailResource extends JsonResource
             'order_id' => $this->order_id,
             'serviceable_type' => $this->getServiceableType(),
             'serviceable_id' => $this->serviceable_id,
-            'service_name' => $this->service_name,
-            'service_image' => $this->service_image,
-            'color' => $this->color,
+            'info' => $this->info,
             'price' => number_format($this->price, 2),
             'quantity' => $this->quantity,
             'total' => number_format($this->price * $this->quantity, 2),
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 

@@ -13,10 +13,28 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $orders = Order::with(['orderDetails', 'customer', 'payments', 'orderLabel'])->get();
+        $today = now()->format('Y-m-d');
 
+        $orders = Order::with(['orderDetails', 'customer', 'payments', 'orderLabel'])->where('order_status', 'delivered')
+            ->whereDate('delivery_date', $today)
+            ->get();
+
+        // Count the number of orders in each status
+        $pending = Order::whereOrderStatus('pending')->count();
+        $processing = Order::whereOrderStatus('processing')->count();
+        $readyToDeliver = Order::whereOrderStatus('ready_to_deliver')->count();
+        $delivered = Order::whereOrderStatus('delivered')->count();
+
+        // Pass the data to the view
         return Inertia::render('Dashboard', [
-            'orders' => OrderResource::collection($orders),
+            'todayDelivery' => OrderResource::collection($orders),
+            'orderStatusCounts' => [
+                ['label' => 'Pending', 'value' => $pending],
+                ['label' => 'Processing', 'value' => $processing],
+                ['label' => 'Ready To Deliver', 'value' => $readyToDeliver],
+                ['label' => 'Delivered', 'value' => $delivered],
+            ],
         ]);
     }
+
 }

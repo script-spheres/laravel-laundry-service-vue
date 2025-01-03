@@ -78,16 +78,16 @@ class HandleInertiaRequests extends Middleware
                     ->add('Expenses Type', route('expense-types.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
                     ->add('Expenses Management', route('expenses.index'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
             })
-            ->add('Report Management', '', function (Section $section) {
-                $section
-                    ->attributes(['icon' => 'BxSolidReport'])
-                    ->add('Financial Reports', route('reports.financial'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Order Reports', route('reports.orders'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Customer Reports', route('reports.customers'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Expense Reports', route('reports.expenses'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Sales Reports', route('reports.sales'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
-                    ->add('Profit Reports', route('reports.profits'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
-            })
+//            ->add('Report Management', '', function (Section $section) {
+//                $section
+//                    ->attributes(['icon' => 'BxSolidReport'])
+//                    ->add('Financial Reports', route('reports.financial'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+//                    ->add('Order Reports', route('reports.orders'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+//                    ->add('Customer Reports', route('reports.customers'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+//                    ->add('Expense Reports', route('reports.expenses'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+//                    ->add('Sales Reports', route('reports.sales'), fn($s) => $s->attributes(['icon' => 'McRoundLine']))
+//                    ->add('Profit Reports', route('reports.profits'), fn($s) => $s->attributes(['icon' => 'McRoundLine']));
+//            })
             ->add('Payment Management', route('payments.index'), fn($s) => $s->attributes(['icon' => 'BxSolidCoupon']))
             ->add('Role Management', route('roles.index'), fn($s) => $s->attributes(['icon' => 'BxSolidCoupon']))
             ->add('User Management', route('users.index'), fn($s) => $s->attributes(['icon' => 'BxSolidCoupon']))

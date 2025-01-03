@@ -13,34 +13,11 @@ use Inertia\Inertia;
 class ReportController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request, ServiceService $serviceTypeService)
-    {
-        $serviceTypes = $serviceTypeService->getServiceTypes();
-
-        return Inertia::render('ServiceType/ServiceTypeIndex', [
-            'services' => ServiceResource::collection($serviceTypes),
-            'filters' => $request->get('filter'),
-        ]);
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function daily()
     {
         return Inertia::render('ServiceType/ServiceTypeForm');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreServiceRequest $request, ServiceService $serviceTypeService)
-    {
-        $serviceTypeService->create($request);
-
-        return redirect()->route('service-types.index')->with(['message' => 'Created successfully']);
     }
 
     /**
@@ -63,23 +40,4 @@ class ReportController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateServiceRequest $request, Service $serviceType, ServiceService $serviceTypeService)
-    {
-        $serviceTypeService->update($serviceType, $request);
-
-        return redirect()->route('service-types.index')->with(['message' => 'Updated successfully']);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Service $serviceType, ServiceService $serviceTypeService)
-    {
-        $serviceTypeService->delete($serviceType);
-
-        return redirect()->route('service-types.index')->with(['message' => 'Deleted successfully']);
-    }
 }

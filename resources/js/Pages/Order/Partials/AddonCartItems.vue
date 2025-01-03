@@ -49,7 +49,7 @@ const totalAddonItems = computed(() =>
             class="mb-1 flex w-full items-center rounded-lg bg-white p-2 shadow"
         >
             <div class="flex-grow">
-                <h5 class="text-sm font-semibold">{{ addon.service_name }}</h5>
+                <h5 class="text-sm font-semibold">{{ addon.info.service_name }}</h5>
                 <p class="text-xs text-gray-500">Price: {{ addon.price }}</p>
             </div>
             <div class="ml-2 flex items-center gap-2">

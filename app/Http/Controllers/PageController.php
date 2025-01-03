@@ -28,14 +28,14 @@ class PageController extends Controller
      */
     public function index(Request $request)
     {
-//        return Inertia::render('Welcome', [
-//            'banners' => Banner::all(),
-//            'services' => Service::all(),
-//            'faqItems' => Faq::all(),
-//            'testimonials' => Review::all(),
-//            'heroSection' => ServiceItem::all(),
-//            'about' => ServiceItem::all(),
-//        ]);
+        return Inertia::render('Welcome', [
+            'banners' => Banner::all(),
+            'services' => Service::all(),
+            'faqItems' => Faq::all(),
+            'testimonials' => Review::all(),
+            'heroSection' => ServiceItem::all(),
+            'about' => ServiceItem::all(),
+        ]);
     }
 
     /**

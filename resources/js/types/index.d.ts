@@ -90,15 +90,10 @@ export type Coupon = {
     title: string;
     description: string;
     code: string;
-    min_amount: number;
-    max_amount: number;
-    valid_from: string;
-    valid_to: string;
     discount_type: string;
-    discount_amount: number;
+    max_discount_amount: number;
     discount_percentage: number;
-    usage_limit: number;
-    used_count: number;
+    min_order_amount: number;
     status: Status;
 };
 
@@ -196,8 +191,8 @@ export type ServiceDetail = {
     service_item_id: number;
     service: Service;
     service_item: ServiceItem;
-    category?: Category;
-    unit?: Unit;
+    category: Category;
+    unit: Unit;
     price: number;
     quantity: number;
 };
@@ -226,11 +221,13 @@ export type Order = {
     customer_id: number;
     store_id: number;
     total_weight_kg: number;
+    tax_percentage: number;
     sub_total: number;
     total_amount: number;
     tax_amount: number;
     discount_amount: number;
     paid_amount: number;
+    due_amount: number;
     delivery_date: string;
     quick_note: string | null;
     order_label: OrderLabel;
@@ -247,11 +244,14 @@ export type OrderDetail = {
     order_id: number;
     serviceable_type: string;
     serviceable_id: number;
-    color: string;
     price: number;
     quantity: number;
-    service_name: string;
-    service_image: Image;
+    info: {
+        service_name: string;
+        service_image: Image;
+        unit_name: string;
+        color: string;
+    };
 };
 
 export type DeliveryScale = {
@@ -290,11 +290,14 @@ export type Expense = {
 
 export type CartItem = {
     id: number;
-    service_name: string;
     serviceable_type: string;
     serviceable_id: string | number;
-    service_image?: Image;
-    color: string;
+    info: {
+        service_name: string;
+        service_image: Image;
+        unit_name: string;
+        color: string;
+    };
     price: number;
     quantity: number;
     total: number;

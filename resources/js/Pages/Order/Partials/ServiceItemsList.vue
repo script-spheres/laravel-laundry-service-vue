@@ -15,11 +15,14 @@ const toggleCartItem = (item: ServiceDetail) => {
     } else {
         posStore.addItem({
             id: item.id,
-            service_name: `${item?.service_item?.name} (${item?.service_item?.name})`,
-            service_image: item?.service_item?.image,
             serviceable_type: 'service',
             serviceable_id: item.id,
-            color: '#000000',
+            info: {
+                service_name: `${item?.service_item?.name} (${item?.service_item?.name})`,
+                service_image: item?.service_item?.image,
+                color: '#000000',
+                unit_name: item.unit.short_name,
+            },
             price: item.price,
             quantity: 1,
         });
