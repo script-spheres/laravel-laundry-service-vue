@@ -25,11 +25,15 @@ class StoreOrderRequest extends FormRequest
         return [
             'customer_id' => ['required', 'exists:App\Models\Customer,id'],
             'store_id' => ['nullable', 'exists:App\Models\Store,id'],
+            'details' => ['required', 'array'],
+            'details.*.service_name' => ['required', 'string', 'max:255'],
+            'details.*.service_image' => ['required'],
+            'details.*.price' => ['required', 'numeric'],
+            'details.*.quantity' => ['required', 'numeric', 'min:1'],
             'sub_total' => ['required', 'numeric'],
             'total_amount' => ['required', 'numeric'],
             'tax_amount' => ['nullable', 'numeric'],
             'discount_amount' => ['nullable', 'numeric'],
-            'details' => ['required', 'array'],
             'delivery_date' => ['nullable', 'date', 'after_or_equal:today'],
             'quick_note' => ['nullable', 'string', 'max:255'],
         ];

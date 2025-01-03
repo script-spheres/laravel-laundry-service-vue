@@ -45,33 +45,41 @@ const totalCartItems = computed(() => posStore.totalItemsByType('service'));
             class="flex items-center rounded-lg bg-white p-1 shadow"
         >
             <img
-                :src="item?.image?.url"
-                :alt="item?.name"
+                :src="item?.info?.service_image?.url"
+                :alt="item?.info?.service_name"
                 class="mr-3 h-12 w-12 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
                 <h5 class="text-sm font-semibold">
-                    {{ item?.name }}
+                    {{ item?.info?.service_name }}
                 </h5>
                 <p class="text-xs text-gray-500">Price: {{ item.price }}</p>
             </div>
             <div class="flex items-center gap-2">
-                <InputColor v-model="item.color" />
+                <InputColor v-model="item.info.color" />
                 <PrimaryButton
                     class="bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
-                    @click="posStore.addItem(item)"
+                    @click="
+                        posStore.updateItemQuantity(item.id, item.quantity - 1)
+                    "
                 >
                     <AkMinus class="h-4 w-4" />
                 </PrimaryButton>
-                <input
-                    v-model="item.quantity"
-                    type="number"
-                    min="1"
-                    class="w-14 rounded-lg border p-1 text-center shadow-sm"
-                />
+                <div>
+                    <input
+                        v-model="item.quantity"
+                        type="number"
+                        min="0.1"
+                        step="0.1"
+                        class="w-20 rounded-lg border p-1 text-center shadow-sm"
+                    />
+                    <p>{{ item?.info?.unit_name }}</p>
+                </div>
                 <PrimaryButton
                     class="bg-gray-600 px-2 py-1 text-white hover:bg-gray-700"
-                    @click="posStore.addItem(item)"
+                    @click="
+                        posStore.updateItemQuantity(item.id, item.quantity + 1)
+                    "
                 >
                     <AkPlus class="h-4 w-4" />
                 </PrimaryButton>

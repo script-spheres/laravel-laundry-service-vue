@@ -27,9 +27,7 @@ const handleClose = () => {
 };
 
 const isInCart = (id: number) => {
-    return posStore
-        .getItemsByType('addon-service')
-        .some((item) => item.id === id);
+    return posStore.itemIsCartByType(id, 'addon-service');
 };
 
 const toggleCartItem = (item: AddonService) => {
@@ -38,14 +36,16 @@ const toggleCartItem = (item: AddonService) => {
     } else {
         posStore.addItem({
             id: item.id,
-            name: item.name,
-            image: item.image,
             serviceable_type: 'addon-service',
             serviceable_id: item.id,
-            color: '',
+            info: {
+                service_name: item.name,
+                service_image: item.image,
+                unit_name: '',
+                color: '#000000',
+            },
             price: item.price,
             quantity: 1,
-            total: item.price,
         });
     }
 };
@@ -73,9 +73,7 @@ const toggleCartItem = (item: AddonService) => {
                         <TableCell class="flex justify-end gap-2">
                             <PrimaryButton
                                 :color="
-                                    isInCart(addonService.id)
-                                        ? 'red'
-                                        : 'gray'
+                                    isInCart(addonService.id) ? 'red' : 'gray'
                                 "
                                 @click="toggleCartItem(addonService)"
                             >

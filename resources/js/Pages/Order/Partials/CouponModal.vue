@@ -1,38 +1,33 @@
 <script setup lang="ts">
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
-import DataTable from '@/Components/DataTable/DataTable.vue';
-import TableBody from '@/Components/DataTable/TableBody.vue';
-import TableCell from '@/Components/DataTable/TableCell.vue';
-import TableHead from '@/Components/DataTable/TableHead.vue';
-import TableHeadCell from '@/Components/DataTable/TableHeadCell.vue';
-import TableRow from '@/Components/DataTable/TableRow.vue';
 import Modal from '@/Components/Modal/Modal.vue';
-import { usePosStore } from '@/Stores/PosStore';
+import { useCartCalculations } from '@/Composables/useCartCalculations';
 import { Coupon } from '@/types';
 import { inject, PropType, Ref } from 'vue';
 
+// Injected ref to control modal visibility
+const showDiscountModal = inject('showDiscountModal') as Ref<boolean>;
+
+// Props declaration
 defineProps({
     coupons: {
-        type: Object as PropType<Coupon[]>,
+        type: Array as PropType<Coupon[]>,
         required: false,
     },
 });
 
-// Inject provided values
-const showDiscountModal = inject('showDiscountModal') as Ref<boolean>;
+const { getSubTotalCost, applyCoupon } = useCartCalculations();
 
-// Access POS store
-const posStore = usePosStore();
-
-// Close Modal
+// Handle closing of the modal
 const handleClose = () => {
     showDiscountModal.value = false;
 };
 
-// Add Coupon to Cart
-const applyCoupon = (coupon: Coupon) => {
-    console.log('Coupon apply:', coupon);
-};
+// Check if a coupon is applicable based on subtotal
+const isCouponApplicable = (maxDiscountAmount: number) =>
+    getSubTotalCost() < maxDiscountAmount;
+
+console.log(isCouponApplicable,'isCouponApplicable');
 </script>
 
 <template>
@@ -41,27 +36,58 @@ const applyCoupon = (coupon: Coupon) => {
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                 Apply a Coupon
             </h2>
-            <!-- Coupons Table -->
-            <DataTable>
-                <TableHead>
-                    <TableHeadCell>Coupon Code</TableHeadCell>
-                    <TableHeadCell>Discount</TableHeadCell>
-                    <TableHeadCell class="text-right">Actions</TableHeadCell>
-                </TableHead>
-                <TableBody>
-                    <TableRow v-for="coupon in coupons" :key="coupon.id">
-                        <TableCell>{{ coupon.code }}</TableCell>
-                        <TableCell>{{ coupon.discount_type }}</TableCell>
-                        <TableCell>{{ coupon.discount_amount }}</TableCell>
-                        <TableCell>{{ coupon.discount_percentage }}%</TableCell>
-                        <TableCell class="flex justify-end gap-2">
-                            <PrimaryButton @click="applyCoupon(coupon)">
-                                Apply
-                            </PrimaryButton>
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
-            </DataTable>
+
+            <!-- List of Coupons -->
+            <div class="space-y-2">
+                <div
+                    v-for="coupon in coupons"
+                    :key="coupon.id"
+                    class="flex items-center justify-between border-b p-2"
+                >
+                    <div>
+                        <div class="flex space-x-2">
+                            <span class="font-medium">{{ coupon.code }}</span>
+                            <p class="rounded bg-gray-300 px-2 font-medium">
+                                {{ coupon.discount_type }}
+                            </p>
+                            <div class="text-sm text-gray-600">
+                                <!-- Show discount details based on type -->
+                                <span v-if="coupon.discount_type === 'flat'">
+                                    Discount: ${{ coupon.max_discount_amount }}
+                                </span>
+                                <span
+                                    v-else-if="
+                                        coupon.discount_type === 'percentage'
+                                    "
+                                >
+                                    Discount: {{ coupon.discount_percentage }}%
+                                    (up to ${{ coupon.max_discount_amount }})
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-sm font-thin">
+                            {{ coupon.description }}
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <!-- Apply Coupon Button -->
+                        <PrimaryButton
+                            v-if="
+                                isCouponApplicable(coupon.max_discount_amount)
+                            "
+                            @click="
+                                applyCoupon(
+                                    coupon.code,
+                                    coupon.max_discount_amount,
+                                )
+                            "
+                        >
+                            Apply
+                        </PrimaryButton>
+                    </div>
+                </div>
+            </div>
         </div>
     </Modal>
 </template>

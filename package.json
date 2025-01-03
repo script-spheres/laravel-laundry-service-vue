@@ -35,6 +35,7 @@
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
+        "@headlessui/vue": "^1.7.23",
         "@inertiaui/modal-vue": "^0.14.0",
         "@kalimahapps/vue-icons": "^1.7.1",
         "@vueuse/core": "^11.3.0",

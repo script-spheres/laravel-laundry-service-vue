@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import InputSelect from '@/Components/Form/InputSelect.vue';
-import InputText from '@/Components/Form/InputText.vue';
 import Card from '@/Components/Panel/Card.vue';
-import { useFilters } from '@/Composables/useFilters';
-import { orderStatusOptions } from '@/Constants/options';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Order, PaginatedData } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { PropType } from 'vue';
+import { computed, PropType } from 'vue';
 
 defineOptions({ layout: AuthenticatedLayout });
 
 const props = defineProps({
-    orders: {
+    todayDelivery: {
         type: Object as PropType<PaginatedData<Order>>,
         required: true,
     },
@@ -20,16 +16,28 @@ const props = defineProps({
         type: Object as PropType<Filters>,
         default: () => ({}),
     },
+    orderStatusCounts: {
+        type: Array as PropType<Array<{ label: string; value: number }>>,
+        required: true,
+    },
 });
 
-const { filter } = useFilters(
-    'orders.index',
-    props.filters || { search_query: '', order_filter: '' },
+// Extract the labels and values from the orderStatusCounts array
+const chartLabels = computed(() =>
+    props.orderStatusCounts.map((item) => item.label),
 );
+const chartSeries = computed(() =>
+    props.orderStatusCounts.map((item) => item.value),
+);
+
+// Today’s Delivery Count
+const todayDeliveryCount = computed(() => {
+    return props.todayDelivery.data ? props.todayDelivery.data.length : 0;
+});
 
 const chartOptions = {
     chart: { type: 'pie', toolbar: { show: true }, height: 600 },
-    labels: ['Pending', 'Processing', 'Ready To Deliver', 'Delivered'],
+    labels: chartLabels.value,
     colors: ['#8392ab', '#faae42', '#2dce89', '#0083ff'],
     legend: {
         position: 'bottom',
@@ -52,8 +60,6 @@ const chartOptions = {
         },
     ],
 };
-
-const chartSeries = [513, 223, 486, 159];
 </script>
 
 <template>
@@ -62,12 +68,7 @@ const chartSeries = [513, 223, 486, 159];
     <!-- Order Summary Grid -->
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div
-            v-for="(status, index) in [
-                'Pending',
-                'Processing',
-                'Ready To Deliver',
-                'Delivered',
-            ]"
+            v-for="(status, index) in chartLabels"
             :key="status"
             class="rounded bg-gray-100 p-4 text-center shadow"
         >
@@ -80,26 +81,16 @@ const chartSeries = [513, 223, 486, 159];
     <div class="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card class="p-4 lg:col-span-2">
             <div class="flex flex-col gap-4 md:flex-row md:justify-between">
-                <h6 class="text-lg font-bold">Today's Delivery:</h6>
-                <div class="flex flex-col gap-2 sm:flex-row sm:gap-4">
-                    <InputText
-                        placeholder="Search Here"
-                        v-model="filter.search_query"
-                        class="w-full sm:w-auto"
-                    />
-                    <InputSelect
-                        v-model="filter.order_filter"
-                        :options="orderStatusOptions"
-                        class="w-full sm:w-auto"
-                    />
-                </div>
+                <h6 class="text-lg font-bold">
+                    Today's Delivery: {{ todayDeliveryCount }}
+                </h6>
             </div>
 
             <div
                 class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
             >
                 <div
-                    v-for="order in orders.data"
+                    v-for="order in props.todayDelivery.data"
                     :key="order.order_uuid"
                     class="rounded bg-gray-50 p-4 shadow"
                 >

@@ -2,7 +2,6 @@
 import SidebarItem from '@/Components/Sidebar/SidebarItem.vue';
 import { NavigationItem } from '@/types';
 import getIcon from '@/Utility/icons';
-import { defineEmits, defineProps } from 'vue';
 
 const props = defineProps<{
     item: NavigationItem;

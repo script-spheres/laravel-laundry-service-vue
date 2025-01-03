@@ -17,6 +17,7 @@ use App\Models\ServiceDetail;
 use App\Models\Store;
 use App\Services\OrderService;
 use App\Services\ServiceDetailService;
+use App\Settings\FinanceSettings;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -54,16 +55,14 @@ class OrderController extends Controller
         $serviceDetailsQuery = ServiceDetail::with(['serviceItem', 'service', 'category', 'unit']);
 
         $serviceDetailsQuery->when($request->input('filter.category_id'), function ($query, $categoryId) {
-            $query->whereHas('category', function ($query) use ($categoryId) {
-                $query->where('id', $categoryId);
-            });
+            $query->where('category_id', $categoryId);
         });
 
         $serviceDetailsQuery->when($request->input('filter.service_id'), function ($query, $serviceId) {
-            $query->whereHas('service', function ($query) use ($serviceId) {
-                $query->where('id', $serviceId);
-            });
+            $query->where('service_id', $serviceId);
         });
+
+        $financeSettings = app(FinanceSettings::class);
 
         return Inertia::render('Order/OrderForm', [
             'services' => Service::where('status', 'active')->get(),
@@ -73,6 +72,7 @@ class OrderController extends Controller
             'coupons' => Coupon::get(),
             'categories' => Category::get(),
             'serviceDetails' => $serviceDetailsQuery->get(),
+            'financeSettings' => $financeSettings,
             'filters' => $request->get('filter'),
         ]);
     }
@@ -82,12 +82,15 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        $financeSettings = app(FinanceSettings::class);
+
         return Inertia::render('Order/OrderShow', [
             'order' => OrderResource::make($order->load(['orderDetails', 'customer', 'payments', 'orderLabel'])),
             'services' => Service::get(),
             'customerOptions' => Customer::get(),
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
+            'financeSettings' => $financeSettings,
         ]);
     }
 
@@ -96,7 +99,18 @@ class OrderController extends Controller
      */
     public function edit(Request $request, Order $order)
     {
-        $orderDetails = OrderDetails::where(['order_id',$order->id])->get();
+        $orderDetails = OrderDetails::where('order_id', $order->id)->get();
+        $serviceDetailsQuery = ServiceDetail::with(['serviceItem', 'service', 'category', 'unit']);
+
+        $serviceDetailsQuery->when($request->input('filter.category_id'), function ($query, $categoryId) {
+            $query->where('category_id', $categoryId);
+        });
+
+        $serviceDetailsQuery->when($request->input('filter.service_id'), function ($query, $serviceId) {
+            $query->where('service_id', $serviceId);
+        });
+
+        $financeSettings = app(FinanceSettings::class);
 
         return Inertia::render('Order/OrderForm', [
             'order' => OrderResource::make($order)->resolve(),
@@ -107,7 +121,8 @@ class OrderController extends Controller
             'addonServices' => AddonService::get(),
             'coupons' => Coupon::get(),
             'categories' => Category::get(),
-            'serviceDetails' => (new ServiceDetailService())->getServiceDetails(),
+            'serviceDetails' => $serviceDetailsQuery->get(),
+            'financeSettings' => $financeSettings,
             'filters' => $request->get('filter'),
         ]);
     }

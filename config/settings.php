@@ -8,7 +8,8 @@ return [
      */
     'settings' => [
         \App\Settings\GeneralSettings::class,
-        \App\Settings\FinanceSettings::class
+        \App\Settings\FinanceSettings::class,
+        \App\Settings\BusinessSettings::class
     ],
 
     /*

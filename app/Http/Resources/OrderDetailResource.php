@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -17,13 +16,29 @@ class OrderDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'order_id' => $this->order_id,
-            'serviceable_type' => $this->serviceable_type,
+            'serviceable_type' => $this->getServiceableType(),
             'serviceable_id' => $this->serviceable_id,
-            'price' => $this->price,
+            'info' => $this->info,
+            'price' => number_format($this->price, 2),
             'quantity' => $this->quantity,
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
-            'serviceable' => $this->whenLoaded('serviceable'),
+            'total' => number_format($this->price * $this->quantity, 2),
         ];
+    }
+
+    /**
+     * Custom logic to return serviceable_type as 'service' or 'addon-service'
+     */
+    private function getServiceableType(): string
+    {
+        if ($this->serviceable_type === 'App\Models\ServiceDetail') {
+            return 'service';
+        }
+
+        if ($this->serviceable_type === 'App\Models\AddonService') {
+            return 'addon-service';
+        }
+
+        // Default case (in case no matching type is found)
+        return 'unknown';
     }
 }

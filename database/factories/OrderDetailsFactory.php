@@ -31,6 +31,11 @@ class OrderDetailsFactory extends Factory
             },
             'quantity' => $this->faker->numberBetween(1, 10),
             'price' => $this->faker->randomFloat(2, 5, 50),
+            'service_name' => $this->faker->word,
+            'color' => $this->faker->safeColorName(),
+            'total' => function (array $attributes) {
+                return $attributes['price'] * $attributes['quantity'];
+            },
         ];
     }
 }

@@ -4,11 +4,13 @@ namespace App\Settings;
 
 use Spatie\LaravelSettings\Settings;
 
-class WebsiteSettings extends Settings
+class BusinessSettings extends Settings
 {
+    public ?string $address;
+    public ?string $email;
 
     public static function group(): string
     {
-        return 'default';
+        return 'business';
     }
 }

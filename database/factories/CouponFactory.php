@@ -23,10 +23,9 @@ class CouponFactory extends Factory
             'description' => $this->faker->paragraph,
             'code' => strtoupper(Str::random(6)),
             'discount_type' => $this->faker->randomElement(['flat', 'percentage']),
-            'discount_amount' => $this->faker->optional()->randomFloat(2, 1, 100),
-            'discount_percentage' => $this->faker->optional()->randomFloat(2, 1, 99),
-            'min_amount' => $this->faker->randomFloat(2, 10, 1000),
-            'max_amount' => $this->faker->randomFloat(2, 10, 1000),
+            'discount_percentage' => $this->faker->randomFloat(2, 1, 99),
+            'max_discount_amount' => $this->faker->randomFloat(2, 1, 100),
+            'min_order_amount' => $this->faker->randomFloat(2, 10, 1000),
             'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }

@@ -16,11 +16,10 @@ return new class extends Migration
             $table->string('title');
             $table->longText('description');
             $table->string('code')->unique();
-            $table->enum('discount_type', ['flat', 'percentage']);
-            $table->decimal('discount_amount', 10, 2)->nullable();
+            $table->enum('discount_type', ['flat', 'percentage'])->default('flat');
             $table->decimal('discount_percentage', 10, 2)->nullable();
-            $table->decimal('min_amount');
-            $table->decimal('max_amount');
+            $table->decimal('max_discount_amount');
+            $table->decimal('min_order_amount');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
             $table->softDeletes();

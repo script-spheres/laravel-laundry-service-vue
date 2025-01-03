@@ -34,7 +34,6 @@ const props = defineProps({
     },
 });
 
-// Initialize reactive filters with default values or passed props
 const { filter, handleClearFilter } = useFilters('coupons.index', {
     title: props.filters?.title ?? '',
     discount_type: props.filters?.discount_type ?? '',
@@ -73,41 +72,37 @@ const { filter, handleClearFilter } = useFilters('coupons.index', {
         </div>
     </Card>
 
-    <div class="mx-auto mt-6">
-        <DataTable>
-            <TableHead>
-                <TableHeadCell>Title</TableHeadCell>
-                <TableHeadCell>Min Amount</TableHeadCell>
-                <TableHeadCell>Max Amount</TableHeadCell>
-                <TableHeadCell>Discount Type</TableHeadCell>
-                <TableHeadCell class="text-right">Status</TableHeadCell>
-                <TableHeadCell class="text-right">Actions</TableHeadCell>
-            </TableHead>
-            <TableBody>
-                <TableRow v-for="coupon in coupons.data" :key="coupon.id">
-                    <TableCell>{{ coupon.title }}</TableCell>
-                    <TableCell>{{ coupon.min_amount }}</TableCell>
-                    <TableCell>{{ coupon.max_amount }}</TableCell>
-                    <TableCell>{{ coupon.discount_type }}</TableCell>
-                    <TableCell class="text-right">
-                        <StatusToggleInput
-                            :action="route('coupons.update', coupon.id)"
-                            :data="coupon"
-                        />
-                    </TableCell>
-                    <TableCell class="flex justify-end gap-2">
-                        <LinkButton :href="route('coupons.edit', coupon.id)">
-                            Edit
-                        </LinkButton>
-                        <DeleteButton
-                            :action="route('coupons.destroy', coupon.id)"
-                        >
-                            Delete
-                        </DeleteButton>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </DataTable>
-        <Pagination :links="coupons.meta" />
-    </div>
+    <DataTable class="mx-auto mt-6">
+        <TableHead>
+            <TableHeadCell>Title</TableHeadCell>
+            <TableHeadCell>Min Discount Amount</TableHeadCell>
+            <TableHeadCell>Max Order Amount</TableHeadCell>
+            <TableHeadCell>Discount Type</TableHeadCell>
+            <TableHeadCell class="text-right">Status</TableHeadCell>
+            <TableHeadCell class="text-right">Actions</TableHeadCell>
+        </TableHead>
+        <TableBody>
+            <TableRow v-for="coupon in coupons.data" :key="coupon.id">
+                <TableCell>{{ coupon.title }}</TableCell>
+                <TableCell>{{ coupon.max_discount_amount }}</TableCell>
+                <TableCell>{{ coupon.min_order_amount }}</TableCell>
+                <TableCell>{{ coupon.discount_type }}</TableCell>
+                <TableCell class="text-right">
+                    <StatusToggleInput
+                        :action="route('coupons.update', coupon.id)"
+                        :data="coupon"
+                    />
+                </TableCell>
+                <TableCell class="flex justify-end gap-2">
+                    <LinkButton :href="route('coupons.edit', coupon.id)">
+                        Edit
+                    </LinkButton>
+                    <DeleteButton :action="route('coupons.destroy', coupon.id)">
+                        Delete
+                    </DeleteButton>
+                </TableCell>
+            </TableRow>
+        </TableBody>
+    </DataTable>
+    <Pagination :links="coupons.meta" />
 </template>
